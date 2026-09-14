@@ -1,0 +1,624 @@
+{
+  "egg": {
+    "bodyBase": "image-231.png",
+    "eyesBase": "image-232.png",
+    "mouthBase": "image-233.png",
+    "bodyMini": "image-234.png",
+    "eyesMini": "image-235.png",
+    "mouthMini": "image-236.png"
+  },
+  "tamas": [
+    {
+      "id": 0,
+      "bodyBase": "image-237.png",
+      "eyesBase": "image-238.png",
+      "mouthBase": "image-239.png",
+      "bodyMini": "image-240.png",
+      "eyesMini": "image-241.png",
+      "mouthMini": "image-242.png"
+    },
+    {
+      "id": 1,
+      "bodyBase": "image-243.png",
+      "eyesBase": "image-244.png",
+      "mouthBase": "image-245.png",
+      "bodyMini": "image-246.png",
+      "eyesMini": "image-247.png",
+      "mouthMini": "image-248.png"
+    },
+    {
+      "id": 2,
+      "bodyBase": "image-249.png",
+      "eyesBase": "image-250.png",
+      "mouthBase": "image-251.png",
+      "bodyMini": "image-252.png",
+      "eyesMini": "image-253.png",
+      "mouthMini": "image-254.png"
+    },
+    {
+      "id": 3,
+      "bodyBase": "image-255.png",
+      "eyesBase": "image-256.png",
+      "mouthBase": "image-257.png",
+      "bodyMini": "image-258.png",
+      "eyesMini": "image-259.png",
+      "mouthMini": "image-260.png"
+    },
+    {
+      "id": 4,
+      "bodyBase": "image-261.png",
+      "eyesBase": "image-262.png",
+      "mouthBase": "image-263.png",
+      "bodyMini": "image-264.png",
+      "eyesMini": "image-265.png",
+      "mouthMini": "image-266.png"
+    },
+    {
+      "id": 5,
+      "bodyBase": "image-267.png",
+      "eyesBase": "image-268.png",
+      "mouthBase": "image-269.png",
+      "bodyMini": "image-270.png",
+      "eyesMini": "image-271.png",
+      "mouthMini": "image-272.png"
+    },
+    {
+      "id": 6,
+      "bodyBase": "image-273.png",
+      "eyesBase": "image-274.png",
+      "mouthBase": "image-275.png",
+      "bodyMini": "image-276.png",
+      "eyesMini": "image-277.png",
+      "mouthMini": "image-278.png"
+    },
+    {
+      "id": 7,
+      "bodyBase": "image-279.png",
+      "eyesBase": "image-280.png",
+      "mouthBase": "image-281.png",
+      "bodyMini": "image-282.png",
+      "eyesMini": "image-283.png",
+      "mouthMini": "image-284.png"
+    },
+    {
+      "id": 8,
+      "bodyBase": "image-285.png",
+      "eyesBase": "image-286.png",
+      "mouthBase": "image-287.png",
+      "bodyMini": "image-288.png",
+      "eyesMini": "image-289.png",
+      "mouthMini": "image-290.png"
+    },
+    {
+      "id": 9,
+      "bodyBase": "image-291.png",
+      "eyesBase": "image-292.png",
+      "mouthBase": "image-293.png",
+      "bodyMini": "image-294.png",
+      "eyesMini": "image-295.png",
+      "mouthMini": "image-296.png"
+    },
+    {
+      "id": 10,
+      "bodyBase": "image-297.png",
+      "eyesBase": "image-298.png",
+      "mouthBase": "image-299.png",
+      "bodyMini": "image-300.png",
+      "eyesMini": "image-301.png",
+      "mouthMini": "image-302.png"
+    },
+    {
+      "id": 11,
+      "bodyBase": "image-303.png",
+      "eyesBase": "image-304.png",
+      "mouthBase": "image-305.png",
+      "bodyMini": "image-306.png",
+      "eyesMini": "image-307.png",
+      "mouthMini": "image-308.png"
+    },
+    {
+      "id": 12,
+      "bodyBase": "image-309.png",
+      "eyesBase": "image-310.png",
+      "mouthBase": "image-311.png",
+      "bodyMini": "image-312.png",
+      "eyesMini": "image-313.png",
+      "mouthMini": "image-314.png"
+    },
+    {
+      "id": 13,
+      "bodyBase": "image-315.png",
+      "eyesBase": "image-316.png",
+      "mouthBase": "image-317.png",
+      "bodyMini": "image-318.png",
+      "eyesMini": "image-319.png",
+      "mouthMini": "image-320.png"
+    },
+    {
+      "id": 14,
+      "bodyBase": "image-321.png",
+      "eyesBase": "image-322.png",
+      "mouthBase": "image-323.png",
+      "bodyMini": "image-324.png",
+      "eyesMini": "image-325.png",
+      "mouthMini": "image-326.png"
+    },
+    {
+      "id": 15,
+      "bodyBase": "image-327.png",
+      "eyesBase": "image-328.png",
+      "mouthBase": "image-329.png",
+      "bodyMini": "image-330.png",
+      "eyesMini": "image-331.png",
+      "mouthMini": "image-332.png"
+    },
+    {
+      "id": 16,
+      "bodyBase": "image-333.png",
+      "eyesBase": "image-334.png",
+      "mouthBase": "image-335.png",
+      "bodyMini": "image-336.png",
+      "eyesMini": "image-337.png",
+      "mouthMini": "image-338.png"
+    },
+    {
+      "id": 17,
+      "bodyBase": "image-339.png",
+      "eyesBase": "image-340.png",
+      "mouthBase": "image-341.png",
+      "bodyMini": "image-342.png",
+      "eyesMini": "image-343.png",
+      "mouthMini": "image-344.png"
+    },
+    {
+      "id": 18,
+      "bodyBase": "image-345.png",
+      "eyesBase": "image-346.png",
+      "mouthBase": "image-347.png",
+      "bodyMini": "image-348.png",
+      "eyesMini": "image-349.png",
+      "mouthMini": "image-350.png"
+    },
+    {
+      "id": 19,
+      "bodyBase": "image-351.png",
+      "eyesBase": "image-352.png",
+      "mouthBase": "image-353.png",
+      "bodyMini": "image-354.png",
+      "eyesMini": "image-355.png",
+      "mouthMini": "image-356.png"
+    },
+    {
+      "id": 20,
+      "bodyBase": "image-357.png",
+      "eyesBase": "image-358.png",
+      "mouthBase": "image-359.png",
+      "bodyMini": "image-360.png",
+      "eyesMini": "image-361.png",
+      "mouthMini": "image-362.png"
+    },
+    {
+      "id": 21,
+      "bodyBase": "image-363.png",
+      "eyesBase": "image-364.png",
+      "mouthBase": "image-365.png",
+      "bodyMini": "image-366.png",
+      "eyesMini": "image-367.png",
+      "mouthMini": "image-368.png"
+    },
+    {
+      "id": 22,
+      "bodyBase": "image-369.png",
+      "eyesBase": "image-370.png",
+      "mouthBase": "image-371.png",
+      "bodyMini": "image-372.png",
+      "eyesMini": "image-373.png",
+      "mouthMini": "image-374.png"
+    },
+    {
+      "id": 23,
+      "bodyBase": "image-375.png",
+      "eyesBase": "image-376.png",
+      "mouthBase": "image-377.png",
+      "bodyMini": "image-378.png",
+      "eyesMini": "image-379.png",
+      "mouthMini": "image-380.png"
+    },
+    {
+      "id": 24,
+      "bodyBase": "image-381.png",
+      "eyesBase": "image-382.png",
+      "mouthBase": "image-383.png",
+      "bodyMini": "image-384.png",
+      "eyesMini": "image-385.png",
+      "mouthMini": "image-386.png"
+    },
+    {
+      "id": 25,
+      "bodyBase": "image-387.png",
+      "eyesBase": "image-388.png",
+      "mouthBase": "image-389.png",
+      "bodyMini": "image-390.png",
+      "eyesMini": "image-391.png",
+      "mouthMini": "image-392.png"
+    },
+    {
+      "id": 26,
+      "bodyBase": "image-393.png",
+      "eyesBase": "image-394.png",
+      "mouthBase": "image-395.png",
+      "bodyMini": "image-396.png",
+      "eyesMini": "image-397.png",
+      "mouthMini": "image-398.png"
+    },
+    {
+      "id": 27,
+      "bodyBase": "image-399.png",
+      "eyesBase": "image-400.png",
+      "mouthBase": "image-401.png",
+      "bodyMini": "image-402.png",
+      "eyesMini": "image-403.png",
+      "mouthMini": "image-404.png"
+    },
+    {
+      "id": 28,
+      "bodyBase": "image-405.png",
+      "eyesBase": "image-406.png",
+      "mouthBase": "image-407.png",
+      "bodyMini": "image-408.png",
+      "eyesMini": "image-409.png",
+      "mouthMini": "image-410.png"
+    },
+    {
+      "id": 29,
+      "bodyBase": "image-411.png",
+      "eyesBase": "image-412.png",
+      "mouthBase": "image-413.png",
+      "bodyMini": "image-414.png",
+      "eyesMini": "image-415.png",
+      "mouthMini": "image-416.png"
+    },
+    {
+      "id": 30,
+      "bodyBase": "image-417.png",
+      "eyesBase": "image-418.png",
+      "mouthBase": "image-419.png",
+      "bodyMini": "image-420.png",
+      "eyesMini": "image-421.png",
+      "mouthMini": "image-422.png"
+    },
+    {
+      "id": 31,
+      "bodyBase": "image-423.png",
+      "eyesBase": "image-424.png",
+      "mouthBase": "image-425.png",
+      "bodyMini": "image-426.png",
+      "eyesMini": "image-427.png",
+      "mouthMini": "image-428.png"
+    },
+    {
+      "id": 32,
+      "bodyBase": "image-429.png",
+      "eyesBase": "image-430.png",
+      "mouthBase": "image-431.png",
+      "bodyMini": "image-432.png",
+      "eyesMini": "image-433.png",
+      "mouthMini": "image-434.png"
+    },
+    {
+      "id": 33,
+      "bodyBase": "image-435.png",
+      "eyesBase": "image-436.png",
+      "mouthBase": "image-437.png",
+      "bodyMini": "image-438.png",
+      "eyesMini": "image-439.png",
+      "mouthMini": "image-440.png"
+    },
+    {
+      "id": 34,
+      "bodyBase": "image-441.png",
+      "eyesBase": "image-442.png",
+      "mouthBase": "image-443.png",
+      "bodyMini": "image-444.png",
+      "eyesMini": "image-445.png",
+      "mouthMini": "image-446.png"
+    },
+    {
+      "id": 35,
+      "bodyBase": "image-447.png",
+      "eyesBase": "image-448.png",
+      "mouthBase": "image-449.png",
+      "bodyMini": "image-450.png",
+      "eyesMini": "image-451.png",
+      "mouthMini": "image-452.png"
+    },
+    {
+      "id": 36,
+      "bodyBase": "image-453.png",
+      "eyesBase": "image-454.png",
+      "mouthBase": "image-455.png",
+      "bodyMini": "image-456.png",
+      "eyesMini": "image-457.png",
+      "mouthMini": "image-458.png"
+    },
+    {
+      "id": 37,
+      "bodyBase": "image-459.png",
+      "eyesBase": "image-460.png",
+      "mouthBase": "image-461.png",
+      "bodyMini": "image-462.png",
+      "eyesMini": "image-463.png",
+      "mouthMini": "image-464.png"
+    },
+    {
+      "id": 38,
+      "bodyBase": "image-465.png",
+      "eyesBase": "image-466.png",
+      "mouthBase": "image-467.png",
+      "bodyMini": "image-468.png",
+      "eyesMini": "image-469.png",
+      "mouthMini": "image-470.png"
+    },
+    {
+      "id": 39,
+      "bodyBase": "image-471.png",
+      "eyesBase": "image-472.png",
+      "mouthBase": "image-473.png",
+      "bodyMini": "image-474.png",
+      "eyesMini": "image-475.png",
+      "mouthMini": "image-476.png"
+    },
+    {
+      "id": 40,
+      "bodyBase": "image-477.png",
+      "eyesBase": "image-478.png",
+      "mouthBase": "image-479.png",
+      "bodyMini": "image-480.png",
+      "eyesMini": "image-481.png",
+      "mouthMini": "image-482.png"
+    },
+    {
+      "id": 41,
+      "bodyBase": "image-483.png",
+      "eyesBase": "image-484.png",
+      "mouthBase": "image-485.png",
+      "bodyMini": "image-486.png",
+      "eyesMini": "image-487.png",
+      "mouthMini": "image-488.png"
+    },
+    {
+      "id": 42,
+      "bodyBase": "image-489.png",
+      "eyesBase": "image-490.png",
+      "mouthBase": "image-491.png",
+      "bodyMini": "image-492.png",
+      "eyesMini": "image-493.png",
+      "mouthMini": "image-494.png"
+    },
+    {
+      "id": 43,
+      "bodyBase": "image-495.png",
+      "eyesBase": "image-496.png",
+      "mouthBase": "image-497.png",
+      "bodyMini": "image-498.png",
+      "eyesMini": "image-499.png",
+      "mouthMini": "image-500.png"
+    },
+    {
+      "id": 44,
+      "bodyBase": "image-501.png",
+      "eyesBase": "image-502.png",
+      "mouthBase": "image-503.png",
+      "bodyMini": "image-504.png",
+      "eyesMini": "image-505.png",
+      "mouthMini": "image-506.png"
+    },
+    {
+      "id": 45,
+      "bodyBase": "image-507.png",
+      "eyesBase": "image-508.png",
+      "mouthBase": "image-509.png",
+      "bodyMini": "image-510.png",
+      "eyesMini": "image-511.png",
+      "mouthMini": "image-512.png"
+    },
+    {
+      "id": 46,
+      "bodyBase": "image-513.png",
+      "eyesBase": "image-514.png",
+      "mouthBase": "image-515.png",
+      "bodyMini": "image-516.png",
+      "eyesMini": "image-517.png",
+      "mouthMini": "image-518.png"
+    },
+    {
+      "id": 47,
+      "bodyBase": "image-519.png",
+      "eyesBase": "image-520.png",
+      "mouthBase": "image-521.png",
+      "bodyMini": "image-522.png",
+      "eyesMini": "image-523.png",
+      "mouthMini": "image-524.png"
+    },
+    {
+      "id": 48,
+      "bodyBase": "image-525.png",
+      "eyesBase": "image-526.png",
+      "mouthBase": "image-527.png",
+      "bodyMini": "image-528.png",
+      "eyesMini": "image-529.png",
+      "mouthMini": "image-530.png"
+    },
+    {
+      "id": 49,
+      "bodyBase": "image-531.png",
+      "eyesBase": "image-532.png",
+      "mouthBase": "image-533.png",
+      "bodyMini": "image-534.png",
+      "eyesMini": "image-535.png",
+      "mouthMini": "image-536.png"
+    },
+    {
+      "id": 50,
+      "bodyBase": "image-537.png",
+      "eyesBase": "image-538.png",
+      "mouthBase": "image-539.png",
+      "bodyMini": "image-540.png",
+      "eyesMini": "image-541.png",
+      "mouthMini": "image-542.png"
+    },
+    {
+      "id": 51,
+      "bodyBase": "image-543.png",
+      "eyesBase": "image-544.png",
+      "mouthBase": "image-545.png",
+      "bodyMini": "image-546.png",
+      "eyesMini": "image-547.png",
+      "mouthMini": "image-548.png"
+    },
+    {
+      "id": 52,
+      "bodyBase": "image-549.png",
+      "eyesBase": "image-550.png",
+      "mouthBase": "image-551.png",
+      "bodyMini": "image-552.png",
+      "eyesMini": "image-553.png",
+      "mouthMini": "image-554.png"
+    },
+    {
+      "id": 53,
+      "bodyBase": "image-555.png",
+      "eyesBase": "image-556.png",
+      "mouthBase": "image-557.png",
+      "bodyMini": "image-558.png",
+      "eyesMini": "image-559.png",
+      "mouthMini": "image-560.png"
+    },
+    {
+      "id": 54,
+      "bodyBase": "image-561.png",
+      "eyesBase": "image-562.png",
+      "mouthBase": "image-563.png",
+      "bodyMini": "image-564.png",
+      "eyesMini": "image-565.png",
+      "mouthMini": "image-566.png"
+    },
+    {
+      "id": 55,
+      "bodyBase": "image-567.png",
+      "eyesBase": "image-568.png",
+      "mouthBase": "image-569.png",
+      "bodyMini": "image-570.png",
+      "eyesMini": "image-571.png",
+      "mouthMini": "image-572.png"
+    },
+    {
+      "id": 56,
+      "bodyBase": "image-573.png",
+      "eyesBase": "image-574.png",
+      "mouthBase": "image-575.png",
+      "bodyMini": "image-576.png",
+      "eyesMini": "image-577.png",
+      "mouthMini": "image-578.png"
+    },
+    {
+      "id": 57,
+      "bodyBase": "image-579.png",
+      "eyesBase": "image-580.png",
+      "mouthBase": "image-581.png",
+      "bodyMini": "image-582.png",
+      "eyesMini": "image-583.png",
+      "mouthMini": "image-584.png"
+    },
+    {
+      "id": 58,
+      "bodyBase": "image-585.png",
+      "eyesBase": "image-586.png",
+      "mouthBase": "image-587.png",
+      "bodyMini": "image-588.png",
+      "eyesMini": "image-589.png",
+      "mouthMini": "image-590.png"
+    },
+    {
+      "id": 59,
+      "bodyBase": "image-591.png",
+      "eyesBase": "image-592.png",
+      "mouthBase": "image-593.png",
+      "bodyMini": "image-594.png",
+      "eyesMini": "image-595.png",
+      "mouthMini": "image-596.png"
+    },
+    {
+      "id": 60,
+      "bodyBase": "image-597.png",
+      "eyesBase": "image-598.png",
+      "mouthBase": "image-599.png",
+      "bodyMini": "image-600.png",
+      "eyesMini": "image-601.png",
+      "mouthMini": "image-602.png"
+    },
+    {
+      "id": 61,
+      "bodyBase": "image-603.png",
+      "eyesBase": "image-604.png",
+      "mouthBase": "image-605.png",
+      "bodyMini": "image-606.png",
+      "eyesMini": "image-607.png",
+      "mouthMini": "image-608.png"
+    },
+    {
+      "id": 62,
+      "bodyBase": "image-609.png",
+      "eyesBase": "image-610.png",
+      "mouthBase": "image-611.png",
+      "bodyMini": "image-612.png",
+      "eyesMini": "image-613.png",
+      "mouthMini": "image-614.png"
+    },
+    {
+      "id": 63,
+      "bodyBase": "image-615.png",
+      "eyesBase": "image-616.png",
+      "mouthBase": "image-617.png",
+      "bodyMini": "image-618.png",
+      "eyesMini": "image-619.png",
+      "mouthMini": "image-620.png"
+    },
+    {
+      "id": 64,
+      "bodyBase": "image-621.png",
+      "eyesBase": "image-622.png",
+      "mouthBase": "image-623.png",
+      "bodyMini": "image-624.png",
+      "eyesMini": "image-625.png",
+      "mouthMini": "image-626.png"
+    },
+    {
+      "id": 65,
+      "bodyBase": "image-627.png",
+      "eyesBase": "image-628.png",
+      "mouthBase": "image-629.png",
+      "bodyMini": "image-630.png",
+      "eyesMini": "image-631.png",
+      "mouthMini": "image-632.png"
+    },
+    {
+      "id": 66,
+      "bodyBase": "image-633.png",
+      "eyesBase": "image-634.png",
+      "mouthBase": "image-635.png",
+      "bodyMini": "image-636.png",
+      "eyesMini": "image-637.png",
+      "mouthMini": "image-638.png"
+    },
+    {
+      "id": 67,
+      "bodyBase": "image-639.png",
+      "eyesBase": "image-640.png",
+      "mouthBase": "image-641.png",
+      "bodyMini": "image-642.png",
+      "eyesMini": "image-643.png",
+      "mouthMini": "image-644.png"
+    }
+  ]
+}
