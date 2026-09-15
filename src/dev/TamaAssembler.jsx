@@ -7,7 +7,7 @@
 // Not part of the production build — see the DEV-gated import in main.jsx.
 // Open with: npm run dev, then visit /?dev=assembler
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import atlas from '../data/tamaAtlas.json';
 
 const SPRITE_BASE = `${import.meta.env.BASE_URL}sprites/`;
@@ -167,7 +167,6 @@ export default function TamaAssembler() {
   const [states, setStates] = useState(SEED_STATES);
   const [stateName, setStateName] = useState('');
   const [activeLayer, setActiveLayer] = useState('body');
-  const layersRef = useRef(null);
 
   const entity = entities[entityIndex];
   const info = VARIANT_INFO[variant];
@@ -265,29 +264,6 @@ export default function TamaAssembler() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [variant, activeLayer, geom, info]);
 
-  // Scroll wheel over any layer's sheet steps that layer's frame directly,
-  // without needing to hover-then-switch-to-arrow-keys first.
-  useEffect(() => {
-    const el = layersRef.current;
-    if (!el) return;
-    function onWheel(e) {
-      const target = e.target.closest?.('[data-layer]');
-      if (!target) return;
-      e.preventDefault();
-      const layer = target.dataset.layer;
-      setActiveLayer(layer);
-      const dir = e.deltaY > 0 ? 1 : -1;
-      setFrames((prev) => {
-        const width = geom[variant][layer].frameWidth;
-        const count = Math.max(1, Math.floor(info.layers[layer].sheetWidth / width));
-        const next = ((prev[layer] + dir) % count + count) % count;
-        return { ...prev, [layer]: next };
-      });
-    }
-    el.addEventListener('wheel', onWheel, { passive: false });
-    return () => el.removeEventListener('wheel', onWheel);
-  }, [variant, geom, info]);
-
   function captureState() {
     if (!stateName.trim()) return;
     setStates((prev) => [...prev, { name: stateName.trim(), body: frames.body, eyes: frames.eyes, mouth: frames.mouth }]);
@@ -324,7 +300,7 @@ export default function TamaAssembler() {
         <br />
         Hover a layer (highlighted below) and use <strong>←/→</strong> to step its frame, <strong>Shift+←/→</strong> to
         nudge its frame width, <strong>Ctrl+←/→</strong> / <strong>↑/↓</strong> to nudge horizontal/vertical position
-        (eyes/mouth only) — or just scroll over any sheet to step it directly.
+        (eyes/mouth only).
       </p>
 
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', marginBottom: 16 }}>
@@ -404,7 +380,7 @@ export default function TamaAssembler() {
           </div>
         </div>
 
-        <div ref={layersRef} style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}>
         {layerNames.map((layer) => {
           const l = info.layers[layer];
           const g = geom[variant][layer];
