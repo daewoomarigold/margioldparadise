@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Local-only reference material (large / redundant with public/sprites or
+# unused) — kept on disk for browsing, not tracked. catalog.json + README are
+# small and useful so those ARE tracked.
+reference/images/
+reference/sprite_catalog.html
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
