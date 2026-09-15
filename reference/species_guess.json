@@ -1,15 +1,12 @@
 {
   "0": {
     "stage": "baby",
-    "colorFamily": [
-      "light_yellow",
-      "yellow"
-    ],
     "candidates": [
-      "babymarutchi",
-      "bbmarutchi"
+      "babymarutchi"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.465
   },
   "1": {
     "stage": "toddler",
@@ -46,27 +43,21 @@
   },
   "4": {
     "stage": "teen",
-    "colorFamily": [
-      "light_pink",
-      "pink"
-    ],
     "candidates": [
-      "leapyoung",
       "roaryoung"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.325
   },
   "5": {
     "stage": "teen",
-    "colorFamily": [
-      "light_yellow",
-      "yellow"
-    ],
     "candidates": [
-      "bumbleyoung",
       "toddleyoung"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.211
   },
   "6": {
     "stage": "teen",
@@ -101,27 +92,21 @@
   },
   "9": {
     "stage": "teen",
-    "colorFamily": [
-      "light_pink",
-      "pink"
-    ],
     "candidates": [
-      "leapyoung",
-      "roaryoung"
+      "leapyoung"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.325
   },
   "10": {
     "stage": "teen",
-    "colorFamily": [
-      "indigo",
-      "lavender"
-    ],
     "candidates": [
-      "flapyoung",
       "paddleyoung"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.384
   },
   "11": {
     "stage": "teen",
@@ -135,15 +120,12 @@
   },
   "12": {
     "stage": "teen",
-    "colorFamily": [
-      "indigo",
-      "lavender"
-    ],
     "candidates": [
-      "flapyoung",
-      "paddleyoung"
+      "flapyoung"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.384
   },
   "13": {
     "stage": "teen",
@@ -158,15 +140,12 @@
   },
   "14": {
     "stage": "teen",
-    "colorFamily": [
-      "light_yellow",
-      "yellow"
-    ],
     "candidates": [
-      "bumbleyoung",
-      "toddleyoung"
+      "bumbleyoung"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.211
   },
   "15": {
     "stage": "teen",
@@ -180,724 +159,435 @@
   },
   "16": {
     "stage": "adult",
-    "colorFamily": [
-      "light_yellow",
-      "yellow"
-    ],
     "candidates": [
-      "batatchi",
-      "hatchitchi",
-      "kametchi",
-      "mametchi",
-      "pochitchi",
-      "sebiretchi",
-      "sheeptchi",
-      "tentotchi"
+      "kametchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 0.821,
+    "shapeMatchMargin": 0.098
   },
   "17": {
     "stage": "adult",
-    "colorFamily": [
-      "light_pink",
-      "pink"
-    ],
     "candidates": [
-      "axolopatchi",
-      "furawatchi",
-      "meowtchi",
-      "papillotchi",
-      "ratchi"
+      "meowtchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.322
   },
   "18": {
     "stage": "adult",
-    "colorFamily": [
-      "light_yellow",
-      "yellow"
-    ],
     "candidates": [
-      "batatchi",
-      "hatchitchi",
-      "kametchi",
-      "mametchi",
-      "pochitchi",
-      "sebiretchi",
-      "sheeptchi",
-      "tentotchi"
+      "pochitchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.181
   },
   "19": {
     "stage": "adult",
-    "colorFamily": [
-      "gray"
-    ],
     "candidates": [
-      "eagletchi",
-      "gumax",
-      "imoritchi",
-      "ishikorotchi",
-      "sharktchi"
+      "gumax"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.164
   },
   "20": {
     "stage": "adult",
-    "colorFamily": [
-      "light_pink",
-      "pink"
-    ],
     "candidates": [
-      "axolopatchi",
-      "furawatchi",
-      "meowtchi",
-      "papillotchi",
       "ratchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.183
   },
   "21": {
     "stage": "adult",
-    "colorFamily": [
-      "light_yellow",
-      "yellow"
-    ],
     "candidates": [
-      "batatchi",
-      "hatchitchi",
-      "kametchi",
-      "mametchi",
-      "pochitchi",
-      "sebiretchi",
-      "sheeptchi",
-      "tentotchi"
+      "mametchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.247
   },
   "22": {
     "stage": "adult",
-    "colorFamily": [
-      "white"
-    ],
     "candidates": [
-      "gemtchi",
-      "gusokutchi",
-      "mimitchi",
-      "molmotchi",
-      "mongatchi"
+      "mimitchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.244
   },
   "23": {
     "stage": "adult",
-    "colorFamily": [
-      "white"
-    ],
     "candidates": [
-      "gemtchi",
-      "gusokutchi",
-      "mimitchi",
-      "molmotchi",
-      "mongatchi"
+      "molmotchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.244
   },
   "24": {
     "stage": "adult",
-    "colorFamily": [
-      "light_yellow",
-      "yellow"
-    ],
     "candidates": [
-      "batatchi",
-      "hatchitchi",
-      "kametchi",
-      "mametchi",
-      "pochitchi",
-      "sebiretchi",
-      "sheeptchi",
-      "tentotchi"
+      "sheeptchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.204
   },
   "25": {
     "stage": "adult",
-    "colorFamily": [
-      "light_yellow",
-      "yellow"
-    ],
     "candidates": [
-      "batatchi",
-      "hatchitchi",
-      "kametchi",
-      "mametchi",
-      "pochitchi",
-      "sebiretchi",
-      "sheeptchi",
-      "tentotchi"
+      "sebiretchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.181
   },
   "26": {
     "stage": "adult",
-    "colorFamily": [
-      "orange"
-    ],
     "candidates": [
-      "beavertchi",
-      "kabutotchi",
-      "kuraratchi",
       "leopatchi"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.315
   },
   "27": {
     "stage": "adult",
-    "colorFamily": [
-      "teal"
-    ],
     "candidates": [
-      "elizardotchi",
-      "kawazutchi",
-      "potsunentchi"
+      "elizardotchi"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.21
   },
   "28": {
     "stage": "adult",
-    "colorFamily": [
-      "green",
-      "light_green"
-    ],
     "candidates": [
-      "heavytchi",
-      "kiwitchi",
-      "kuchipatchi",
-      "otototchi",
-      "shigemi-san",
-      "tustustchi"
+      "heavytchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.278
   },
   "29": {
     "stage": "adult",
-    "colorFamily": [
-      "light_pink",
-      "pink"
-    ],
     "candidates": [
-      "axolopatchi",
-      "furawatchi",
-      "meowtchi",
-      "papillotchi",
-      "ratchi"
+      "furawatchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.183
   },
   "30": {
     "stage": "adult",
-    "colorFamily": [
-      "green",
-      "light_green"
-    ],
     "candidates": [
-      "heavytchi",
-      "kiwitchi",
-      "kuchipatchi",
-      "otototchi",
-      "shigemi-san",
       "tustustchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.126
   },
   "31": {
     "stage": "adult",
-    "colorFamily": [
-      "teal"
-    ],
     "candidates": [
-      "elizardotchi",
-      "kawazutchi",
       "potsunentchi"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.229
   },
   "32": {
     "stage": "adult",
-    "colorFamily": [
-      "green",
-      "light_green"
-    ],
     "candidates": [
-      "heavytchi",
-      "kiwitchi",
-      "kuchipatchi",
-      "otototchi",
-      "shigemi-san",
-      "tustustchi"
+      "shigemi-san"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.278
   },
   "33": {
     "stage": "adult",
-    "colorFamily": [
-      "blue",
-      "sky_blue"
-    ],
     "candidates": [
-      "amefuratchi",
-      "irukatchi",
-      "kujiratchi",
-      "peacotchi"
+      "irukatchi"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.273
   },
   "34": {
     "stage": "adult",
-    "colorFamily": [
-      "light_yellow",
-      "yellow"
-    ],
     "candidates": [
-      "batatchi",
-      "hatchitchi",
-      "kametchi",
-      "mametchi",
-      "pochitchi",
-      "sebiretchi",
-      "sheeptchi",
-      "tentotchi"
+      "kametchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.33
   },
   "35": {
     "stage": "adult",
-    "colorFamily": [
-      "orange"
-    ],
     "candidates": [
-      "beavertchi",
-      "kabutotchi",
-      "kuraratchi",
-      "leopatchi"
+      "beavertchi"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.224
   },
   "36": {
     "stage": "adult",
-    "colorFamily": [
-      "blue",
-      "sky_blue"
-    ],
     "candidates": [
-      "amefuratchi",
-      "irukatchi",
-      "kujiratchi",
-      "peacotchi"
+      "kujiratchi"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.321
   },
   "37": {
     "stage": "adult",
-    "colorFamily": [
-      "light_pink",
-      "pink"
-    ],
     "candidates": [
-      "axolopatchi",
-      "furawatchi",
-      "meowtchi",
-      "papillotchi",
-      "ratchi"
+      "axolopatchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.341
   },
   "38": {
     "stage": "adult",
-    "colorFamily": [
-      "gray"
-    ],
     "candidates": [
-      "eagletchi",
-      "gumax",
-      "imoritchi",
-      "ishikorotchi",
-      "sharktchi"
+      "imoritchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.261
   },
   "39": {
     "stage": "adult",
-    "colorFamily": [
-      "teal"
-    ],
     "candidates": [
-      "elizardotchi",
-      "kawazutchi",
-      "potsunentchi"
+      "kawazutchi"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.21
   },
   "40": {
     "stage": "adult",
-    "colorFamily": [
-      "indigo",
-      "lavender"
-    ],
     "candidates": [
-      "ankotchi",
-      "batchi",
-      "horhotchi",
-      "tachutchi",
       "uruotchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.275
   },
   "41": {
     "stage": "adult",
-    "colorFamily": [
-      "indigo",
-      "lavender"
-    ],
     "candidates": [
-      "ankotchi",
-      "batchi",
-      "horhotchi",
-      "tachutchi",
-      "uruotchi"
+      "tachutchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.305
   },
   "42": {
     "stage": "adult",
-    "colorFamily": [
-      "gray"
-    ],
     "candidates": [
-      "eagletchi",
-      "gumax",
-      "imoritchi",
-      "ishikorotchi",
       "sharktchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.164
   },
   "43": {
     "stage": "adult",
-    "colorFamily": [
-      "indigo",
-      "lavender"
-    ],
     "candidates": [
-      "ankotchi",
-      "batchi",
-      "horhotchi",
-      "tachutchi",
-      "uruotchi"
+      "ankotchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.299
   },
   "44": {
     "stage": "adult",
-    "colorFamily": [
-      "green",
-      "light_green"
-    ],
     "candidates": [
-      "heavytchi",
-      "kiwitchi",
-      "kuchipatchi",
-      "otototchi",
-      "shigemi-san",
-      "tustustchi"
+      "otototchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.289
   },
   "45": {
     "stage": "adult",
-    "colorFamily": [
-      "orange"
-    ],
     "candidates": [
-      "beavertchi",
-      "kabutotchi",
-      "kuraratchi",
-      "leopatchi"
+      "kuraratchi"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.468
   },
   "46": {
     "stage": "adult",
-    "colorFamily": [
-      "red"
-    ],
     "candidates": [
-      "magmatchi",
       "mendakotchi"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.212
   },
   "47": {
     "stage": "adult",
-    "colorFamily": [
-      "blue",
-      "sky_blue"
-    ],
     "candidates": [
-      "amefuratchi",
-      "irukatchi",
-      "kujiratchi",
-      "peacotchi"
+      "amefuratchi"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.321
   },
   "48": {
     "stage": "adult",
-    "colorFamily": [
-      "white"
-    ],
     "candidates": [
-      "gemtchi",
-      "gusokutchi",
-      "mimitchi",
-      "molmotchi",
-      "mongatchi"
+      "gusokutchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.354
   },
   "49": {
     "stage": "adult",
-    "colorFamily": [
-      "indigo",
-      "lavender"
-    ],
     "candidates": [
-      "ankotchi",
-      "batchi",
-      "horhotchi",
-      "tachutchi",
-      "uruotchi"
+      "horhotchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.305
   },
   "50": {
     "stage": "adult",
-    "colorFamily": [
-      "white"
-    ],
     "candidates": [
-      "gemtchi",
-      "gusokutchi",
-      "mimitchi",
-      "molmotchi",
       "mongatchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.245
   },
   "51": {
     "stage": "adult",
-    "colorFamily": [
-      "gray"
-    ],
     "candidates": [
-      "eagletchi",
-      "gumax",
-      "imoritchi",
-      "ishikorotchi",
-      "sharktchi"
+      "eagletchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.248
   },
   "52": {
     "stage": "adult",
-    "colorFamily": [
-      "indigo",
-      "lavender"
-    ],
     "candidates": [
-      "ankotchi",
-      "batchi",
-      "horhotchi",
-      "tachutchi",
-      "uruotchi"
+      "batchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.275
   },
   "53": {
     "stage": "adult",
-    "colorFamily": [
-      "light_yellow",
-      "yellow"
-    ],
     "candidates": [
-      "batatchi",
-      "hatchitchi",
-      "kametchi",
-      "mametchi",
-      "pochitchi",
-      "sebiretchi",
-      "sheeptchi",
-      "tentotchi"
+      "pochitchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 0.767,
+    "shapeMatchMargin": 0.059
   },
   "54": {
     "stage": "adult",
-    "colorFamily": [
-      "orange"
-    ],
     "candidates": [
-      "beavertchi",
-      "kabutotchi",
-      "kuraratchi",
-      "leopatchi"
+      "kabutotchi"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.224
   },
   "55": {
     "stage": "adult",
-    "colorFamily": [
-      "light_yellow",
-      "yellow"
-    ],
     "candidates": [
-      "batatchi",
-      "hatchitchi",
-      "kametchi",
-      "mametchi",
-      "pochitchi",
-      "sebiretchi",
-      "sheeptchi",
       "tentotchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.178
   },
   "56": {
     "stage": "adult",
-    "colorFamily": [
-      "light_yellow",
-      "yellow"
-    ],
     "candidates": [
-      "batatchi",
-      "hatchitchi",
-      "kametchi",
-      "mametchi",
-      "pochitchi",
-      "sebiretchi",
-      "sheeptchi",
-      "tentotchi"
+      "hatchitchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.178
   },
   "57": {
     "stage": "adult",
-    "colorFamily": [
-      "green",
-      "light_green"
-    ],
     "candidates": [
-      "heavytchi",
-      "kiwitchi",
-      "kuchipatchi",
-      "otototchi",
-      "shigemi-san",
-      "tustustchi"
+      "kuchipatchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.126
   },
   "58": {
     "stage": "adult",
-    "colorFamily": [
-      "light_yellow",
-      "yellow"
-    ],
     "candidates": [
-      "batatchi",
-      "hatchitchi",
-      "kametchi",
-      "mametchi",
-      "pochitchi",
-      "sebiretchi",
-      "sheeptchi",
-      "tentotchi"
+      "batatchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.254
   },
   "59": {
     "stage": "adult",
-    "colorFamily": [
-      "blue",
-      "sky_blue"
-    ],
     "candidates": [
-      "amefuratchi",
-      "irukatchi",
-      "kujiratchi",
       "peacotchi"
     ],
-    "confidence": "medium"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.273
   },
   "60": {
     "stage": "adult",
-    "colorFamily": [
-      "green",
-      "light_green"
-    ],
     "candidates": [
-      "heavytchi",
-      "kiwitchi",
-      "kuchipatchi",
-      "otototchi",
-      "shigemi-san",
-      "tustustchi"
+      "kiwitchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.166
   },
   "61": {
     "stage": "adult",
-    "colorFamily": [
-      "white"
-    ],
     "candidates": [
-      "gemtchi",
-      "gusokutchi",
-      "mimitchi",
-      "molmotchi",
-      "mongatchi"
+      "gemtchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.259
   },
   "62": {
     "stage": "adult",
-    "colorFamily": [
-      "light_pink",
-      "pink"
-    ],
     "candidates": [
-      "axolopatchi",
-      "furawatchi",
-      "meowtchi",
-      "papillotchi",
-      "ratchi"
+      "papillotchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 0.768,
+    "shapeMatchMargin": 0.111
   },
   "63": {
     "stage": "adult",
-    "colorFamily": [
-      "gray"
-    ],
     "candidates": [
-      "eagletchi",
-      "gumax",
-      "imoritchi",
-      "ishikorotchi",
-      "sharktchi"
+      "ishikorotchi"
     ],
-    "confidence": "low"
+    "confidence": "high-shape-matched",
+    "shapeMatchScore": 1.0,
+    "shapeMatchMargin": 0.235
   },
   "64": {
     "stage": "adult",

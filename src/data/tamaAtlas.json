@@ -17,18 +17,20 @@
       "eyesMini": "image-241.png",
       "mouthMini": "image-242.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 27,
+      "eyesOffsetYBase": 30,
       "mouthOffsetXBase": 0,
       "mouthOffsetYBase": 32,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 14,
+      "eyesOffsetYMini": 15,
       "mouthOffsetXMini": 0,
       "mouthOffsetYMini": 16,
-      "offsetSource": "bible",
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "babymarutchi",
-        "bbmarutchi"
-      ]
+        "babymarutchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.465,
+      "shapeMatchRunnerUp": "bbmarutchi"
     },
     {
       "id": 1,
@@ -101,19 +103,21 @@
       "bodyMini": "image-264.png",
       "eyesMini": "image-265.png",
       "mouthMini": "image-266.png",
-      "eyesOffsetXBase": -2,
-      "eyesOffsetYBase": 22,
-      "mouthOffsetXBase": -2,
-      "mouthOffsetYBase": 22,
-      "eyesOffsetXMini": -1,
-      "eyesOffsetYMini": 11,
-      "mouthOffsetXMini": -1,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 17,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 16,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 8,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 8,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "leapyoung",
         "roaryoung"
-      ]
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.325,
+      "shapeMatchRunnerUp": "leapyoung"
     },
     {
       "id": 5,
@@ -124,18 +128,20 @@
       "eyesMini": "image-271.png",
       "mouthMini": "image-272.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 26,
+      "eyesOffsetYBase": 24,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 31,
+      "mouthOffsetYBase": 32,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 13,
+      "eyesOffsetYMini": 12,
       "mouthOffsetXMini": 0,
       "mouthOffsetYMini": 16,
-      "offsetSource": "bible",
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "bumbleyoung",
         "toddleyoung"
-      ]
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.211,
+      "shapeMatchRunnerUp": "bumbleyoung"
     },
     {
       "id": 6,
@@ -208,19 +214,21 @@
       "bodyMini": "image-294.png",
       "eyesMini": "image-295.png",
       "mouthMini": "image-296.png",
-      "eyesOffsetXBase": -2,
-      "eyesOffsetYBase": 22,
-      "mouthOffsetXBase": -2,
-      "mouthOffsetYBase": 22,
-      "eyesOffsetXMini": -1,
-      "eyesOffsetYMini": 11,
-      "mouthOffsetXMini": -1,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "eyesOffsetXBase": -3,
+      "eyesOffsetYBase": 26,
+      "mouthOffsetXBase": -3,
+      "mouthOffsetYBase": 28,
+      "eyesOffsetXMini": -2,
+      "eyesOffsetYMini": 13,
+      "mouthOffsetXMini": -2,
+      "mouthOffsetYMini": 14,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "leapyoung",
-        "roaryoung"
-      ]
+        "leapyoung"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.325,
+      "shapeMatchRunnerUp": "roaryoung"
     },
     {
       "id": 10,
@@ -230,19 +238,21 @@
       "bodyMini": "image-300.png",
       "eyesMini": "image-301.png",
       "mouthMini": "image-302.png",
-      "eyesOffsetXBase": -2,
-      "eyesOffsetYBase": 24,
-      "mouthOffsetXBase": -2,
-      "mouthOffsetYBase": 26,
-      "eyesOffsetXMini": -1,
-      "eyesOffsetYMini": 12,
-      "mouthOffsetXMini": -1,
-      "mouthOffsetYMini": 13,
-      "offsetSource": "bible",
+      "eyesOffsetXBase": -3,
+      "eyesOffsetYBase": 30,
+      "mouthOffsetXBase": -3,
+      "mouthOffsetYBase": 32,
+      "eyesOffsetXMini": -2,
+      "eyesOffsetYMini": 15,
+      "mouthOffsetXMini": -2,
+      "mouthOffsetYMini": 16,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "flapyoung",
         "paddleyoung"
-      ]
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.384,
+      "shapeMatchRunnerUp": "flapyoung"
     },
     {
       "id": 11,
@@ -273,19 +283,21 @@
       "bodyMini": "image-312.png",
       "eyesMini": "image-313.png",
       "mouthMini": "image-314.png",
-      "eyesOffsetXBase": -2,
-      "eyesOffsetYBase": 24,
-      "mouthOffsetXBase": -2,
-      "mouthOffsetYBase": 26,
-      "eyesOffsetXMini": -1,
-      "eyesOffsetYMini": 12,
-      "mouthOffsetXMini": -1,
-      "mouthOffsetYMini": 13,
-      "offsetSource": "bible",
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 17,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 19,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 8,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 10,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "flapyoung",
-        "paddleyoung"
-      ]
+        "flapyoung"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.384,
+      "shapeMatchRunnerUp": "paddleyoung"
     },
     {
       "id": 13,
@@ -316,19 +328,21 @@
       "bodyMini": "image-324.png",
       "eyesMini": "image-325.png",
       "mouthMini": "image-326.png",
-      "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 26,
-      "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 31,
+      "eyesOffsetXBase": -1,
+      "eyesOffsetYBase": 28,
+      "mouthOffsetXBase": -1,
+      "mouthOffsetYBase": 30,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 13,
+      "eyesOffsetYMini": 14,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 16,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 15,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "bumbleyoung",
-        "toddleyoung"
-      ]
+        "bumbleyoung"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.211,
+      "shapeMatchRunnerUp": "toddleyoung"
     },
     {
       "id": 15,
@@ -360,24 +374,20 @@
       "eyesMini": "image-337.png",
       "mouthMini": "image-338.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 14,
+      "eyesOffsetYBase": 26,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 22,
+      "mouthOffsetYBase": 30,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 7,
+      "eyesOffsetYMini": 13,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 15,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "batatchi",
-        "hatchitchi",
-        "kametchi",
-        "mametchi",
-        "pochitchi",
-        "sebiretchi",
-        "sheeptchi",
-        "tentotchi"
-      ]
+        "kametchi"
+      ],
+      "shapeMatchScore": 0.821,
+      "shapeMatchMargin": 0.098,
+      "shapeMatchRunnerUp": "sheeptchi"
     },
     {
       "id": 17,
@@ -395,14 +405,13 @@
       "eyesOffsetYMini": 10,
       "mouthOffsetXMini": 0,
       "mouthOffsetYMini": 10,
-      "offsetSource": "bible",
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "axolopatchi",
-        "furawatchi",
-        "meowtchi",
-        "papillotchi",
-        "ratchi"
-      ]
+        "meowtchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.322,
+      "shapeMatchRunnerUp": "furawatchi"
     },
     {
       "id": 18,
@@ -412,25 +421,21 @@
       "bodyMini": "image-348.png",
       "eyesMini": "image-349.png",
       "mouthMini": "image-350.png",
-      "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 14,
+      "eyesOffsetXBase": -1,
+      "eyesOffsetYBase": 7,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 22,
+      "mouthOffsetYBase": 16,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 7,
+      "eyesOffsetYMini": 4,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 8,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "batatchi",
-        "hatchitchi",
-        "kametchi",
-        "mametchi",
-        "pochitchi",
-        "sebiretchi",
-        "sheeptchi",
-        "tentotchi"
-      ]
+        "pochitchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.181,
+      "shapeMatchRunnerUp": "sebiretchi"
     },
     {
       "id": 19,
@@ -440,22 +445,21 @@
       "bodyMini": "image-354.png",
       "eyesMini": "image-355.png",
       "mouthMini": "image-356.png",
-      "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 12,
+      "eyesOffsetXBase": 1,
+      "eyesOffsetYBase": 10,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 19,
+      "mouthOffsetYBase": 15,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 6,
+      "eyesOffsetYMini": 5,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 10,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 8,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "eagletchi",
-        "gumax",
-        "imoritchi",
-        "ishikorotchi",
-        "sharktchi"
-      ]
+        "gumax"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.164,
+      "shapeMatchRunnerUp": "sharktchi"
     },
     {
       "id": 20,
@@ -466,21 +470,20 @@
       "eyesMini": "image-361.png",
       "mouthMini": "image-362.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 20,
+      "eyesOffsetYBase": 15,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 20,
+      "mouthOffsetYBase": 15,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 10,
+      "eyesOffsetYMini": 8,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 10,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 8,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "axolopatchi",
-        "furawatchi",
-        "meowtchi",
-        "papillotchi",
         "ratchi"
-      ]
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.183,
+      "shapeMatchRunnerUp": "furawatchi"
     },
     {
       "id": 21,
@@ -491,24 +494,20 @@
       "eyesMini": "image-367.png",
       "mouthMini": "image-368.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 14,
+      "eyesOffsetYBase": 20,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 22,
+      "mouthOffsetYBase": 20,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 7,
+      "eyesOffsetYMini": 10,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 10,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "batatchi",
-        "hatchitchi",
-        "kametchi",
-        "mametchi",
-        "pochitchi",
-        "sebiretchi",
-        "sheeptchi",
-        "tentotchi"
-      ]
+        "mametchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.247,
+      "shapeMatchRunnerUp": "hatchitchi"
     },
     {
       "id": 22,
@@ -526,14 +525,13 @@
       "eyesOffsetYMini": 12,
       "mouthOffsetXMini": 0,
       "mouthOffsetYMini": 12,
-      "offsetSource": "bible",
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "gemtchi",
-        "gusokutchi",
-        "mimitchi",
-        "molmotchi",
-        "mongatchi"
-      ]
+        "mimitchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.244,
+      "shapeMatchRunnerUp": "molmotchi"
     },
     {
       "id": 23,
@@ -543,22 +541,21 @@
       "bodyMini": "image-378.png",
       "eyesMini": "image-379.png",
       "mouthMini": "image-380.png",
-      "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 23,
+      "eyesOffsetXBase": 1,
+      "eyesOffsetYBase": 8,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 24,
+      "mouthOffsetYBase": 12,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 12,
+      "eyesOffsetYMini": 4,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 12,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 6,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "gemtchi",
-        "gusokutchi",
-        "mimitchi",
-        "molmotchi",
-        "mongatchi"
-      ]
+        "molmotchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.244,
+      "shapeMatchRunnerUp": "mimitchi"
     },
     {
       "id": 24,
@@ -569,24 +566,20 @@
       "eyesMini": "image-385.png",
       "mouthMini": "image-386.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 14,
+      "eyesOffsetYBase": 19,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 22,
+      "mouthOffsetYBase": 25,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 7,
+      "eyesOffsetYMini": 10,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "batatchi",
-        "hatchitchi",
-        "kametchi",
-        "mametchi",
-        "pochitchi",
-        "sebiretchi",
-        "sheeptchi",
-        "tentotchi"
-      ]
+        "sheeptchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.204,
+      "shapeMatchRunnerUp": "hatchitchi"
     },
     {
       "id": 25,
@@ -596,25 +589,21 @@
       "bodyMini": "image-390.png",
       "eyesMini": "image-391.png",
       "mouthMini": "image-392.png",
-      "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 14,
+      "eyesOffsetXBase": -3,
+      "eyesOffsetYBase": 12,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 22,
-      "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 7,
+      "mouthOffsetYBase": 23,
+      "eyesOffsetXMini": -2,
+      "eyesOffsetYMini": 6,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "batatchi",
-        "hatchitchi",
-        "kametchi",
-        "mametchi",
-        "pochitchi",
-        "sebiretchi",
-        "sheeptchi",
-        "tentotchi"
-      ]
+        "sebiretchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.181,
+      "shapeMatchRunnerUp": "pochitchi"
     },
     {
       "id": 26,
@@ -624,21 +613,21 @@
       "bodyMini": "image-396.png",
       "eyesMini": "image-397.png",
       "mouthMini": "image-398.png",
-      "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 10,
+      "eyesOffsetXBase": -5,
+      "eyesOffsetYBase": 9,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 14,
-      "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 5,
+      "mouthOffsetYBase": 18,
+      "eyesOffsetXMini": -2,
+      "eyesOffsetYMini": 4,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 7,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 9,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "beavertchi",
-        "kabutotchi",
-        "kuraratchi",
         "leopatchi"
-      ]
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.315,
+      "shapeMatchRunnerUp": "kabutotchi"
     },
     {
       "id": 27,
@@ -656,12 +645,13 @@
       "eyesOffsetYMini": 10,
       "mouthOffsetXMini": 0,
       "mouthOffsetYMini": 12,
-      "offsetSource": "bible",
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "elizardotchi",
-        "kawazutchi",
-        "potsunentchi"
-      ]
+        "elizardotchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.21,
+      "shapeMatchRunnerUp": "kawazutchi"
     },
     {
       "id": 28,
@@ -672,22 +662,20 @@
       "eyesMini": "image-409.png",
       "mouthMini": "image-410.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 15,
+      "eyesOffsetYBase": 18,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 18,
+      "mouthOffsetYBase": 25,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 8,
+      "eyesOffsetYMini": 9,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 9,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "heavytchi",
-        "kiwitchi",
-        "kuchipatchi",
-        "otototchi",
-        "shigemi-san",
-        "tustustchi"
-      ]
+        "heavytchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.278,
+      "shapeMatchRunnerUp": "shigemi-san"
     },
     {
       "id": 29,
@@ -698,21 +686,20 @@
       "eyesMini": "image-415.png",
       "mouthMini": "image-416.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 20,
+      "eyesOffsetYBase": 18,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 20,
+      "mouthOffsetYBase": 19,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 10,
+      "eyesOffsetYMini": 9,
       "mouthOffsetXMini": 0,
       "mouthOffsetYMini": 10,
-      "offsetSource": "bible",
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "axolopatchi",
-        "furawatchi",
-        "meowtchi",
-        "papillotchi",
-        "ratchi"
-      ]
+        "furawatchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.183,
+      "shapeMatchRunnerUp": "ratchi"
     },
     {
       "id": 30,
@@ -722,23 +709,21 @@
       "bodyMini": "image-420.png",
       "eyesMini": "image-421.png",
       "mouthMini": "image-422.png",
-      "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 15,
+      "eyesOffsetXBase": 1,
+      "eyesOffsetYBase": 12,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 18,
+      "mouthOffsetYBase": 16,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 8,
+      "eyesOffsetYMini": 6,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 9,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 8,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "heavytchi",
-        "kiwitchi",
-        "kuchipatchi",
-        "otototchi",
-        "shigemi-san",
         "tustustchi"
-      ]
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.126,
+      "shapeMatchRunnerUp": "kuchipatchi"
     },
     {
       "id": 31,
@@ -749,19 +734,20 @@
       "eyesMini": "image-427.png",
       "mouthMini": "image-428.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 20,
+      "eyesOffsetYBase": 27,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 25,
+      "mouthOffsetYBase": 28,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 10,
+      "eyesOffsetYMini": 14,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 12,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 14,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "elizardotchi",
-        "kawazutchi",
         "potsunentchi"
-      ]
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.229,
+      "shapeMatchRunnerUp": "elizardotchi"
     },
     {
       "id": 32,
@@ -772,22 +758,20 @@
       "eyesMini": "image-433.png",
       "mouthMini": "image-434.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 15,
+      "eyesOffsetYBase": 35,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 18,
+      "mouthOffsetYBase": 36,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 8,
+      "eyesOffsetYMini": 18,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 9,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 18,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "heavytchi",
-        "kiwitchi",
-        "kuchipatchi",
-        "otototchi",
-        "shigemi-san",
-        "tustustchi"
-      ]
+        "shigemi-san"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.278,
+      "shapeMatchRunnerUp": "heavytchi"
     },
     {
       "id": 33,
@@ -798,20 +782,20 @@
       "eyesMini": "image-439.png",
       "mouthMini": "image-440.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 17,
+      "eyesOffsetYBase": 13,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 22,
+      "mouthOffsetYBase": 14,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 8,
+      "eyesOffsetYMini": 6,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 7,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "amefuratchi",
-        "irukatchi",
-        "kujiratchi",
-        "peacotchi"
-      ]
+        "irukatchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.273,
+      "shapeMatchRunnerUp": "peacotchi"
     },
     {
       "id": 34,
@@ -822,24 +806,20 @@
       "eyesMini": "image-445.png",
       "mouthMini": "image-446.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 14,
+      "eyesOffsetYBase": 26,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 22,
+      "mouthOffsetYBase": 30,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 7,
+      "eyesOffsetYMini": 13,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 15,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "batatchi",
-        "hatchitchi",
-        "kametchi",
-        "mametchi",
-        "pochitchi",
-        "sebiretchi",
-        "sheeptchi",
-        "tentotchi"
-      ]
+        "kametchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.33,
+      "shapeMatchRunnerUp": "sheeptchi"
     },
     {
       "id": 35,
@@ -849,21 +829,21 @@
       "bodyMini": "image-450.png",
       "eyesMini": "image-451.png",
       "mouthMini": "image-452.png",
-      "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 10,
+      "eyesOffsetXBase": 1,
+      "eyesOffsetYBase": 11,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 14,
+      "mouthOffsetYBase": 12,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 5,
+      "eyesOffsetYMini": 6,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 7,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 6,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "beavertchi",
-        "kabutotchi",
-        "kuraratchi",
-        "leopatchi"
-      ]
+        "beavertchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.224,
+      "shapeMatchRunnerUp": "kabutotchi"
     },
     {
       "id": 36,
@@ -873,21 +853,21 @@
       "bodyMini": "image-456.png",
       "eyesMini": "image-457.png",
       "mouthMini": "image-458.png",
-      "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 17,
+      "eyesOffsetXBase": 1,
+      "eyesOffsetYBase": 24,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 22,
+      "mouthOffsetYBase": 32,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 8,
+      "eyesOffsetYMini": 12,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 16,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "amefuratchi",
-        "irukatchi",
-        "kujiratchi",
-        "peacotchi"
-      ]
+        "kujiratchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.321,
+      "shapeMatchRunnerUp": "amefuratchi"
     },
     {
       "id": 37,
@@ -898,21 +878,20 @@
       "eyesMini": "image-463.png",
       "mouthMini": "image-464.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 20,
+      "eyesOffsetYBase": 22,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 20,
+      "mouthOffsetYBase": 23,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 10,
+      "eyesOffsetYMini": 11,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 10,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "axolopatchi",
-        "furawatchi",
-        "meowtchi",
-        "papillotchi",
-        "ratchi"
-      ]
+        "axolopatchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.341,
+      "shapeMatchRunnerUp": "furawatchi"
     },
     {
       "id": 38,
@@ -922,22 +901,21 @@
       "bodyMini": "image-468.png",
       "eyesMini": "image-469.png",
       "mouthMini": "image-470.png",
-      "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 12,
-      "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 19,
-      "eyesOffsetXMini": 0,
+      "eyesOffsetXBase": -5,
+      "eyesOffsetYBase": 11,
+      "mouthOffsetXBase": -5,
+      "mouthOffsetYBase": 13,
+      "eyesOffsetXMini": -2,
       "eyesOffsetYMini": 6,
-      "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 10,
-      "offsetSource": "bible",
+      "mouthOffsetXMini": -2,
+      "mouthOffsetYMini": 6,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "eagletchi",
-        "gumax",
-        "imoritchi",
-        "ishikorotchi",
-        "sharktchi"
-      ]
+        "imoritchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.261,
+      "shapeMatchRunnerUp": "sharktchi"
     },
     {
       "id": 39,
@@ -948,19 +926,20 @@
       "eyesMini": "image-475.png",
       "mouthMini": "image-476.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 20,
+      "eyesOffsetYBase": 10,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 25,
+      "mouthOffsetYBase": 13,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 10,
+      "eyesOffsetYMini": 5,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 12,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 6,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "elizardotchi",
-        "kawazutchi",
-        "potsunentchi"
-      ]
+        "kawazutchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.21,
+      "shapeMatchRunnerUp": "elizardotchi"
     },
     {
       "id": 40,
@@ -970,22 +949,21 @@
       "bodyMini": "image-480.png",
       "eyesMini": "image-481.png",
       "mouthMini": "image-482.png",
-      "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 23,
+      "eyesOffsetXBase": -2,
+      "eyesOffsetYBase": 26,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 29,
-      "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 12,
+      "mouthOffsetYBase": 34,
+      "eyesOffsetXMini": -1,
+      "eyesOffsetYMini": 13,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 14,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 17,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "ankotchi",
-        "batchi",
-        "horhotchi",
-        "tachutchi",
         "uruotchi"
-      ]
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.275,
+      "shapeMatchRunnerUp": "batchi"
     },
     {
       "id": 41,
@@ -996,21 +974,20 @@
       "eyesMini": "image-487.png",
       "mouthMini": "image-488.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 23,
+      "eyesOffsetYBase": 14,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 29,
+      "mouthOffsetYBase": 15,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 12,
+      "eyesOffsetYMini": 7,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 14,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 8,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "ankotchi",
-        "batchi",
-        "horhotchi",
-        "tachutchi",
-        "uruotchi"
-      ]
+        "tachutchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.305,
+      "shapeMatchRunnerUp": "horhotchi"
     },
     {
       "id": 42,
@@ -1021,21 +998,20 @@
       "eyesMini": "image-493.png",
       "mouthMini": "image-494.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 12,
+      "eyesOffsetYBase": 14,
       "mouthOffsetXBase": 0,
       "mouthOffsetYBase": 19,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 6,
+      "eyesOffsetYMini": 7,
       "mouthOffsetXMini": 0,
       "mouthOffsetYMini": 10,
-      "offsetSource": "bible",
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "eagletchi",
-        "gumax",
-        "imoritchi",
-        "ishikorotchi",
         "sharktchi"
-      ]
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.164,
+      "shapeMatchRunnerUp": "gumax"
     },
     {
       "id": 43,
@@ -1048,19 +1024,18 @@
       "eyesOffsetXBase": 0,
       "eyesOffsetYBase": 23,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 29,
+      "mouthOffsetYBase": 33,
       "eyesOffsetXMini": 0,
       "eyesOffsetYMini": 12,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 14,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 16,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "ankotchi",
-        "batchi",
-        "horhotchi",
-        "tachutchi",
-        "uruotchi"
-      ]
+        "ankotchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.299,
+      "shapeMatchRunnerUp": "uruotchi"
     },
     {
       "id": 44,
@@ -1071,22 +1046,20 @@
       "eyesMini": "image-505.png",
       "mouthMini": "image-506.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 15,
+      "eyesOffsetYBase": 19,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 18,
+      "mouthOffsetYBase": 21,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 8,
+      "eyesOffsetYMini": 10,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 9,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 10,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "heavytchi",
-        "kiwitchi",
-        "kuchipatchi",
-        "otototchi",
-        "shigemi-san",
-        "tustustchi"
-      ]
+        "otototchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.289,
+      "shapeMatchRunnerUp": "shigemi-san"
     },
     {
       "id": 45,
@@ -1097,20 +1070,20 @@
       "eyesMini": "image-511.png",
       "mouthMini": "image-512.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 10,
+      "eyesOffsetYBase": 3,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 14,
+      "mouthOffsetYBase": 3,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 5,
+      "eyesOffsetYMini": 2,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 7,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 2,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "beavertchi",
-        "kabutotchi",
-        "kuraratchi",
-        "leopatchi"
-      ]
+        "kuraratchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.468,
+      "shapeMatchRunnerUp": "leopatchi"
     },
     {
       "id": 46,
@@ -1121,18 +1094,20 @@
       "eyesMini": "image-517.png",
       "mouthMini": "image-518.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 24,
+      "eyesOffsetYBase": 26,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 24,
+      "mouthOffsetYBase": 25,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 12,
+      "eyesOffsetYMini": 13,
       "mouthOffsetXMini": 0,
       "mouthOffsetYMini": 12,
-      "offsetSource": "bible",
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "magmatchi",
         "mendakotchi"
-      ]
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.212,
+      "shapeMatchRunnerUp": "magmatchi"
     },
     {
       "id": 47,
@@ -1143,20 +1118,20 @@
       "eyesMini": "image-523.png",
       "mouthMini": "image-524.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 17,
+      "eyesOffsetYBase": 12,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 22,
+      "mouthOffsetYBase": 18,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 8,
+      "eyesOffsetYMini": 6,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 9,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "amefuratchi",
-        "irukatchi",
-        "kujiratchi",
-        "peacotchi"
-      ]
+        "amefuratchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.321,
+      "shapeMatchRunnerUp": "kujiratchi"
     },
     {
       "id": 48,
@@ -1167,21 +1142,20 @@
       "eyesMini": "image-529.png",
       "mouthMini": "image-530.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 23,
+      "eyesOffsetYBase": 34,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 24,
+      "mouthOffsetYBase": 35,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 12,
+      "eyesOffsetYMini": 17,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 12,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 18,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "gemtchi",
-        "gusokutchi",
-        "mimitchi",
-        "molmotchi",
-        "mongatchi"
-      ]
+        "gusokutchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.354,
+      "shapeMatchRunnerUp": "molmotchi"
     },
     {
       "id": 49,
@@ -1192,21 +1166,20 @@
       "eyesMini": "image-535.png",
       "mouthMini": "image-536.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 23,
+      "eyesOffsetYBase": 15,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 29,
+      "mouthOffsetYBase": 15,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 12,
+      "eyesOffsetYMini": 8,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 14,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 8,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "ankotchi",
-        "batchi",
-        "horhotchi",
-        "tachutchi",
-        "uruotchi"
-      ]
+        "horhotchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.305,
+      "shapeMatchRunnerUp": "tachutchi"
     },
     {
       "id": 50,
@@ -1217,21 +1190,20 @@
       "eyesMini": "image-541.png",
       "mouthMini": "image-542.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 23,
+      "eyesOffsetYBase": 13,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 24,
+      "mouthOffsetYBase": 15,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 12,
+      "eyesOffsetYMini": 6,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 12,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 8,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "gemtchi",
-        "gusokutchi",
-        "mimitchi",
-        "molmotchi",
         "mongatchi"
-      ]
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.245,
+      "shapeMatchRunnerUp": "molmotchi"
     },
     {
       "id": 51,
@@ -1244,19 +1216,18 @@
       "eyesOffsetXBase": 0,
       "eyesOffsetYBase": 12,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 19,
+      "mouthOffsetYBase": 21,
       "eyesOffsetXMini": 0,
       "eyesOffsetYMini": 6,
       "mouthOffsetXMini": 0,
       "mouthOffsetYMini": 10,
-      "offsetSource": "bible",
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "eagletchi",
-        "gumax",
-        "imoritchi",
-        "ishikorotchi",
-        "sharktchi"
-      ]
+        "eagletchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.248,
+      "shapeMatchRunnerUp": "ishikorotchi"
     },
     {
       "id": 52,
@@ -1267,21 +1238,20 @@
       "eyesMini": "image-553.png",
       "mouthMini": "image-554.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 23,
+      "eyesOffsetYBase": 26,
       "mouthOffsetXBase": 0,
       "mouthOffsetYBase": 29,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 12,
+      "eyesOffsetYMini": 13,
       "mouthOffsetXMini": 0,
       "mouthOffsetYMini": 14,
-      "offsetSource": "bible",
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "ankotchi",
-        "batchi",
-        "horhotchi",
-        "tachutchi",
-        "uruotchi"
-      ]
+        "batchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.275,
+      "shapeMatchRunnerUp": "uruotchi"
     },
     {
       "id": 53,
@@ -1291,25 +1261,21 @@
       "bodyMini": "image-558.png",
       "eyesMini": "image-559.png",
       "mouthMini": "image-560.png",
-      "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 14,
+      "eyesOffsetXBase": -1,
+      "eyesOffsetYBase": 7,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 22,
+      "mouthOffsetYBase": 16,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 7,
+      "eyesOffsetYMini": 4,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 8,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "batatchi",
-        "hatchitchi",
-        "kametchi",
-        "mametchi",
-        "pochitchi",
-        "sebiretchi",
-        "sheeptchi",
-        "tentotchi"
-      ]
+        "pochitchi"
+      ],
+      "shapeMatchScore": 0.767,
+      "shapeMatchMargin": 0.059,
+      "shapeMatchRunnerUp": "sebiretchi"
     },
     {
       "id": 54,
@@ -1320,20 +1286,20 @@
       "eyesMini": "image-565.png",
       "mouthMini": "image-566.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 10,
+      "eyesOffsetYBase": 15,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 14,
+      "mouthOffsetYBase": 15,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 5,
+      "eyesOffsetYMini": 8,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 7,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 8,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "beavertchi",
-        "kabutotchi",
-        "kuraratchi",
-        "leopatchi"
-      ]
+        "kabutotchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.224,
+      "shapeMatchRunnerUp": "beavertchi"
     },
     {
       "id": 55,
@@ -1343,25 +1309,21 @@
       "bodyMini": "image-570.png",
       "eyesMini": "image-571.png",
       "mouthMini": "image-572.png",
-      "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 14,
+      "eyesOffsetXBase": -1,
+      "eyesOffsetYBase": 15,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 22,
+      "mouthOffsetYBase": 23,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 7,
+      "eyesOffsetYMini": 8,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "batatchi",
-        "hatchitchi",
-        "kametchi",
-        "mametchi",
-        "pochitchi",
-        "sebiretchi",
-        "sheeptchi",
         "tentotchi"
-      ]
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.178,
+      "shapeMatchRunnerUp": "hatchitchi"
     },
     {
       "id": 56,
@@ -1372,24 +1334,20 @@
       "eyesMini": "image-577.png",
       "mouthMini": "image-578.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 14,
+      "eyesOffsetYBase": 11,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 22,
+      "mouthOffsetYBase": 16,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 7,
+      "eyesOffsetYMini": 6,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 8,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "batatchi",
-        "hatchitchi",
-        "kametchi",
-        "mametchi",
-        "pochitchi",
-        "sebiretchi",
-        "sheeptchi",
-        "tentotchi"
-      ]
+        "hatchitchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.178,
+      "shapeMatchRunnerUp": "tentotchi"
     },
     {
       "id": 57,
@@ -1400,22 +1358,20 @@
       "eyesMini": "image-583.png",
       "mouthMini": "image-584.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 15,
+      "eyesOffsetYBase": 9,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 18,
+      "mouthOffsetYBase": 11,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 8,
+      "eyesOffsetYMini": 4,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 9,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 6,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "heavytchi",
-        "kiwitchi",
-        "kuchipatchi",
-        "otototchi",
-        "shigemi-san",
-        "tustustchi"
-      ]
+        "kuchipatchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.126,
+      "shapeMatchRunnerUp": "tustustchi"
     },
     {
       "id": 58,
@@ -1428,22 +1384,18 @@
       "eyesOffsetXBase": 0,
       "eyesOffsetYBase": 14,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 22,
+      "mouthOffsetYBase": 18,
       "eyesOffsetXMini": 0,
       "eyesOffsetYMini": 7,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 9,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "batatchi",
-        "hatchitchi",
-        "kametchi",
-        "mametchi",
-        "pochitchi",
-        "sebiretchi",
-        "sheeptchi",
-        "tentotchi"
-      ]
+        "batatchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.254,
+      "shapeMatchRunnerUp": "tentotchi"
     },
     {
       "id": 59,
@@ -1454,20 +1406,20 @@
       "eyesMini": "image-595.png",
       "mouthMini": "image-596.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 17,
+      "eyesOffsetYBase": 21,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 22,
+      "mouthOffsetYBase": 27,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 8,
+      "eyesOffsetYMini": 10,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 11,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 14,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "amefuratchi",
-        "irukatchi",
-        "kujiratchi",
         "peacotchi"
-      ]
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.273,
+      "shapeMatchRunnerUp": "irukatchi"
     },
     {
       "id": 60,
@@ -1478,22 +1430,20 @@
       "eyesMini": "image-601.png",
       "mouthMini": "image-602.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 15,
+      "eyesOffsetYBase": 7,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 18,
+      "mouthOffsetYBase": 13,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 8,
+      "eyesOffsetYMini": 4,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 9,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 6,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "heavytchi",
-        "kiwitchi",
-        "kuchipatchi",
-        "otototchi",
-        "shigemi-san",
-        "tustustchi"
-      ]
+        "kiwitchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.166,
+      "shapeMatchRunnerUp": "kuchipatchi"
     },
     {
       "id": 61,
@@ -1504,21 +1454,20 @@
       "eyesMini": "image-607.png",
       "mouthMini": "image-608.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 23,
+      "eyesOffsetYBase": 24,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 24,
+      "mouthOffsetYBase": 25,
       "eyesOffsetXMini": 0,
       "eyesOffsetYMini": 12,
       "mouthOffsetXMini": 0,
       "mouthOffsetYMini": 12,
-      "offsetSource": "bible",
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "gemtchi",
-        "gusokutchi",
-        "mimitchi",
-        "molmotchi",
-        "mongatchi"
-      ]
+        "gemtchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.259,
+      "shapeMatchRunnerUp": "molmotchi"
     },
     {
       "id": 62,
@@ -1531,19 +1480,18 @@
       "eyesOffsetXBase": 0,
       "eyesOffsetYBase": 20,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 20,
+      "mouthOffsetYBase": 23,
       "eyesOffsetXMini": 0,
       "eyesOffsetYMini": 10,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 10,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "axolopatchi",
-        "furawatchi",
-        "meowtchi",
-        "papillotchi",
-        "ratchi"
-      ]
+        "papillotchi"
+      ],
+      "shapeMatchScore": 0.768,
+      "shapeMatchMargin": 0.111,
+      "shapeMatchRunnerUp": "axolopatchi"
     },
     {
       "id": 63,
@@ -1554,21 +1502,20 @@
       "eyesMini": "image-619.png",
       "mouthMini": "image-620.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 12,
+      "eyesOffsetYBase": 19,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 19,
+      "mouthOffsetYBase": 22,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 6,
+      "eyesOffsetYMini": 10,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 10,
-      "offsetSource": "bible",
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "eagletchi",
-        "gumax",
-        "imoritchi",
-        "ishikorotchi",
-        "sharktchi"
-      ]
+        "ishikorotchi"
+      ],
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": 0.235,
+      "shapeMatchRunnerUp": "sharktchi"
     },
     {
       "id": 64,
