@@ -12,9 +12,13 @@ import atlas from '../data/tamaAtlas.json';
 
 const SPRITE_BASE = `${import.meta.env.BASE_URL}sprites/`;
 
-// Confirmed from real file dimensions (not guessed): the base sheets are
-// body 1280x64 / eyes 1280x32 / mouth 1152x32; mini sheets are body 768x32 /
-// eyes 448x16 / mouth 448x16. Frame width below is still a guess to tune.
+// Confirmed from real file dimensions AND reference/catalog.json's per-file
+// subimages (frame count) field — not guessed, and cross-checked against
+// all 68 tamas, not just one: base sheets are body 1280x64 (20 frames @
+// 64px) / eyes 1280x32 (20 @ 64px) / mouth 1152x32 (18 @ 64px); mini sheets
+// are body 768x32 (24 @ 32px) / eyes 448x16 (14 @ 32px) / mouth 448x16
+// (14 @ 32px). Frame width defaults below reflect this. What's still
+// unknown and needs live tuning per layer is offsetX/offsetY placement.
 const VARIANT_INFO = {
   base: {
     canvasHeight: 64,
