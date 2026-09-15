@@ -17,14 +17,25 @@ const SPRITE_BASE = `${import.meta.env.BASE_URL}sprites/`;
 // all 68 tamas, not just one: base sheets are body 1280x64 (20 frames @
 // 64px) / eyes 1280x32 (20 @ 64px) / mouth 1152x32 (18 @ 64px); mini sheets
 // are body 768x32 (24 @ 32px) / eyes 448x16 (14 @ 32px) / mouth 448x16
-// (14 @ 32px). Frame width defaults below reflect this. What's still
-// unknown and needs live tuning per layer is offsetX/offsetY placement.
+// (14 @ 32px). Frame width defaults below reflect this.
+//
+// offsetX/offsetY are GLOBAL, not per-tama: measuring opaque-pixel bounding
+// boxes across several tamas showed eyes/mouth content sits at a consistent
+// local position within their own sheet regardless of which tama, while
+// body shape varies a lot — meaning character-specific variation lives in
+// the art itself, not in a per-character offset (confirmed by mouth's
+// offsetY:32 — exactly half the 64px canvas — already looking right across
+// differently-shaped bodies without per-tama adjustment). So one tuned
+// value per layer should work everywhere; no need to redo this per tama.
+// mouth offsetY (32 base / 16 mini) is user-confirmed correct. eyes offsetY
+// (20 base / 10 mini) is a first estimate derived from bounding-box math,
+// not yet confirmed — verify live and adjust if needed.
 const VARIANT_INFO = {
   base: {
     canvasHeight: 64,
     layers: {
       body: { sheetWidth: 1280, sheetHeight: 64, defaultFrameWidth: 64, defaultOffsetX: 0, defaultOffsetY: 0 },
-      eyes: { sheetWidth: 1280, sheetHeight: 32, defaultFrameWidth: 64, defaultOffsetX: 0, defaultOffsetY: 0 },
+      eyes: { sheetWidth: 1280, sheetHeight: 32, defaultFrameWidth: 64, defaultOffsetX: 0, defaultOffsetY: 20 },
       mouth: { sheetWidth: 1152, sheetHeight: 32, defaultFrameWidth: 64, defaultOffsetX: 0, defaultOffsetY: 32 },
     },
   },
@@ -32,7 +43,7 @@ const VARIANT_INFO = {
     canvasHeight: 32,
     layers: {
       body: { sheetWidth: 768, sheetHeight: 32, defaultFrameWidth: 32, defaultOffsetX: 0, defaultOffsetY: 0 },
-      eyes: { sheetWidth: 448, sheetHeight: 16, defaultFrameWidth: 32, defaultOffsetX: 0, defaultOffsetY: 0 },
+      eyes: { sheetWidth: 448, sheetHeight: 16, defaultFrameWidth: 32, defaultOffsetX: 0, defaultOffsetY: 10 },
       mouth: { sheetWidth: 448, sheetHeight: 16, defaultFrameWidth: 32, defaultOffsetX: 0, defaultOffsetY: 16 },
     },
   },
