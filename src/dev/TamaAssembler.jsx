@@ -19,17 +19,21 @@ const SPRITE_BASE = `${import.meta.env.BASE_URL}sprites/`;
 // are body 768x32 (24 @ 32px) / eyes 448x16 (14 @ 32px) / mouth 448x16
 // (14 @ 32px). Frame width defaults below reflect this.
 //
-// offsetX/offsetY are GLOBAL, not per-tama: measuring opaque-pixel bounding
-// boxes across several tamas showed eyes/mouth content sits at a consistent
-// local position within their own sheet regardless of which tama, while
-// body shape varies a lot — meaning character-specific variation lives in
-// the art itself, not in a per-character offset (confirmed by mouth's
-// offsetY:32 — exactly half the 64px canvas — already looking right across
-// differently-shaped bodies without per-tama adjustment). So one tuned
-// value per layer should work everywhere; no need to redo this per tama.
-// mouth offsetY (32 base / 16 mini) is user-confirmed correct. eyes offsetY
-// (20 base / 10 mini) is a first estimate derived from bounding-box math,
-// not yet confirmed — verify live and adjust if needed.
+// offsetX and mouth's offsetY are GLOBAL constants: mouth's content sits at
+// a consistent local position within its own sheet regardless of tama, and
+// offsetY:32 (exactly half the 64px canvas) already looks right across
+// differently-shaped bodies — user-confirmed correct.
+//
+// eyes offsetY turned out to genuinely vary per tama, unlike mouth: cross-
+// checking real per-character eye-position data from a community
+// Tamagotchi Paradise recoloring tool against how much transparent
+// headroom each of our own body sprites has (r²≈0.6 linear fit) showed
+// unusually-shaped bodies (e.g. tall dragon/bird secrets with almost no
+// headroom) need noticeably different eye placement than round blob
+// bodies. So eyesOffsetYGuessBase/Mini is precomputed PER TAMA in
+// tamaAtlas.json and loaded automatically when you switch entities below
+// (see the "computed guess" hint next to the eyes offsetY field) — still
+// fully overridable, but shouldn't need much manual correction from here.
 const VARIANT_INFO = {
   base: {
     canvasHeight: 64,
@@ -172,6 +176,22 @@ export default function TamaAssembler() {
     variant === 'base'
       ? { body: entity.bodyBase, eyes: entity.eyesBase, mouth: entity.mouthBase }
       : { body: entity.bodyMini, eyes: entity.eyesMini, mouth: entity.mouthMini };
+
+  // Per-tama computed guess for eyes offsetY, baked into tamaAtlas.json —
+  // derived from measuring this tama's own body art (how much transparent
+  // headroom it has) against real eye-position data from a community
+  // Tamagotchi Paradise recoloring tool (see git log for the derivation).
+  // Unlike frame width/offsetX/mouth offsetY, this genuinely varies per tama
+  // (differently-shaped bodies need different eye placement), so it's
+  // loaded fresh whenever you switch entity/variant, rather than being one
+  // fixed constant. Still fully overridable with the controls below.
+  const eyesGuess = variant === 'base' ? entity.eyesOffsetYGuessBase : entity.eyesOffsetYGuessMini;
+
+  useEffect(() => {
+    if (eyesGuess == null) return; // egg has no eyes guess
+    setGeom((prev) => ({ ...prev, [variant]: { ...prev[variant], eyes: { ...prev[variant].eyes, offsetY: eyesGuess } } }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [entityIndex, variant]);
 
   function updateLayerGeom(layer, patch) {
     setGeom((prev) => ({ ...prev, [variant]: { ...prev[variant], [layer]: { ...prev[variant][layer], ...patch } } }));
@@ -394,6 +414,20 @@ export default function TamaAssembler() {
                     <label>
                       offsetY: <input type="number" value={g.offsetY} onChange={(e) => updateLayerGeom(layer, { offsetY: Number(e.target.value) || 0 })} style={{ width: 48 }} />
                     </label>
+                    {layer === 'eyes' && eyesGuess != null && (
+                      <span style={{ fontSize: 11, opacity: 0.6 }}>
+                        (computed guess: {eyesGuess}
+                        {g.offsetY !== eyesGuess && (
+                          <>
+                            {' — '}
+                            <button style={{ fontSize: 11 }} onClick={() => updateLayerGeom('eyes', { offsetY: eyesGuess })}>
+                              reset
+                            </button>
+                          </>
+                        )}
+                        )
+                      </span>
+                    )}
                   </>
                 )}
               </div>

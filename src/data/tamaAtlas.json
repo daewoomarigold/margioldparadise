@@ -15,7 +15,11 @@
       "mouthBase": "image-239.png",
       "bodyMini": "image-240.png",
       "eyesMini": "image-241.png",
-      "mouthMini": "image-242.png"
+      "mouthMini": "image-242.png",
+      "bodyTopBase": 31,
+      "bodyTopMini": 13,
+      "eyesOffsetYGuessBase": 23,
+      "eyesOffsetYGuessMini": 10
     },
     {
       "id": 1,
@@ -24,7 +28,11 @@
       "mouthBase": "image-245.png",
       "bodyMini": "image-246.png",
       "eyesMini": "image-247.png",
-      "mouthMini": "image-248.png"
+      "mouthMini": "image-248.png",
+      "bodyTopBase": 26,
+      "bodyTopMini": 13,
+      "eyesOffsetYGuessBase": 20,
+      "eyesOffsetYGuessMini": 10
     },
     {
       "id": 2,
@@ -33,7 +41,11 @@
       "mouthBase": "image-251.png",
       "bodyMini": "image-252.png",
       "eyesMini": "image-253.png",
-      "mouthMini": "image-254.png"
+      "mouthMini": "image-254.png",
+      "bodyTopBase": 30,
+      "bodyTopMini": 15,
+      "eyesOffsetYGuessBase": 22,
+      "eyesOffsetYGuessMini": 11
     },
     {
       "id": 3,
@@ -42,7 +54,11 @@
       "mouthBase": "image-257.png",
       "bodyMini": "image-258.png",
       "eyesMini": "image-259.png",
-      "mouthMini": "image-260.png"
+      "mouthMini": "image-260.png",
+      "bodyTopBase": 23,
+      "bodyTopMini": 11,
+      "eyesOffsetYGuessBase": 18,
+      "eyesOffsetYGuessMini": 9
     },
     {
       "id": 4,
@@ -51,7 +67,11 @@
       "mouthBase": "image-263.png",
       "bodyMini": "image-264.png",
       "eyesMini": "image-265.png",
-      "mouthMini": "image-266.png"
+      "mouthMini": "image-266.png",
+      "bodyTopBase": 17,
+      "bodyTopMini": 1,
+      "eyesOffsetYGuessBase": 14,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 5,
@@ -60,7 +80,11 @@
       "mouthBase": "image-269.png",
       "bodyMini": "image-270.png",
       "eyesMini": "image-271.png",
-      "mouthMini": "image-272.png"
+      "mouthMini": "image-272.png",
+      "bodyTopBase": 22,
+      "bodyTopMini": 7,
+      "eyesOffsetYGuessBase": 17,
+      "eyesOffsetYGuessMini": 6
     },
     {
       "id": 6,
@@ -69,7 +93,11 @@
       "mouthBase": "image-275.png",
       "bodyMini": "image-276.png",
       "eyesMini": "image-277.png",
-      "mouthMini": "image-278.png"
+      "mouthMini": "image-278.png",
+      "bodyTopBase": 18,
+      "bodyTopMini": 1,
+      "eyesOffsetYGuessBase": 15,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 7,
@@ -78,7 +106,11 @@
       "mouthBase": "image-281.png",
       "bodyMini": "image-282.png",
       "eyesMini": "image-283.png",
-      "mouthMini": "image-284.png"
+      "mouthMini": "image-284.png",
+      "bodyTopBase": 17,
+      "bodyTopMini": 1,
+      "eyesOffsetYGuessBase": 14,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 8,
@@ -87,7 +119,11 @@
       "mouthBase": "image-287.png",
       "bodyMini": "image-288.png",
       "eyesMini": "image-289.png",
-      "mouthMini": "image-290.png"
+      "mouthMini": "image-290.png",
+      "bodyTopBase": 19,
+      "bodyTopMini": 9,
+      "eyesOffsetYGuessBase": 15,
+      "eyesOffsetYGuessMini": 7
     },
     {
       "id": 9,
@@ -96,7 +132,11 @@
       "mouthBase": "image-293.png",
       "bodyMini": "image-294.png",
       "eyesMini": "image-295.png",
-      "mouthMini": "image-296.png"
+      "mouthMini": "image-296.png",
+      "bodyTopBase": 23,
+      "bodyTopMini": 11,
+      "eyesOffsetYGuessBase": 18,
+      "eyesOffsetYGuessMini": 9
     },
     {
       "id": 10,
@@ -105,7 +145,11 @@
       "mouthBase": "image-299.png",
       "bodyMini": "image-300.png",
       "eyesMini": "image-301.png",
-      "mouthMini": "image-302.png"
+      "mouthMini": "image-302.png",
+      "bodyTopBase": 25,
+      "bodyTopMini": 11,
+      "eyesOffsetYGuessBase": 19,
+      "eyesOffsetYGuessMini": 9
     },
     {
       "id": 11,
@@ -114,7 +158,11 @@
       "mouthBase": "image-305.png",
       "bodyMini": "image-306.png",
       "eyesMini": "image-307.png",
-      "mouthMini": "image-308.png"
+      "mouthMini": "image-308.png",
+      "bodyTopBase": 14,
+      "bodyTopMini": 7,
+      "eyesOffsetYGuessBase": 12,
+      "eyesOffsetYGuessMini": 6
     },
     {
       "id": 12,
@@ -123,7 +171,11 @@
       "mouthBase": "image-311.png",
       "bodyMini": "image-312.png",
       "eyesMini": "image-313.png",
-      "mouthMini": "image-314.png"
+      "mouthMini": "image-314.png",
+      "bodyTopBase": 13,
+      "bodyTopMini": 4,
+      "eyesOffsetYGuessBase": 12,
+      "eyesOffsetYGuessMini": 4
     },
     {
       "id": 13,
@@ -132,7 +184,11 @@
       "mouthBase": "image-317.png",
       "bodyMini": "image-318.png",
       "eyesMini": "image-319.png",
-      "mouthMini": "image-320.png"
+      "mouthMini": "image-320.png",
+      "bodyTopBase": 6,
+      "bodyTopMini": 2,
+      "eyesOffsetYGuessBase": 7,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 14,
@@ -141,7 +197,11 @@
       "mouthBase": "image-323.png",
       "bodyMini": "image-324.png",
       "eyesMini": "image-325.png",
-      "mouthMini": "image-326.png"
+      "mouthMini": "image-326.png",
+      "bodyTopBase": 25,
+      "bodyTopMini": 12,
+      "eyesOffsetYGuessBase": 19,
+      "eyesOffsetYGuessMini": 9
     },
     {
       "id": 15,
@@ -150,7 +210,11 @@
       "mouthBase": "image-329.png",
       "bodyMini": "image-330.png",
       "eyesMini": "image-331.png",
-      "mouthMini": "image-332.png"
+      "mouthMini": "image-332.png",
+      "bodyTopBase": 21,
+      "bodyTopMini": 10,
+      "eyesOffsetYGuessBase": 17,
+      "eyesOffsetYGuessMini": 8
     },
     {
       "id": 16,
@@ -159,7 +223,11 @@
       "mouthBase": "image-335.png",
       "bodyMini": "image-336.png",
       "eyesMini": "image-337.png",
-      "mouthMini": "image-338.png"
+      "mouthMini": "image-338.png",
+      "bodyTopBase": 19,
+      "bodyTopMini": 8,
+      "eyesOffsetYGuessBase": 15,
+      "eyesOffsetYGuessMini": 7
     },
     {
       "id": 17,
@@ -168,7 +236,11 @@
       "mouthBase": "image-341.png",
       "bodyMini": "image-342.png",
       "eyesMini": "image-343.png",
-      "mouthMini": "image-344.png"
+      "mouthMini": "image-344.png",
+      "bodyTopBase": 2,
+      "bodyTopMini": 0,
+      "eyesOffsetYGuessBase": 5,
+      "eyesOffsetYGuessMini": 2
     },
     {
       "id": 18,
@@ -177,7 +249,11 @@
       "mouthBase": "image-347.png",
       "bodyMini": "image-348.png",
       "eyesMini": "image-349.png",
-      "mouthMini": "image-350.png"
+      "mouthMini": "image-350.png",
+      "bodyTopBase": 7,
+      "bodyTopMini": 4,
+      "eyesOffsetYGuessBase": 8,
+      "eyesOffsetYGuessMini": 4
     },
     {
       "id": 19,
@@ -186,7 +262,11 @@
       "mouthBase": "image-353.png",
       "bodyMini": "image-354.png",
       "eyesMini": "image-355.png",
-      "mouthMini": "image-356.png"
+      "mouthMini": "image-356.png",
+      "bodyTopBase": 2,
+      "bodyTopMini": 1,
+      "eyesOffsetYGuessBase": 5,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 20,
@@ -195,7 +275,11 @@
       "mouthBase": "image-359.png",
       "bodyMini": "image-360.png",
       "eyesMini": "image-361.png",
-      "mouthMini": "image-362.png"
+      "mouthMini": "image-362.png",
+      "bodyTopBase": 8,
+      "bodyTopMini": 3,
+      "eyesOffsetYGuessBase": 9,
+      "eyesOffsetYGuessMini": 4
     },
     {
       "id": 21,
@@ -204,7 +288,11 @@
       "mouthBase": "image-365.png",
       "bodyMini": "image-366.png",
       "eyesMini": "image-367.png",
-      "mouthMini": "image-368.png"
+      "mouthMini": "image-368.png",
+      "bodyTopBase": 7,
+      "bodyTopMini": 0,
+      "eyesOffsetYGuessBase": 8,
+      "eyesOffsetYGuessMini": 2
     },
     {
       "id": 22,
@@ -213,7 +301,11 @@
       "mouthBase": "image-371.png",
       "bodyMini": "image-372.png",
       "eyesMini": "image-373.png",
-      "mouthMini": "image-374.png"
+      "mouthMini": "image-374.png",
+      "bodyTopBase": 3,
+      "bodyTopMini": 0,
+      "eyesOffsetYGuessBase": 6,
+      "eyesOffsetYGuessMini": 2
     },
     {
       "id": 23,
@@ -222,7 +314,11 @@
       "mouthBase": "image-377.png",
       "bodyMini": "image-378.png",
       "eyesMini": "image-379.png",
-      "mouthMini": "image-380.png"
+      "mouthMini": "image-380.png",
+      "bodyTopBase": 4,
+      "bodyTopMini": 0,
+      "eyesOffsetYGuessBase": 6,
+      "eyesOffsetYGuessMini": 2
     },
     {
       "id": 24,
@@ -231,7 +327,11 @@
       "mouthBase": "image-383.png",
       "bodyMini": "image-384.png",
       "eyesMini": "image-385.png",
-      "mouthMini": "image-386.png"
+      "mouthMini": "image-386.png",
+      "bodyTopBase": 13,
+      "bodyTopMini": 6,
+      "eyesOffsetYGuessBase": 12,
+      "eyesOffsetYGuessMini": 6
     },
     {
       "id": 25,
@@ -240,7 +340,11 @@
       "mouthBase": "image-389.png",
       "bodyMini": "image-390.png",
       "eyesMini": "image-391.png",
-      "mouthMini": "image-392.png"
+      "mouthMini": "image-392.png",
+      "bodyTopBase": 5,
+      "bodyTopMini": 2,
+      "eyesOffsetYGuessBase": 7,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 26,
@@ -249,7 +353,11 @@
       "mouthBase": "image-395.png",
       "bodyMini": "image-396.png",
       "eyesMini": "image-397.png",
-      "mouthMini": "image-398.png"
+      "mouthMini": "image-398.png",
+      "bodyTopBase": 5,
+      "bodyTopMini": 2,
+      "eyesOffsetYGuessBase": 7,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 27,
@@ -258,7 +366,11 @@
       "mouthBase": "image-401.png",
       "bodyMini": "image-402.png",
       "eyesMini": "image-403.png",
-      "mouthMini": "image-404.png"
+      "mouthMini": "image-404.png",
+      "bodyTopBase": 8,
+      "bodyTopMini": 2,
+      "eyesOffsetYGuessBase": 9,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 28,
@@ -267,7 +379,11 @@
       "mouthBase": "image-407.png",
       "bodyMini": "image-408.png",
       "eyesMini": "image-409.png",
-      "mouthMini": "image-410.png"
+      "mouthMini": "image-410.png",
+      "bodyTopBase": 16,
+      "bodyTopMini": 6,
+      "eyesOffsetYGuessBase": 14,
+      "eyesOffsetYGuessMini": 6
     },
     {
       "id": 29,
@@ -276,7 +392,11 @@
       "mouthBase": "image-413.png",
       "bodyMini": "image-414.png",
       "eyesMini": "image-415.png",
-      "mouthMini": "image-416.png"
+      "mouthMini": "image-416.png",
+      "bodyTopBase": 10,
+      "bodyTopMini": 1,
+      "eyesOffsetYGuessBase": 10,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 30,
@@ -285,7 +405,11 @@
       "mouthBase": "image-419.png",
       "bodyMini": "image-420.png",
       "eyesMini": "image-421.png",
-      "mouthMini": "image-422.png"
+      "mouthMini": "image-422.png",
+      "bodyTopBase": 0,
+      "bodyTopMini": 0,
+      "eyesOffsetYGuessBase": 4,
+      "eyesOffsetYGuessMini": 2
     },
     {
       "id": 31,
@@ -294,7 +418,11 @@
       "mouthBase": "image-425.png",
       "bodyMini": "image-426.png",
       "eyesMini": "image-427.png",
-      "mouthMini": "image-428.png"
+      "mouthMini": "image-428.png",
+      "bodyTopBase": 4,
+      "bodyTopMini": 0,
+      "eyesOffsetYGuessBase": 6,
+      "eyesOffsetYGuessMini": 2
     },
     {
       "id": 32,
@@ -303,7 +431,11 @@
       "mouthBase": "image-431.png",
       "bodyMini": "image-432.png",
       "eyesMini": "image-433.png",
-      "mouthMini": "image-434.png"
+      "mouthMini": "image-434.png",
+      "bodyTopBase": 16,
+      "bodyTopMini": 8,
+      "eyesOffsetYGuessBase": 14,
+      "eyesOffsetYGuessMini": 7
     },
     {
       "id": 33,
@@ -312,7 +444,11 @@
       "mouthBase": "image-437.png",
       "bodyMini": "image-438.png",
       "eyesMini": "image-439.png",
-      "mouthMini": "image-440.png"
+      "mouthMini": "image-440.png",
+      "bodyTopBase": 7,
+      "bodyTopMini": 1,
+      "eyesOffsetYGuessBase": 8,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 34,
@@ -321,7 +457,11 @@
       "mouthBase": "image-443.png",
       "bodyMini": "image-444.png",
       "eyesMini": "image-445.png",
-      "mouthMini": "image-446.png"
+      "mouthMini": "image-446.png",
+      "bodyTopBase": 19,
+      "bodyTopMini": 9,
+      "eyesOffsetYGuessBase": 15,
+      "eyesOffsetYGuessMini": 7
     },
     {
       "id": 35,
@@ -330,7 +470,11 @@
       "mouthBase": "image-449.png",
       "bodyMini": "image-450.png",
       "eyesMini": "image-451.png",
-      "mouthMini": "image-452.png"
+      "mouthMini": "image-452.png",
+      "bodyTopBase": 4,
+      "bodyTopMini": 1,
+      "eyesOffsetYGuessBase": 6,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 36,
@@ -339,7 +483,11 @@
       "mouthBase": "image-455.png",
       "bodyMini": "image-456.png",
       "eyesMini": "image-457.png",
-      "mouthMini": "image-458.png"
+      "mouthMini": "image-458.png",
+      "bodyTopBase": 16,
+      "bodyTopMini": 8,
+      "eyesOffsetYGuessBase": 14,
+      "eyesOffsetYGuessMini": 7
     },
     {
       "id": 37,
@@ -348,7 +496,11 @@
       "mouthBase": "image-461.png",
       "bodyMini": "image-462.png",
       "eyesMini": "image-463.png",
-      "mouthMini": "image-464.png"
+      "mouthMini": "image-464.png",
+      "bodyTopBase": 10,
+      "bodyTopMini": 2,
+      "eyesOffsetYGuessBase": 10,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 38,
@@ -357,7 +509,11 @@
       "mouthBase": "image-467.png",
       "bodyMini": "image-468.png",
       "eyesMini": "image-469.png",
-      "mouthMini": "image-470.png"
+      "mouthMini": "image-470.png",
+      "bodyTopBase": 14,
+      "bodyTopMini": 5,
+      "eyesOffsetYGuessBase": 12,
+      "eyesOffsetYGuessMini": 5
     },
     {
       "id": 39,
@@ -366,7 +522,11 @@
       "mouthBase": "image-473.png",
       "bodyMini": "image-474.png",
       "eyesMini": "image-475.png",
-      "mouthMini": "image-476.png"
+      "mouthMini": "image-476.png",
+      "bodyTopBase": 6,
+      "bodyTopMini": 2,
+      "eyesOffsetYGuessBase": 7,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 40,
@@ -375,7 +535,11 @@
       "mouthBase": "image-479.png",
       "bodyMini": "image-480.png",
       "eyesMini": "image-481.png",
-      "mouthMini": "image-482.png"
+      "mouthMini": "image-482.png",
+      "bodyTopBase": 26,
+      "bodyTopMini": 12,
+      "eyesOffsetYGuessBase": 20,
+      "eyesOffsetYGuessMini": 9
     },
     {
       "id": 41,
@@ -384,7 +548,11 @@
       "mouthBase": "image-485.png",
       "bodyMini": "image-486.png",
       "eyesMini": "image-487.png",
-      "mouthMini": "image-488.png"
+      "mouthMini": "image-488.png",
+      "bodyTopBase": 5,
+      "bodyTopMini": 2,
+      "eyesOffsetYGuessBase": 7,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 42,
@@ -393,7 +561,11 @@
       "mouthBase": "image-491.png",
       "bodyMini": "image-492.png",
       "eyesMini": "image-493.png",
-      "mouthMini": "image-494.png"
+      "mouthMini": "image-494.png",
+      "bodyTopBase": 1,
+      "bodyTopMini": 0,
+      "eyesOffsetYGuessBase": 4,
+      "eyesOffsetYGuessMini": 2
     },
     {
       "id": 43,
@@ -402,7 +574,11 @@
       "mouthBase": "image-497.png",
       "bodyMini": "image-498.png",
       "eyesMini": "image-499.png",
-      "mouthMini": "image-500.png"
+      "mouthMini": "image-500.png",
+      "bodyTopBase": 9,
+      "bodyTopMini": 3,
+      "eyesOffsetYGuessBase": 9,
+      "eyesOffsetYGuessMini": 4
     },
     {
       "id": 44,
@@ -411,7 +587,11 @@
       "mouthBase": "image-503.png",
       "bodyMini": "image-504.png",
       "eyesMini": "image-505.png",
-      "mouthMini": "image-506.png"
+      "mouthMini": "image-506.png",
+      "bodyTopBase": 17,
+      "bodyTopMini": 7,
+      "eyesOffsetYGuessBase": 14,
+      "eyesOffsetYGuessMini": 6
     },
     {
       "id": 45,
@@ -420,7 +600,11 @@
       "mouthBase": "image-509.png",
       "bodyMini": "image-510.png",
       "eyesMini": "image-511.png",
-      "mouthMini": "image-512.png"
+      "mouthMini": "image-512.png",
+      "bodyTopBase": 1,
+      "bodyTopMini": 0,
+      "eyesOffsetYGuessBase": 4,
+      "eyesOffsetYGuessMini": 2
     },
     {
       "id": 46,
@@ -429,7 +613,11 @@
       "mouthBase": "image-515.png",
       "bodyMini": "image-516.png",
       "eyesMini": "image-517.png",
-      "mouthMini": "image-518.png"
+      "mouthMini": "image-518.png",
+      "bodyTopBase": 17,
+      "bodyTopMini": 8,
+      "eyesOffsetYGuessBase": 14,
+      "eyesOffsetYGuessMini": 7
     },
     {
       "id": 47,
@@ -438,7 +626,11 @@
       "mouthBase": "image-521.png",
       "bodyMini": "image-522.png",
       "eyesMini": "image-523.png",
-      "mouthMini": "image-524.png"
+      "mouthMini": "image-524.png",
+      "bodyTopBase": 1,
+      "bodyTopMini": 0,
+      "eyesOffsetYGuessBase": 4,
+      "eyesOffsetYGuessMini": 2
     },
     {
       "id": 48,
@@ -447,7 +639,11 @@
       "mouthBase": "image-527.png",
       "bodyMini": "image-528.png",
       "eyesMini": "image-529.png",
-      "mouthMini": "image-530.png"
+      "mouthMini": "image-530.png",
+      "bodyTopBase": 20,
+      "bodyTopMini": 9,
+      "eyesOffsetYGuessBase": 16,
+      "eyesOffsetYGuessMini": 7
     },
     {
       "id": 49,
@@ -456,7 +652,11 @@
       "mouthBase": "image-533.png",
       "bodyMini": "image-534.png",
       "eyesMini": "image-535.png",
-      "mouthMini": "image-536.png"
+      "mouthMini": "image-536.png",
+      "bodyTopBase": 9,
+      "bodyTopMini": 1,
+      "eyesOffsetYGuessBase": 9,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 50,
@@ -465,7 +665,11 @@
       "mouthBase": "image-539.png",
       "bodyMini": "image-540.png",
       "eyesMini": "image-541.png",
-      "mouthMini": "image-542.png"
+      "mouthMini": "image-542.png",
+      "bodyTopBase": 7,
+      "bodyTopMini": 1,
+      "eyesOffsetYGuessBase": 8,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 51,
@@ -474,7 +678,11 @@
       "mouthBase": "image-545.png",
       "bodyMini": "image-546.png",
       "eyesMini": "image-547.png",
-      "mouthMini": "image-548.png"
+      "mouthMini": "image-548.png",
+      "bodyTopBase": 16,
+      "bodyTopMini": 7,
+      "eyesOffsetYGuessBase": 14,
+      "eyesOffsetYGuessMini": 6
     },
     {
       "id": 52,
@@ -483,7 +691,11 @@
       "mouthBase": "image-551.png",
       "bodyMini": "image-552.png",
       "eyesMini": "image-553.png",
-      "mouthMini": "image-554.png"
+      "mouthMini": "image-554.png",
+      "bodyTopBase": 20,
+      "bodyTopMini": 9,
+      "eyesOffsetYGuessBase": 16,
+      "eyesOffsetYGuessMini": 7
     },
     {
       "id": 53,
@@ -492,7 +704,11 @@
       "mouthBase": "image-557.png",
       "bodyMini": "image-558.png",
       "eyesMini": "image-559.png",
-      "mouthMini": "image-560.png"
+      "mouthMini": "image-560.png",
+      "bodyTopBase": 4,
+      "bodyTopMini": 2,
+      "eyesOffsetYGuessBase": 6,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 54,
@@ -501,7 +717,11 @@
       "mouthBase": "image-563.png",
       "bodyMini": "image-564.png",
       "eyesMini": "image-565.png",
-      "mouthMini": "image-566.png"
+      "mouthMini": "image-566.png",
+      "bodyTopBase": 2,
+      "bodyTopMini": 1,
+      "eyesOffsetYGuessBase": 5,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 55,
@@ -510,7 +730,11 @@
       "mouthBase": "image-569.png",
       "bodyMini": "image-570.png",
       "eyesMini": "image-571.png",
-      "mouthMini": "image-572.png"
+      "mouthMini": "image-572.png",
+      "bodyTopBase": 2,
+      "bodyTopMini": 1,
+      "eyesOffsetYGuessBase": 5,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 56,
@@ -519,7 +743,11 @@
       "mouthBase": "image-575.png",
       "bodyMini": "image-576.png",
       "eyesMini": "image-577.png",
-      "mouthMini": "image-578.png"
+      "mouthMini": "image-578.png",
+      "bodyTopBase": 12,
+      "bodyTopMini": 4,
+      "eyesOffsetYGuessBase": 11,
+      "eyesOffsetYGuessMini": 4
     },
     {
       "id": 57,
@@ -528,7 +756,11 @@
       "mouthBase": "image-581.png",
       "bodyMini": "image-582.png",
       "eyesMini": "image-583.png",
-      "mouthMini": "image-584.png"
+      "mouthMini": "image-584.png",
+      "bodyTopBase": 10,
+      "bodyTopMini": 1,
+      "eyesOffsetYGuessBase": 10,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 58,
@@ -537,7 +769,11 @@
       "mouthBase": "image-587.png",
       "bodyMini": "image-588.png",
       "eyesMini": "image-589.png",
-      "mouthMini": "image-590.png"
+      "mouthMini": "image-590.png",
+      "bodyTopBase": 0,
+      "bodyTopMini": 0,
+      "eyesOffsetYGuessBase": 4,
+      "eyesOffsetYGuessMini": 2
     },
     {
       "id": 59,
@@ -546,7 +782,11 @@
       "mouthBase": "image-593.png",
       "bodyMini": "image-594.png",
       "eyesMini": "image-595.png",
-      "mouthMini": "image-596.png"
+      "mouthMini": "image-596.png",
+      "bodyTopBase": 4,
+      "bodyTopMini": 2,
+      "eyesOffsetYGuessBase": 6,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 60,
@@ -555,7 +795,11 @@
       "mouthBase": "image-599.png",
       "bodyMini": "image-600.png",
       "eyesMini": "image-601.png",
-      "mouthMini": "image-602.png"
+      "mouthMini": "image-602.png",
+      "bodyTopBase": 8,
+      "bodyTopMini": 3,
+      "eyesOffsetYGuessBase": 9,
+      "eyesOffsetYGuessMini": 4
     },
     {
       "id": 61,
@@ -564,7 +808,11 @@
       "mouthBase": "image-605.png",
       "bodyMini": "image-606.png",
       "eyesMini": "image-607.png",
-      "mouthMini": "image-608.png"
+      "mouthMini": "image-608.png",
+      "bodyTopBase": 2,
+      "bodyTopMini": 0,
+      "eyesOffsetYGuessBase": 5,
+      "eyesOffsetYGuessMini": 2
     },
     {
       "id": 62,
@@ -573,7 +821,11 @@
       "mouthBase": "image-611.png",
       "bodyMini": "image-612.png",
       "eyesMini": "image-613.png",
-      "mouthMini": "image-614.png"
+      "mouthMini": "image-614.png",
+      "bodyTopBase": 6,
+      "bodyTopMini": 3,
+      "eyesOffsetYGuessBase": 7,
+      "eyesOffsetYGuessMini": 4
     },
     {
       "id": 63,
@@ -582,7 +834,11 @@
       "mouthBase": "image-617.png",
       "bodyMini": "image-618.png",
       "eyesMini": "image-619.png",
-      "mouthMini": "image-620.png"
+      "mouthMini": "image-620.png",
+      "bodyTopBase": 14,
+      "bodyTopMini": 5,
+      "eyesOffsetYGuessBase": 12,
+      "eyesOffsetYGuessMini": 5
     },
     {
       "id": 64,
@@ -591,7 +847,11 @@
       "mouthBase": "image-623.png",
       "bodyMini": "image-624.png",
       "eyesMini": "image-625.png",
-      "mouthMini": "image-626.png"
+      "mouthMini": "image-626.png",
+      "bodyTopBase": 18,
+      "bodyTopMini": 9,
+      "eyesOffsetYGuessBase": 15,
+      "eyesOffsetYGuessMini": 7
     },
     {
       "id": 65,
@@ -600,7 +860,11 @@
       "mouthBase": "image-629.png",
       "bodyMini": "image-630.png",
       "eyesMini": "image-631.png",
-      "mouthMini": "image-632.png"
+      "mouthMini": "image-632.png",
+      "bodyTopBase": 1,
+      "bodyTopMini": 0,
+      "eyesOffsetYGuessBase": 4,
+      "eyesOffsetYGuessMini": 2
     },
     {
       "id": 66,
@@ -609,7 +873,11 @@
       "mouthBase": "image-635.png",
       "bodyMini": "image-636.png",
       "eyesMini": "image-637.png",
-      "mouthMini": "image-638.png"
+      "mouthMini": "image-638.png",
+      "bodyTopBase": 4,
+      "bodyTopMini": 2,
+      "eyesOffsetYGuessBase": 6,
+      "eyesOffsetYGuessMini": 3
     },
     {
       "id": 67,
@@ -618,7 +886,11 @@
       "mouthBase": "image-641.png",
       "bodyMini": "image-642.png",
       "eyesMini": "image-643.png",
-      "mouthMini": "image-644.png"
+      "mouthMini": "image-644.png",
+      "bodyTopBase": 7,
+      "bodyTopMini": 1,
+      "eyesOffsetYGuessBase": 8,
+      "eyesOffsetYGuessMini": 3
     }
   ]
 }
