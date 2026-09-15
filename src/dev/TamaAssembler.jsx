@@ -138,19 +138,19 @@ function SheetWithGrid({ file, frameWidth, frameIndex, label, sheetWidth, sheetH
   );
 }
 
-// A first best guess, seeded so you have something to correct rather than a
-// blank table. Indices assume frameWidth=64 (base) — adjust once real frame
-// width is confirmed. Based on eyeballing image-237/238/239 (baby, id 0):
-// body has ~20 frames mostly idle-bob poses with one raised/mid-step pose
-// and two blush-cheek poses near the end; eyes cycle through plain dots,
-// ^ ^ (content), > < (annoyed), closed dashes, and heart/note marks; mouth
-// (only 18 frames) has a similar small/neutral/open/frown set.
+// First-pass guesses for tama #0 (base variant), seeded so there's something
+// to correct rather than a blank table — not confirmed. Frame width is now
+// confirmed real data (see comment above), but WHICH frame index shows which
+// pose is still a visual judgment call with no research/bible source, so
+// this is eyeballed from the raw strips: body frame 0 reads as the plainest
+// neutral pose (no tilt/squash), so it's used for both idle and blink since
+// a blink shouldn't move the body. Eyes frame 0 is the plain open-dot pose;
+// the eyes frame used for blink is a guess at a flatter "closed" pair partway
+// through the strip — least confident part of this guess, verify first.
+// Mouth stays neutral (frame 0) for both, since blinking shouldn't move it.
 const SEED_STATES = [
   { name: 'idle', body: 0, eyes: 0, mouth: 0 },
-  { name: 'blink', body: 0, eyes: 13, mouth: 0 },
-  { name: 'happy', body: 18, eyes: 2, mouth: 3 },
-  { name: 'sad', body: 14, eyes: 9, mouth: 8 },
-  { name: 'walk', body: 12, eyes: 0, mouth: 0 },
+  { name: 'blink', body: 0, eyes: 9, mouth: 0 },
 ];
 
 export default function TamaAssembler() {
