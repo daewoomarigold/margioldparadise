@@ -16,10 +16,19 @@
       "bodyMini": "image-240.png",
       "eyesMini": "image-241.png",
       "mouthMini": "image-242.png",
-      "bodyTopBase": 31,
-      "bodyTopMini": 13,
-      "eyesOffsetYGuessBase": 23,
-      "eyesOffsetYGuessMini": 10
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 27,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 32,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 14,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 16,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "babymarutchi",
+        "bbmarutchi"
+      ]
     },
     {
       "id": 1,
@@ -29,10 +38,18 @@
       "bodyMini": "image-246.png",
       "eyesMini": "image-247.png",
       "mouthMini": "image-248.png",
-      "bodyTopBase": 26,
-      "bodyTopMini": 13,
-      "eyesOffsetYGuessBase": 20,
-      "eyesOffsetYGuessMini": 10
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 25,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 32,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 12,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 16,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "landkid"
+      ]
     },
     {
       "id": 2,
@@ -42,10 +59,18 @@
       "bodyMini": "image-252.png",
       "eyesMini": "image-253.png",
       "mouthMini": "image-254.png",
-      "bodyTopBase": 30,
-      "bodyTopMini": 15,
-      "eyesOffsetYGuessBase": 22,
-      "eyesOffsetYGuessMini": 11
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 31,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 32,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 16,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 16,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "waterkid"
+      ]
     },
     {
       "id": 3,
@@ -55,10 +80,18 @@
       "bodyMini": "image-258.png",
       "eyesMini": "image-259.png",
       "mouthMini": "image-260.png",
-      "bodyTopBase": 23,
-      "bodyTopMini": 11,
-      "eyesOffsetYGuessBase": 18,
-      "eyesOffsetYGuessMini": 9
+      "eyesOffsetXBase": 1,
+      "eyesOffsetYBase": 32,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 32,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 16,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 16,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "skykid"
+      ]
     },
     {
       "id": 4,
@@ -68,10 +101,19 @@
       "bodyMini": "image-264.png",
       "eyesMini": "image-265.png",
       "mouthMini": "image-266.png",
-      "bodyTopBase": 17,
-      "bodyTopMini": 1,
-      "eyesOffsetYGuessBase": 14,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": -2,
+      "eyesOffsetYBase": 22,
+      "mouthOffsetXBase": -2,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": -1,
+      "eyesOffsetYMini": 11,
+      "mouthOffsetXMini": -1,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "leapyoung",
+        "roaryoung"
+      ]
     },
     {
       "id": 5,
@@ -81,10 +123,19 @@
       "bodyMini": "image-270.png",
       "eyesMini": "image-271.png",
       "mouthMini": "image-272.png",
-      "bodyTopBase": 22,
-      "bodyTopMini": 7,
-      "eyesOffsetYGuessBase": 17,
-      "eyesOffsetYGuessMini": 6
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 26,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 31,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 13,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 16,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "bumbleyoung",
+        "toddleyoung"
+      ]
     },
     {
       "id": 6,
@@ -94,10 +145,18 @@
       "bodyMini": "image-276.png",
       "eyesMini": "image-277.png",
       "mouthMini": "image-278.png",
-      "bodyTopBase": 18,
-      "bodyTopMini": 1,
-      "eyesOffsetYGuessBase": 15,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": -1,
+      "eyesOffsetYBase": 18,
+      "mouthOffsetXBase": 1,
+      "mouthOffsetYBase": 24,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 9,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "lickyoung"
+      ]
     },
     {
       "id": 7,
@@ -107,10 +166,18 @@
       "bodyMini": "image-282.png",
       "eyesMini": "image-283.png",
       "mouthMini": "image-284.png",
-      "bodyTopBase": 17,
-      "bodyTopMini": 1,
-      "eyesOffsetYGuessBase": 14,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 29,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 32,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 14,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 16,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "sproutyoung"
+      ]
     },
     {
       "id": 8,
@@ -120,10 +187,18 @@
       "bodyMini": "image-288.png",
       "eyesMini": "image-289.png",
       "mouthMini": "image-290.png",
-      "bodyTopBase": 19,
-      "bodyTopMini": 9,
-      "eyesOffsetYGuessBase": 15,
-      "eyesOffsetYGuessMini": 7
+      "eyesOffsetXBase": -3,
+      "eyesOffsetYBase": 30,
+      "mouthOffsetXBase": -3,
+      "mouthOffsetYBase": 32,
+      "eyesOffsetXMini": -2,
+      "eyesOffsetYMini": 15,
+      "mouthOffsetXMini": -2,
+      "mouthOffsetYMini": 16,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "glideyoung"
+      ]
     },
     {
       "id": 9,
@@ -133,10 +208,19 @@
       "bodyMini": "image-294.png",
       "eyesMini": "image-295.png",
       "mouthMini": "image-296.png",
-      "bodyTopBase": 23,
-      "bodyTopMini": 11,
-      "eyesOffsetYGuessBase": 18,
-      "eyesOffsetYGuessMini": 9
+      "eyesOffsetXBase": -2,
+      "eyesOffsetYBase": 22,
+      "mouthOffsetXBase": -2,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": -1,
+      "eyesOffsetYMini": 11,
+      "mouthOffsetXMini": -1,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "leapyoung",
+        "roaryoung"
+      ]
     },
     {
       "id": 10,
@@ -146,10 +230,19 @@
       "bodyMini": "image-300.png",
       "eyesMini": "image-301.png",
       "mouthMini": "image-302.png",
-      "bodyTopBase": 25,
-      "bodyTopMini": 11,
-      "eyesOffsetYGuessBase": 19,
-      "eyesOffsetYGuessMini": 9
+      "eyesOffsetXBase": -2,
+      "eyesOffsetYBase": 24,
+      "mouthOffsetXBase": -2,
+      "mouthOffsetYBase": 26,
+      "eyesOffsetXMini": -1,
+      "eyesOffsetYMini": 12,
+      "mouthOffsetXMini": -1,
+      "mouthOffsetYMini": 13,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "flapyoung",
+        "paddleyoung"
+      ]
     },
     {
       "id": 11,
@@ -159,10 +252,18 @@
       "bodyMini": "image-306.png",
       "eyesMini": "image-307.png",
       "mouthMini": "image-308.png",
-      "bodyTopBase": 14,
-      "bodyTopMini": 7,
-      "eyesOffsetYGuessBase": 12,
-      "eyesOffsetYGuessMini": 6
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 17,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 19,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 8,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 10,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "floatyoung"
+      ]
     },
     {
       "id": 12,
@@ -172,10 +273,19 @@
       "bodyMini": "image-312.png",
       "eyesMini": "image-313.png",
       "mouthMini": "image-314.png",
-      "bodyTopBase": 13,
-      "bodyTopMini": 4,
-      "eyesOffsetYGuessBase": 12,
-      "eyesOffsetYGuessMini": 4
+      "eyesOffsetXBase": -2,
+      "eyesOffsetYBase": 24,
+      "mouthOffsetXBase": -2,
+      "mouthOffsetYBase": 26,
+      "eyesOffsetXMini": -1,
+      "eyesOffsetYMini": 12,
+      "mouthOffsetXMini": -1,
+      "mouthOffsetYMini": 13,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "flapyoung",
+        "paddleyoung"
+      ]
     },
     {
       "id": 13,
@@ -185,10 +295,18 @@
       "bodyMini": "image-318.png",
       "eyesMini": "image-319.png",
       "mouthMini": "image-320.png",
-      "bodyTopBase": 6,
-      "bodyTopMini": 2,
-      "eyesOffsetYGuessBase": 7,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 15,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 17,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 8,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 8,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "chirpyoung"
+      ]
     },
     {
       "id": 14,
@@ -198,10 +316,19 @@
       "bodyMini": "image-324.png",
       "eyesMini": "image-325.png",
       "mouthMini": "image-326.png",
-      "bodyTopBase": 25,
-      "bodyTopMini": 12,
-      "eyesOffsetYGuessBase": 19,
-      "eyesOffsetYGuessMini": 9
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 26,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 31,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 13,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 16,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "bumbleyoung",
+        "toddleyoung"
+      ]
     },
     {
       "id": 15,
@@ -211,10 +338,18 @@
       "bodyMini": "image-330.png",
       "eyesMini": "image-331.png",
       "mouthMini": "image-332.png",
-      "bodyTopBase": 21,
-      "bodyTopMini": 10,
-      "eyesOffsetYGuessBase": 17,
-      "eyesOffsetYGuessMini": 8
+      "eyesOffsetXBase": 1,
+      "eyesOffsetYBase": 25,
+      "mouthOffsetXBase": 1,
+      "mouthOffsetYBase": 27,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 12,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 14,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "rockyyoung"
+      ]
     },
     {
       "id": 16,
@@ -224,10 +359,25 @@
       "bodyMini": "image-336.png",
       "eyesMini": "image-337.png",
       "mouthMini": "image-338.png",
-      "bodyTopBase": 19,
-      "bodyTopMini": 8,
-      "eyesOffsetYGuessBase": 15,
-      "eyesOffsetYGuessMini": 7
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 14,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 7,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "batatchi",
+        "hatchitchi",
+        "kametchi",
+        "mametchi",
+        "pochitchi",
+        "sebiretchi",
+        "sheeptchi",
+        "tentotchi"
+      ]
     },
     {
       "id": 17,
@@ -237,10 +387,22 @@
       "bodyMini": "image-342.png",
       "eyesMini": "image-343.png",
       "mouthMini": "image-344.png",
-      "bodyTopBase": 2,
-      "bodyTopMini": 0,
-      "eyesOffsetYGuessBase": 5,
-      "eyesOffsetYGuessMini": 2
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 20,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 20,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 10,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 10,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "axolopatchi",
+        "furawatchi",
+        "meowtchi",
+        "papillotchi",
+        "ratchi"
+      ]
     },
     {
       "id": 18,
@@ -250,10 +412,25 @@
       "bodyMini": "image-348.png",
       "eyesMini": "image-349.png",
       "mouthMini": "image-350.png",
-      "bodyTopBase": 7,
-      "bodyTopMini": 4,
-      "eyesOffsetYGuessBase": 8,
-      "eyesOffsetYGuessMini": 4
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 14,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 7,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "batatchi",
+        "hatchitchi",
+        "kametchi",
+        "mametchi",
+        "pochitchi",
+        "sebiretchi",
+        "sheeptchi",
+        "tentotchi"
+      ]
     },
     {
       "id": 19,
@@ -263,10 +440,22 @@
       "bodyMini": "image-354.png",
       "eyesMini": "image-355.png",
       "mouthMini": "image-356.png",
-      "bodyTopBase": 2,
-      "bodyTopMini": 1,
-      "eyesOffsetYGuessBase": 5,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 12,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 19,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 6,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 10,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "eagletchi",
+        "gumax",
+        "imoritchi",
+        "ishikorotchi",
+        "sharktchi"
+      ]
     },
     {
       "id": 20,
@@ -276,10 +465,22 @@
       "bodyMini": "image-360.png",
       "eyesMini": "image-361.png",
       "mouthMini": "image-362.png",
-      "bodyTopBase": 8,
-      "bodyTopMini": 3,
-      "eyesOffsetYGuessBase": 9,
-      "eyesOffsetYGuessMini": 4
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 20,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 20,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 10,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 10,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "axolopatchi",
+        "furawatchi",
+        "meowtchi",
+        "papillotchi",
+        "ratchi"
+      ]
     },
     {
       "id": 21,
@@ -289,10 +490,25 @@
       "bodyMini": "image-366.png",
       "eyesMini": "image-367.png",
       "mouthMini": "image-368.png",
-      "bodyTopBase": 7,
-      "bodyTopMini": 0,
-      "eyesOffsetYGuessBase": 8,
-      "eyesOffsetYGuessMini": 2
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 14,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 7,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "batatchi",
+        "hatchitchi",
+        "kametchi",
+        "mametchi",
+        "pochitchi",
+        "sebiretchi",
+        "sheeptchi",
+        "tentotchi"
+      ]
     },
     {
       "id": 22,
@@ -302,10 +518,22 @@
       "bodyMini": "image-372.png",
       "eyesMini": "image-373.png",
       "mouthMini": "image-374.png",
-      "bodyTopBase": 3,
-      "bodyTopMini": 0,
-      "eyesOffsetYGuessBase": 6,
-      "eyesOffsetYGuessMini": 2
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 23,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 24,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 12,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "gemtchi",
+        "gusokutchi",
+        "mimitchi",
+        "molmotchi",
+        "mongatchi"
+      ]
     },
     {
       "id": 23,
@@ -315,10 +543,22 @@
       "bodyMini": "image-378.png",
       "eyesMini": "image-379.png",
       "mouthMini": "image-380.png",
-      "bodyTopBase": 4,
-      "bodyTopMini": 0,
-      "eyesOffsetYGuessBase": 6,
-      "eyesOffsetYGuessMini": 2
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 23,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 24,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 12,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "gemtchi",
+        "gusokutchi",
+        "mimitchi",
+        "molmotchi",
+        "mongatchi"
+      ]
     },
     {
       "id": 24,
@@ -328,10 +568,25 @@
       "bodyMini": "image-384.png",
       "eyesMini": "image-385.png",
       "mouthMini": "image-386.png",
-      "bodyTopBase": 13,
-      "bodyTopMini": 6,
-      "eyesOffsetYGuessBase": 12,
-      "eyesOffsetYGuessMini": 6
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 14,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 7,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "batatchi",
+        "hatchitchi",
+        "kametchi",
+        "mametchi",
+        "pochitchi",
+        "sebiretchi",
+        "sheeptchi",
+        "tentotchi"
+      ]
     },
     {
       "id": 25,
@@ -341,10 +596,25 @@
       "bodyMini": "image-390.png",
       "eyesMini": "image-391.png",
       "mouthMini": "image-392.png",
-      "bodyTopBase": 5,
-      "bodyTopMini": 2,
-      "eyesOffsetYGuessBase": 7,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 14,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 7,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "batatchi",
+        "hatchitchi",
+        "kametchi",
+        "mametchi",
+        "pochitchi",
+        "sebiretchi",
+        "sheeptchi",
+        "tentotchi"
+      ]
     },
     {
       "id": 26,
@@ -354,10 +624,21 @@
       "bodyMini": "image-396.png",
       "eyesMini": "image-397.png",
       "mouthMini": "image-398.png",
-      "bodyTopBase": 5,
-      "bodyTopMini": 2,
-      "eyesOffsetYGuessBase": 7,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 10,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 14,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 5,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 7,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "beavertchi",
+        "kabutotchi",
+        "kuraratchi",
+        "leopatchi"
+      ]
     },
     {
       "id": 27,
@@ -367,10 +648,20 @@
       "bodyMini": "image-402.png",
       "eyesMini": "image-403.png",
       "mouthMini": "image-404.png",
-      "bodyTopBase": 8,
-      "bodyTopMini": 2,
-      "eyesOffsetYGuessBase": 9,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 20,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 25,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 10,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "elizardotchi",
+        "kawazutchi",
+        "potsunentchi"
+      ]
     },
     {
       "id": 28,
@@ -380,10 +671,23 @@
       "bodyMini": "image-408.png",
       "eyesMini": "image-409.png",
       "mouthMini": "image-410.png",
-      "bodyTopBase": 16,
-      "bodyTopMini": 6,
-      "eyesOffsetYGuessBase": 14,
-      "eyesOffsetYGuessMini": 6
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 15,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 18,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 8,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 9,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "heavytchi",
+        "kiwitchi",
+        "kuchipatchi",
+        "otototchi",
+        "shigemi-san",
+        "tustustchi"
+      ]
     },
     {
       "id": 29,
@@ -393,10 +697,22 @@
       "bodyMini": "image-414.png",
       "eyesMini": "image-415.png",
       "mouthMini": "image-416.png",
-      "bodyTopBase": 10,
-      "bodyTopMini": 1,
-      "eyesOffsetYGuessBase": 10,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 20,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 20,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 10,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 10,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "axolopatchi",
+        "furawatchi",
+        "meowtchi",
+        "papillotchi",
+        "ratchi"
+      ]
     },
     {
       "id": 30,
@@ -406,10 +722,23 @@
       "bodyMini": "image-420.png",
       "eyesMini": "image-421.png",
       "mouthMini": "image-422.png",
-      "bodyTopBase": 0,
-      "bodyTopMini": 0,
-      "eyesOffsetYGuessBase": 4,
-      "eyesOffsetYGuessMini": 2
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 15,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 18,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 8,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 9,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "heavytchi",
+        "kiwitchi",
+        "kuchipatchi",
+        "otototchi",
+        "shigemi-san",
+        "tustustchi"
+      ]
     },
     {
       "id": 31,
@@ -419,10 +748,20 @@
       "bodyMini": "image-426.png",
       "eyesMini": "image-427.png",
       "mouthMini": "image-428.png",
-      "bodyTopBase": 4,
-      "bodyTopMini": 0,
-      "eyesOffsetYGuessBase": 6,
-      "eyesOffsetYGuessMini": 2
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 20,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 25,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 10,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "elizardotchi",
+        "kawazutchi",
+        "potsunentchi"
+      ]
     },
     {
       "id": 32,
@@ -432,10 +771,23 @@
       "bodyMini": "image-432.png",
       "eyesMini": "image-433.png",
       "mouthMini": "image-434.png",
-      "bodyTopBase": 16,
-      "bodyTopMini": 8,
-      "eyesOffsetYGuessBase": 14,
-      "eyesOffsetYGuessMini": 7
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 15,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 18,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 8,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 9,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "heavytchi",
+        "kiwitchi",
+        "kuchipatchi",
+        "otototchi",
+        "shigemi-san",
+        "tustustchi"
+      ]
     },
     {
       "id": 33,
@@ -445,10 +797,21 @@
       "bodyMini": "image-438.png",
       "eyesMini": "image-439.png",
       "mouthMini": "image-440.png",
-      "bodyTopBase": 7,
-      "bodyTopMini": 1,
-      "eyesOffsetYGuessBase": 8,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 17,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 8,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "amefuratchi",
+        "irukatchi",
+        "kujiratchi",
+        "peacotchi"
+      ]
     },
     {
       "id": 34,
@@ -458,10 +821,25 @@
       "bodyMini": "image-444.png",
       "eyesMini": "image-445.png",
       "mouthMini": "image-446.png",
-      "bodyTopBase": 19,
-      "bodyTopMini": 9,
-      "eyesOffsetYGuessBase": 15,
-      "eyesOffsetYGuessMini": 7
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 14,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 7,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "batatchi",
+        "hatchitchi",
+        "kametchi",
+        "mametchi",
+        "pochitchi",
+        "sebiretchi",
+        "sheeptchi",
+        "tentotchi"
+      ]
     },
     {
       "id": 35,
@@ -471,10 +849,21 @@
       "bodyMini": "image-450.png",
       "eyesMini": "image-451.png",
       "mouthMini": "image-452.png",
-      "bodyTopBase": 4,
-      "bodyTopMini": 1,
-      "eyesOffsetYGuessBase": 6,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 10,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 14,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 5,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 7,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "beavertchi",
+        "kabutotchi",
+        "kuraratchi",
+        "leopatchi"
+      ]
     },
     {
       "id": 36,
@@ -484,10 +873,21 @@
       "bodyMini": "image-456.png",
       "eyesMini": "image-457.png",
       "mouthMini": "image-458.png",
-      "bodyTopBase": 16,
-      "bodyTopMini": 8,
-      "eyesOffsetYGuessBase": 14,
-      "eyesOffsetYGuessMini": 7
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 17,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 8,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "amefuratchi",
+        "irukatchi",
+        "kujiratchi",
+        "peacotchi"
+      ]
     },
     {
       "id": 37,
@@ -497,10 +897,22 @@
       "bodyMini": "image-462.png",
       "eyesMini": "image-463.png",
       "mouthMini": "image-464.png",
-      "bodyTopBase": 10,
-      "bodyTopMini": 2,
-      "eyesOffsetYGuessBase": 10,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 20,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 20,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 10,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 10,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "axolopatchi",
+        "furawatchi",
+        "meowtchi",
+        "papillotchi",
+        "ratchi"
+      ]
     },
     {
       "id": 38,
@@ -510,10 +922,22 @@
       "bodyMini": "image-468.png",
       "eyesMini": "image-469.png",
       "mouthMini": "image-470.png",
-      "bodyTopBase": 14,
-      "bodyTopMini": 5,
-      "eyesOffsetYGuessBase": 12,
-      "eyesOffsetYGuessMini": 5
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 12,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 19,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 6,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 10,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "eagletchi",
+        "gumax",
+        "imoritchi",
+        "ishikorotchi",
+        "sharktchi"
+      ]
     },
     {
       "id": 39,
@@ -523,10 +947,20 @@
       "bodyMini": "image-474.png",
       "eyesMini": "image-475.png",
       "mouthMini": "image-476.png",
-      "bodyTopBase": 6,
-      "bodyTopMini": 2,
-      "eyesOffsetYGuessBase": 7,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 20,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 25,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 10,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "elizardotchi",
+        "kawazutchi",
+        "potsunentchi"
+      ]
     },
     {
       "id": 40,
@@ -536,10 +970,22 @@
       "bodyMini": "image-480.png",
       "eyesMini": "image-481.png",
       "mouthMini": "image-482.png",
-      "bodyTopBase": 26,
-      "bodyTopMini": 12,
-      "eyesOffsetYGuessBase": 20,
-      "eyesOffsetYGuessMini": 9
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 23,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 29,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 12,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 14,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "ankotchi",
+        "batchi",
+        "horhotchi",
+        "tachutchi",
+        "uruotchi"
+      ]
     },
     {
       "id": 41,
@@ -549,10 +995,22 @@
       "bodyMini": "image-486.png",
       "eyesMini": "image-487.png",
       "mouthMini": "image-488.png",
-      "bodyTopBase": 5,
-      "bodyTopMini": 2,
-      "eyesOffsetYGuessBase": 7,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 23,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 29,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 12,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 14,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "ankotchi",
+        "batchi",
+        "horhotchi",
+        "tachutchi",
+        "uruotchi"
+      ]
     },
     {
       "id": 42,
@@ -562,10 +1020,22 @@
       "bodyMini": "image-492.png",
       "eyesMini": "image-493.png",
       "mouthMini": "image-494.png",
-      "bodyTopBase": 1,
-      "bodyTopMini": 0,
-      "eyesOffsetYGuessBase": 4,
-      "eyesOffsetYGuessMini": 2
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 12,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 19,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 6,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 10,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "eagletchi",
+        "gumax",
+        "imoritchi",
+        "ishikorotchi",
+        "sharktchi"
+      ]
     },
     {
       "id": 43,
@@ -575,10 +1045,22 @@
       "bodyMini": "image-498.png",
       "eyesMini": "image-499.png",
       "mouthMini": "image-500.png",
-      "bodyTopBase": 9,
-      "bodyTopMini": 3,
-      "eyesOffsetYGuessBase": 9,
-      "eyesOffsetYGuessMini": 4
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 23,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 29,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 12,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 14,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "ankotchi",
+        "batchi",
+        "horhotchi",
+        "tachutchi",
+        "uruotchi"
+      ]
     },
     {
       "id": 44,
@@ -588,10 +1070,23 @@
       "bodyMini": "image-504.png",
       "eyesMini": "image-505.png",
       "mouthMini": "image-506.png",
-      "bodyTopBase": 17,
-      "bodyTopMini": 7,
-      "eyesOffsetYGuessBase": 14,
-      "eyesOffsetYGuessMini": 6
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 15,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 18,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 8,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 9,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "heavytchi",
+        "kiwitchi",
+        "kuchipatchi",
+        "otototchi",
+        "shigemi-san",
+        "tustustchi"
+      ]
     },
     {
       "id": 45,
@@ -601,10 +1096,21 @@
       "bodyMini": "image-510.png",
       "eyesMini": "image-511.png",
       "mouthMini": "image-512.png",
-      "bodyTopBase": 1,
-      "bodyTopMini": 0,
-      "eyesOffsetYGuessBase": 4,
-      "eyesOffsetYGuessMini": 2
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 10,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 14,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 5,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 7,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "beavertchi",
+        "kabutotchi",
+        "kuraratchi",
+        "leopatchi"
+      ]
     },
     {
       "id": 46,
@@ -614,10 +1120,19 @@
       "bodyMini": "image-516.png",
       "eyesMini": "image-517.png",
       "mouthMini": "image-518.png",
-      "bodyTopBase": 17,
-      "bodyTopMini": 8,
-      "eyesOffsetYGuessBase": 14,
-      "eyesOffsetYGuessMini": 7
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 24,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 24,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 12,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "magmatchi",
+        "mendakotchi"
+      ]
     },
     {
       "id": 47,
@@ -627,10 +1142,21 @@
       "bodyMini": "image-522.png",
       "eyesMini": "image-523.png",
       "mouthMini": "image-524.png",
-      "bodyTopBase": 1,
-      "bodyTopMini": 0,
-      "eyesOffsetYGuessBase": 4,
-      "eyesOffsetYGuessMini": 2
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 17,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 8,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "amefuratchi",
+        "irukatchi",
+        "kujiratchi",
+        "peacotchi"
+      ]
     },
     {
       "id": 48,
@@ -640,10 +1166,22 @@
       "bodyMini": "image-528.png",
       "eyesMini": "image-529.png",
       "mouthMini": "image-530.png",
-      "bodyTopBase": 20,
-      "bodyTopMini": 9,
-      "eyesOffsetYGuessBase": 16,
-      "eyesOffsetYGuessMini": 7
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 23,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 24,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 12,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "gemtchi",
+        "gusokutchi",
+        "mimitchi",
+        "molmotchi",
+        "mongatchi"
+      ]
     },
     {
       "id": 49,
@@ -653,10 +1191,22 @@
       "bodyMini": "image-534.png",
       "eyesMini": "image-535.png",
       "mouthMini": "image-536.png",
-      "bodyTopBase": 9,
-      "bodyTopMini": 1,
-      "eyesOffsetYGuessBase": 9,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 23,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 29,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 12,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 14,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "ankotchi",
+        "batchi",
+        "horhotchi",
+        "tachutchi",
+        "uruotchi"
+      ]
     },
     {
       "id": 50,
@@ -666,10 +1216,22 @@
       "bodyMini": "image-540.png",
       "eyesMini": "image-541.png",
       "mouthMini": "image-542.png",
-      "bodyTopBase": 7,
-      "bodyTopMini": 1,
-      "eyesOffsetYGuessBase": 8,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 23,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 24,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 12,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "gemtchi",
+        "gusokutchi",
+        "mimitchi",
+        "molmotchi",
+        "mongatchi"
+      ]
     },
     {
       "id": 51,
@@ -679,10 +1241,22 @@
       "bodyMini": "image-546.png",
       "eyesMini": "image-547.png",
       "mouthMini": "image-548.png",
-      "bodyTopBase": 16,
-      "bodyTopMini": 7,
-      "eyesOffsetYGuessBase": 14,
-      "eyesOffsetYGuessMini": 6
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 12,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 19,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 6,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 10,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "eagletchi",
+        "gumax",
+        "imoritchi",
+        "ishikorotchi",
+        "sharktchi"
+      ]
     },
     {
       "id": 52,
@@ -692,10 +1266,22 @@
       "bodyMini": "image-552.png",
       "eyesMini": "image-553.png",
       "mouthMini": "image-554.png",
-      "bodyTopBase": 20,
-      "bodyTopMini": 9,
-      "eyesOffsetYGuessBase": 16,
-      "eyesOffsetYGuessMini": 7
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 23,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 29,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 12,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 14,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "ankotchi",
+        "batchi",
+        "horhotchi",
+        "tachutchi",
+        "uruotchi"
+      ]
     },
     {
       "id": 53,
@@ -705,10 +1291,25 @@
       "bodyMini": "image-558.png",
       "eyesMini": "image-559.png",
       "mouthMini": "image-560.png",
-      "bodyTopBase": 4,
-      "bodyTopMini": 2,
-      "eyesOffsetYGuessBase": 6,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 14,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 7,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "batatchi",
+        "hatchitchi",
+        "kametchi",
+        "mametchi",
+        "pochitchi",
+        "sebiretchi",
+        "sheeptchi",
+        "tentotchi"
+      ]
     },
     {
       "id": 54,
@@ -718,10 +1319,21 @@
       "bodyMini": "image-564.png",
       "eyesMini": "image-565.png",
       "mouthMini": "image-566.png",
-      "bodyTopBase": 2,
-      "bodyTopMini": 1,
-      "eyesOffsetYGuessBase": 5,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 10,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 14,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 5,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 7,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "beavertchi",
+        "kabutotchi",
+        "kuraratchi",
+        "leopatchi"
+      ]
     },
     {
       "id": 55,
@@ -731,10 +1343,25 @@
       "bodyMini": "image-570.png",
       "eyesMini": "image-571.png",
       "mouthMini": "image-572.png",
-      "bodyTopBase": 2,
-      "bodyTopMini": 1,
-      "eyesOffsetYGuessBase": 5,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 14,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 7,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "batatchi",
+        "hatchitchi",
+        "kametchi",
+        "mametchi",
+        "pochitchi",
+        "sebiretchi",
+        "sheeptchi",
+        "tentotchi"
+      ]
     },
     {
       "id": 56,
@@ -744,10 +1371,25 @@
       "bodyMini": "image-576.png",
       "eyesMini": "image-577.png",
       "mouthMini": "image-578.png",
-      "bodyTopBase": 12,
-      "bodyTopMini": 4,
-      "eyesOffsetYGuessBase": 11,
-      "eyesOffsetYGuessMini": 4
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 14,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 7,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "batatchi",
+        "hatchitchi",
+        "kametchi",
+        "mametchi",
+        "pochitchi",
+        "sebiretchi",
+        "sheeptchi",
+        "tentotchi"
+      ]
     },
     {
       "id": 57,
@@ -757,10 +1399,23 @@
       "bodyMini": "image-582.png",
       "eyesMini": "image-583.png",
       "mouthMini": "image-584.png",
-      "bodyTopBase": 10,
-      "bodyTopMini": 1,
-      "eyesOffsetYGuessBase": 10,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 15,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 18,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 8,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 9,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "heavytchi",
+        "kiwitchi",
+        "kuchipatchi",
+        "otototchi",
+        "shigemi-san",
+        "tustustchi"
+      ]
     },
     {
       "id": 58,
@@ -770,10 +1425,25 @@
       "bodyMini": "image-588.png",
       "eyesMini": "image-589.png",
       "mouthMini": "image-590.png",
-      "bodyTopBase": 0,
-      "bodyTopMini": 0,
-      "eyesOffsetYGuessBase": 4,
-      "eyesOffsetYGuessMini": 2
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 14,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 7,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "batatchi",
+        "hatchitchi",
+        "kametchi",
+        "mametchi",
+        "pochitchi",
+        "sebiretchi",
+        "sheeptchi",
+        "tentotchi"
+      ]
     },
     {
       "id": 59,
@@ -783,10 +1453,21 @@
       "bodyMini": "image-594.png",
       "eyesMini": "image-595.png",
       "mouthMini": "image-596.png",
-      "bodyTopBase": 4,
-      "bodyTopMini": 2,
-      "eyesOffsetYGuessBase": 6,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 17,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 22,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 8,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 11,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "amefuratchi",
+        "irukatchi",
+        "kujiratchi",
+        "peacotchi"
+      ]
     },
     {
       "id": 60,
@@ -796,10 +1477,23 @@
       "bodyMini": "image-600.png",
       "eyesMini": "image-601.png",
       "mouthMini": "image-602.png",
-      "bodyTopBase": 8,
-      "bodyTopMini": 3,
-      "eyesOffsetYGuessBase": 9,
-      "eyesOffsetYGuessMini": 4
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 15,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 18,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 8,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 9,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "heavytchi",
+        "kiwitchi",
+        "kuchipatchi",
+        "otototchi",
+        "shigemi-san",
+        "tustustchi"
+      ]
     },
     {
       "id": 61,
@@ -809,10 +1503,22 @@
       "bodyMini": "image-606.png",
       "eyesMini": "image-607.png",
       "mouthMini": "image-608.png",
-      "bodyTopBase": 2,
-      "bodyTopMini": 0,
-      "eyesOffsetYGuessBase": 5,
-      "eyesOffsetYGuessMini": 2
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 23,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 24,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 12,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "gemtchi",
+        "gusokutchi",
+        "mimitchi",
+        "molmotchi",
+        "mongatchi"
+      ]
     },
     {
       "id": 62,
@@ -822,10 +1528,22 @@
       "bodyMini": "image-612.png",
       "eyesMini": "image-613.png",
       "mouthMini": "image-614.png",
-      "bodyTopBase": 6,
-      "bodyTopMini": 3,
-      "eyesOffsetYGuessBase": 7,
-      "eyesOffsetYGuessMini": 4
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 20,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 20,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 10,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 10,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "axolopatchi",
+        "furawatchi",
+        "meowtchi",
+        "papillotchi",
+        "ratchi"
+      ]
     },
     {
       "id": 63,
@@ -835,10 +1553,22 @@
       "bodyMini": "image-618.png",
       "eyesMini": "image-619.png",
       "mouthMini": "image-620.png",
-      "bodyTopBase": 14,
-      "bodyTopMini": 5,
-      "eyesOffsetYGuessBase": 12,
-      "eyesOffsetYGuessMini": 5
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 12,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 19,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 6,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 10,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "eagletchi",
+        "gumax",
+        "imoritchi",
+        "ishikorotchi",
+        "sharktchi"
+      ]
     },
     {
       "id": 64,
@@ -848,10 +1578,18 @@
       "bodyMini": "image-624.png",
       "eyesMini": "image-625.png",
       "mouthMini": "image-626.png",
-      "bodyTopBase": 18,
-      "bodyTopMini": 9,
-      "eyesOffsetYGuessBase": 15,
-      "eyesOffsetYGuessMini": 7
+      "eyesOffsetXBase": 0,
+      "eyesOffsetYBase": 21,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 24,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 10,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 12,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "magmatchi"
+      ]
     },
     {
       "id": 65,
@@ -861,10 +1599,18 @@
       "bodyMini": "image-630.png",
       "eyesMini": "image-631.png",
       "mouthMini": "image-632.png",
-      "bodyTopBase": 1,
-      "bodyTopMini": 0,
-      "eyesOffsetYGuessBase": 4,
-      "eyesOffsetYGuessMini": 2
+      "eyesOffsetXBase": -1,
+      "eyesOffsetYBase": 15,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 18,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 8,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 9,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "chodracotchi"
+      ]
     },
     {
       "id": 66,
@@ -874,10 +1620,18 @@
       "bodyMini": "image-636.png",
       "eyesMini": "image-637.png",
       "mouthMini": "image-638.png",
-      "bodyTopBase": 4,
-      "bodyTopMini": 2,
-      "eyesOffsetYGuessBase": 6,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": -1,
+      "eyesOffsetYBase": 5,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 8,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 2,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 4,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "mermarintchi"
+      ]
     },
     {
       "id": 67,
@@ -887,10 +1641,18 @@
       "bodyMini": "image-642.png",
       "eyesMini": "image-643.png",
       "mouthMini": "image-644.png",
-      "bodyTopBase": 7,
-      "bodyTopMini": 1,
-      "eyesOffsetYGuessBase": 8,
-      "eyesOffsetYGuessMini": 3
+      "eyesOffsetXBase": -1,
+      "eyesOffsetYBase": 26,
+      "mouthOffsetXBase": 0,
+      "mouthOffsetYBase": 29,
+      "eyesOffsetXMini": 0,
+      "eyesOffsetYMini": 13,
+      "mouthOffsetXMini": 0,
+      "mouthOffsetYMini": 14,
+      "offsetSource": "bible",
+      "offsetSourceNames": [
+        "yayacorntchi"
+      ]
     }
   ]
 }

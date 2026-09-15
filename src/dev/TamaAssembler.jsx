@@ -19,21 +19,21 @@ const SPRITE_BASE = `${import.meta.env.BASE_URL}sprites/`;
 // are body 768x32 (24 @ 32px) / eyes 448x16 (14 @ 32px) / mouth 448x16
 // (14 @ 32px). Frame width defaults below reflect this.
 //
-// offsetX and mouth's offsetY are GLOBAL constants: mouth's content sits at
-// a consistent local position within its own sheet regardless of tama, and
-// offsetY:32 (exactly half the 64px canvas) already looks right across
-// differently-shaped bodies — user-confirmed correct.
-//
-// eyes offsetY turned out to genuinely vary per tama, unlike mouth: cross-
-// checking real per-character eye-position data from a community
-// Tamagotchi Paradise recoloring tool against how much transparent
-// headroom each of our own body sprites has (r²≈0.6 linear fit) showed
-// unusually-shaped bodies (e.g. tall dragon/bird secrets with almost no
-// headroom) need noticeably different eye placement than round blob
-// bodies. So eyesOffsetYGuessBase/Mini is precomputed PER TAMA in
-// tamaAtlas.json and loaded automatically when you switch entities below
-// (see the "computed guess" hint next to the eyes offsetY field) — still
-// fully overridable, but shouldn't need much manual correction from here.
+// eyes/mouth offsetX/offsetY are NOT estimated or globally constant — they
+// come straight from Scalynko/TamaParaGenerator's data.json (a community
+// Tamagotchi Paradise tool, see git log for the URL), which lists a real
+// EyePos/MouthPos per named character. Its body/eyes/mouth images turned
+// out to be the exact same native 64x64/64x32/64x32 firmware dimensions as
+// our own sprite sheets, so those coordinates transfer with zero scaling —
+// this is ground truth, not a guess. Each of our 68 tamas got matched to
+// real species name(s) via reference/species_guess.json (color-matched
+// earlier), and eyesOffsetX/Y + mouthOffsetX/Y (Base/Mini, Mini halved for
+// scale) are baked into tamaAtlas.json per tama, loaded automatically on
+// entity/variant switch (see the "bible: x_ y_" hint next to each field
+// below) — still fully overridable, but shouldn't need correction beyond
+// occasional per-tama fine-tuning where the species match itself was
+// ambiguous (see the "bible match" name(s) shown next to the entity
+// selector — a single confident name vs. several candidates averaged).
 const VARIANT_INFO = {
   base: {
     canvasHeight: 64,
@@ -177,19 +177,34 @@ export default function TamaAssembler() {
       ? { body: entity.bodyBase, eyes: entity.eyesBase, mouth: entity.mouthBase }
       : { body: entity.bodyMini, eyes: entity.eyesMini, mouth: entity.mouthMini };
 
-  // Per-tama computed guess for eyes offsetY, baked into tamaAtlas.json —
-  // derived from measuring this tama's own body art (how much transparent
-  // headroom it has) against real eye-position data from a community
-  // Tamagotchi Paradise recoloring tool (see git log for the derivation).
-  // Unlike frame width/offsetX/mouth offsetY, this genuinely varies per tama
-  // (differently-shaped bodies need different eye placement), so it's
-  // loaded fresh whenever you switch entity/variant, rather than being one
-  // fixed constant. Still fully overridable with the controls below.
-  const eyesGuess = variant === 'base' ? entity.eyesOffsetYGuessBase : entity.eyesOffsetYGuessMini;
+  // Per-tama TRUE offsets, baked into tamaAtlas.json from a real data.json
+  // in a community Tamagotchi Paradise tool (Scalynko/TamaParaGenerator —
+  // see git log for the derivation) whose body/eyes/mouth images are the
+  // same native 64x64/64x32/64x32 firmware dimensions as our own sprite
+  // sheets, so its EyePos/MouthPos coordinates transfer with zero scaling
+  // — not an estimate or a proportional guess, the actual ground truth for
+  // whichever real species name(s) matched this tama (see offsetSource /
+  // offsetSourceNames). Loaded fresh on every entity/variant switch, still
+  // fully overridable with the controls below.
+  const suffix = variant === 'base' ? 'Base' : 'Mini';
+  const bible =
+    entity[`eyesOffsetX${suffix}`] != null
+      ? {
+          eyes: { x: entity[`eyesOffsetX${suffix}`], y: entity[`eyesOffsetY${suffix}`] },
+          mouth: { x: entity[`mouthOffsetX${suffix}`], y: entity[`mouthOffsetY${suffix}`] },
+        }
+      : null; // egg has no bible entry
 
   useEffect(() => {
-    if (eyesGuess == null) return; // egg has no eyes guess
-    setGeom((prev) => ({ ...prev, [variant]: { ...prev[variant], eyes: { ...prev[variant].eyes, offsetY: eyesGuess } } }));
+    if (!bible) return;
+    setGeom((prev) => ({
+      ...prev,
+      [variant]: {
+        ...prev[variant],
+        eyes: { ...prev[variant].eyes, offsetX: bible.eyes.x, offsetY: bible.eyes.y },
+        mouth: { ...prev[variant].mouth, offsetX: bible.mouth.x, offsetY: bible.mouth.y },
+      },
+    }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entityIndex, variant]);
 
@@ -324,6 +339,12 @@ export default function TamaAssembler() {
           </select>
         </label>
 
+        {entity.offsetSourceNames?.length > 0 && (
+          <span style={{ fontSize: 12, opacity: 0.6 }}>
+            bible match: {entity.offsetSourceNames.join(', ')}
+          </span>
+        )}
+
         <label>
           Variant:{' '}
           <select
@@ -414,13 +435,16 @@ export default function TamaAssembler() {
                     <label>
                       offsetY: <input type="number" value={g.offsetY} onChange={(e) => updateLayerGeom(layer, { offsetY: Number(e.target.value) || 0 })} style={{ width: 48 }} />
                     </label>
-                    {layer === 'eyes' && eyesGuess != null && (
+                    {bible && (layer === 'eyes' || layer === 'mouth') && (
                       <span style={{ fontSize: 11, opacity: 0.6 }}>
-                        (computed guess: {eyesGuess}
-                        {g.offsetY !== eyesGuess && (
+                        (bible: x{bible[layer].x} y{bible[layer].y}
+                        {(g.offsetX !== bible[layer].x || g.offsetY !== bible[layer].y) && (
                           <>
                             {' — '}
-                            <button style={{ fontSize: 11 }} onClick={() => updateLayerGeom('eyes', { offsetY: eyesGuess })}>
+                            <button
+                              style={{ fontSize: 11 }}
+                              onClick={() => updateLayerGeom(layer, { offsetX: bible[layer].x, offsetY: bible[layer].y })}
+                            >
                               reset
                             </button>
                           </>
