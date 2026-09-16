@@ -275,6 +275,7 @@ export default function TamaAssembler() {
     setCycleIndex(0);
     setVariant('mini');
     setMirrored(previewState.mirror);
+    setPlaying(true); // loop automatically on selection, no play click needed
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [previewStateName]);
 
@@ -461,10 +462,7 @@ export default function TamaAssembler() {
           State:{' '}
           <select
             value={previewStateName}
-            onChange={(e) => {
-              setPlaying(false);
-              setPreviewStateName(e.target.value);
-            }}
+            onChange={(e) => setPreviewStateName(e.target.value)}
           >
             {Object.keys(animationStates)
               .filter((k) => k !== '_comment')
