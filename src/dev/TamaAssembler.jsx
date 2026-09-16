@@ -70,12 +70,15 @@ function makeDefaultGeom() {
 }
 
 // Resolves a named entry from animationStates.json into a playable shape:
-// { body: [...], eyes: [...], mouth: [...], mirror }. Handles mirrorOf
-// (e.g. walk_right) by pulling the referenced state's frames instead of
-// duplicating them, matching how the data file stores it. eyes/mouth of
-// null (face not yet defined for that body pose) fall back to [0] so
-// there's something to render — not a real answer, just keeps the preview
-// from crashing; same caveat as the SEED_STATES preview rows.
+// { body: [...], eyes: [...], mouth: [...], faceOffsetY: [...], mirror }.
+// Handles mirrorOf (e.g. walk_right) by pulling the referenced state's
+// frames instead of duplicating them, matching how the data file stores
+// it. eyes/mouth of null (face not yet defined for that body pose) fall
+// back to [0] so there's something to render — not a real answer, just
+// keeps the preview from crashing; same caveat as the SEED_STATES preview
+// rows. faceOffsetY is a per-cycle-frame pixel delta on top of the tama's
+// normal eyes/mouth offsetY (not a different sprite frame), e.g. walk's
+// subtle up-shift on the second step frame; defaults to no shift.
 function resolveAnimState(name) {
   const raw = animationStates[name];
   if (!raw) return null;
@@ -85,6 +88,7 @@ function resolveAnimState(name) {
     body: target.body,
     eyes: target.eyes ?? [0],
     mouth: target.mouth ?? [0],
+    faceOffsetY: target.faceOffsetY ?? [0],
     mirror: Boolean(raw.mirrorOf),
   };
 }
@@ -286,6 +290,21 @@ export default function TamaAssembler() {
       eyes: previewState.eyes[cycleIndex % previewState.eyes.length],
       mouth: previewState.mouth[cycleIndex % previewState.mouth.length],
     });
+    // faceOffsetY is a pixel nudge on top of the tama's normal bible
+    // offsetY, not a different sprite frame — e.g. walk's 1px up-shift on
+    // the second step. Applied live over geom rather than baked into the
+    // saved offset, so it doesn't stick around after leaving this state.
+    if (bible) {
+      const delta = previewState.faceOffsetY[cycleIndex % previewState.faceOffsetY.length];
+      setGeom((prev) => ({
+        ...prev,
+        [variant]: {
+          ...prev[variant],
+          eyes: { ...prev[variant].eyes, offsetY: bible.eyes.y + delta },
+          mouth: { ...prev[variant].mouth, offsetY: bible.mouth.y + delta },
+        },
+      }));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [previewStateName, cycleIndex]);
 

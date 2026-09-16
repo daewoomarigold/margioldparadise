@@ -1,8 +1,8 @@
 {
-  "_comment": "Canonical animation state definitions, mini variant. body is a list of frame indices to cycle through (single-element = static pose). eyes/mouth are null where face positioning hasn't been figured out yet for that body orientation — sit_forward/sit_left/sit_back are new body poses whose face placement is a later task, not yet safe to assume matches the default forward-facing idle position. walk_right is derived from walk_left by horizontal mirroring (CSS scaleX(-1) or equivalent), not a separate sprite — see TamaAssembler's Mirror toggle to preview it.",
+  "_comment": "Canonical animation state definitions, mini variant. body is a list of frame indices to cycle through (single-element = static pose). eyes/mouth are null where face positioning hasn't been figured out yet for that body orientation — sit_forward/sit_left/sit_back are new body poses whose face placement is a later task, not yet safe to assume matches the default forward-facing idle position. walk_right is derived from walk_left by horizontal mirroring (CSS scaleX(-1) or equivalent), not a separate sprite — see TamaAssembler's Mirror toggle to preview it. faceOffsetY (optional) is a per-cycle-frame pixel delta added to the tama's normal eyes/mouth offsetY (not a different sprite frame) — negative = shift up, cycles by index like body/eyes/mouth.",
   "idle": { "body": [0], "eyes": [0], "mouth": [0] },
   "blink": { "body": [0], "eyes": [5], "mouth": [0] },
-  "walk_left": { "body": [12, 13], "eyes": [0], "mouth": [0] },
+  "walk_left": { "body": [12, 13], "eyes": [0], "mouth": [0], "faceOffsetY": [0, -1] },
   "walk_right": { "mirrorOf": "walk_left" },
   "sit_forward": { "body": [6], "eyes": null, "mouth": null },
   "sit_left": { "body": [7], "eyes": null, "mouth": null },
