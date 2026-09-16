@@ -13,6 +13,7 @@ import { spriteUrl, resolveAnimState } from '../game/spriteData.js';
 import { TamaComposite } from '../game/spriteCompositor.jsx';
 import { createRoamer, stepRoamer, stepAnim } from '../game/movement.js';
 import { getYBoundsForImage683 } from './terrain.js';
+import StudentGrid from './StudentGrid.jsx';
 
 const STORAGE_KEY = 'marigold-teacher-data-v1'; // must match TeacherDashboard.jsx
 
@@ -108,8 +109,11 @@ export default function IslandView() {
         gap: 12,
         background: '#0e0e1a',
         fontFamily: 'ui-monospace, monospace',
+        padding: 16,
+        boxSizing: 'border-box',
       }}
     >
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center' }}>
       <div
         style={{
           position: 'relative',
@@ -194,6 +198,9 @@ export default function IslandView() {
             </div>
           );
         })}
+      </div>
+
+      <StudentGrid students={students} />
       </div>
 
       <div style={{ color: '#7070a0', fontSize: 11 }}>{activeClass ? activeClass.name : 'Marigold Island'}</div>

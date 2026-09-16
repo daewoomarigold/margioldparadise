@@ -57,6 +57,21 @@ export function findTamaName(tamaId) {
   return null;
 }
 
+// Total possible tamadex entries: every adult across all teen lines (48)
+// plus the 3 biome secrets — matches GAME_DESIGN.md's "only completed
+// adults count as tamadex entries" (secrets are adult-tier awards, not a
+// separate category). Doesn't include bbmarutchi, which isn't part of the
+// normal roll chain. Computed from growthChart.json rather than
+// hardcoded so it can't drift if the chart data ever changes.
+export function totalCollectible() {
+  let total = 0;
+  for (const toddler of chart.toddlers) {
+    for (const teen of toddler.teens) total += teen.adults.length;
+    total += 1; // secret
+  }
+  return total;
+}
+
 // Creates a fresh student progression record. tamadex/closedTeens/
 // closedBiomes/secrets persist across growth cycles (a completed adult
 // starts a new baby, but collection history is permanent) — only
