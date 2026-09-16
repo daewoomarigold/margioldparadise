@@ -9,6 +9,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import atlas from '../data/tamaAtlas.json';
+import animationStates from '../data/animationStates.json';
 
 const SPRITE_BASE = `${import.meta.env.BASE_URL}sprites/`;
 
@@ -66,6 +67,26 @@ function makeDefaultGeom() {
     }
   }
   return geom;
+}
+
+// Resolves a named entry from animationStates.json into a playable shape:
+// { body: [...], eyes: [...], mouth: [...], mirror }. Handles mirrorOf
+// (e.g. walk_right) by pulling the referenced state's frames instead of
+// duplicating them, matching how the data file stores it. eyes/mouth of
+// null (face not yet defined for that body pose) fall back to [0] so
+// there's something to render — not a real answer, just keeps the preview
+// from crashing; same caveat as the SEED_STATES preview rows.
+function resolveAnimState(name) {
+  const raw = animationStates[name];
+  if (!raw) return null;
+  const target = raw.mirrorOf ? animationStates[raw.mirrorOf] : raw;
+  if (!target) return null;
+  return {
+    body: target.body,
+    eyes: target.eyes ?? [0],
+    mouth: target.mouth ?? [0],
+    mirror: Boolean(raw.mirrorOf),
+  };
 }
 
 // Renders one horizontal slice of a sprite sheet, scaled up and pixelated.
@@ -199,6 +220,10 @@ export default function TamaAssembler() {
   const [states, setStates] = useState(SEED_STATES);
   const [stateName, setStateName] = useState('');
   const [activeLayer, setActiveLayer] = useState('body');
+  const [previewStateName, setPreviewStateName] = useState('idle');
+  const [playing, setPlaying] = useState(false);
+  const [fps, setFps] = useState(4);
+  const [cycleIndex, setCycleIndex] = useState(0);
 
   const entity = entities[entityIndex];
   const info = VARIANT_INFO[variant];
@@ -238,6 +263,38 @@ export default function TamaAssembler() {
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entityIndex, variant]);
+
+  // Animation preview: plays through a named state from animationStates.json
+  // (not the tool's own scratch SEED_STATES table below). All canonical
+  // states are mini-only, so selecting one forces variant to mini and syncs
+  // the Mirror checkbox for mirrorOf states like walk_right.
+  const previewState = resolveAnimState(previewStateName);
+
+  useEffect(() => {
+    if (!previewState) return;
+    setCycleIndex(0);
+    setVariant('mini');
+    setMirrored(previewState.mirror);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [previewStateName]);
+
+  useEffect(() => {
+    if (!previewState) return;
+    setFrames({
+      body: previewState.body[cycleIndex % previewState.body.length],
+      eyes: previewState.eyes[cycleIndex % previewState.eyes.length],
+      mouth: previewState.mouth[cycleIndex % previewState.mouth.length],
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [previewStateName, cycleIndex]);
+
+  useEffect(() => {
+    if (!playing || !previewState) return;
+    const frameCount = Math.max(previewState.body.length, previewState.eyes.length, previewState.mouth.length);
+    if (frameCount <= 1) return; // nothing to animate, e.g. idle
+    const id = setInterval(() => setCycleIndex((i) => (i + 1) % frameCount), 1000 / fps);
+    return () => clearInterval(id);
+  }, [playing, previewStateName, fps]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function updateLayerGeom(layer, patch) {
     setGeom((prev) => ({ ...prev, [variant]: { ...prev[variant], [layer]: { ...prev[variant][layer], ...patch } } }));
@@ -385,6 +442,49 @@ export default function TamaAssembler() {
         </label>
 
         <button onClick={exportStates}>Export states JSON</button>
+      </div>
+
+      <div
+        style={{
+          display: 'flex',
+          gap: 12,
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          marginBottom: 16,
+          padding: 8,
+          border: '1px solid #444',
+          borderRadius: 4,
+        }}
+      >
+        <strong style={{ fontSize: 12 }}>Animation preview</strong>
+        <label>
+          State:{' '}
+          <select
+            value={previewStateName}
+            onChange={(e) => {
+              setPlaying(false);
+              setPreviewStateName(e.target.value);
+            }}
+          >
+            {Object.keys(animationStates)
+              .filter((k) => k !== '_comment')
+              .map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+          </select>
+        </label>
+        <button onClick={() => setPlaying((p) => !p)} disabled={!previewState || previewState.body.length <= 1}>
+          {playing ? '⏸ pause' : '▶ play'}
+        </button>
+        <label>
+          fps: <input type="number" min={1} max={30} value={fps} onChange={(e) => setFps(Number(e.target.value) || 1)} style={{ width: 40 }} />
+        </label>
+        <span style={{ fontSize: 12, opacity: 0.6 }}>
+          frame {cycleIndex + 1} / {previewState ? Math.max(previewState.body.length, previewState.eyes.length, previewState.mouth.length) : 1}
+          {previewState?.mirror && ' (mirrored)'}
+        </span>
       </div>
 
       <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', marginBottom: 24 }}>
