@@ -10,121 +10,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import atlas from '../data/tamaAtlas.json';
 import animationStates from '../data/animationStates.json';
+import { VARIANT_INFO, makeDefaultGeom, resolveAnimState, spriteUrl } from '../game/spriteData.js';
+import { Cropped } from '../game/spriteCompositor.jsx';
 
-const SPRITE_BASE = `${import.meta.env.BASE_URL}sprites/`;
-
-// Confirmed from real file dimensions AND reference/catalog.json's per-file
-// subimages (frame count) field — not guessed, and cross-checked against
-// all 68 tamas, not just one: base sheets are body 1280x64 (20 frames @
-// 64px) / eyes 1280x32 (20 @ 64px) / mouth 1152x32 (18 @ 64px); mini sheets
-// are body 768x32 (24 @ 32px) / eyes 448x16 (14 @ 32px) / mouth 448x16
-// (14 @ 32px). Frame width defaults below reflect this.
-//
-// eyes/mouth offsetX/offsetY are NOT estimated or globally constant — they
-// come straight from Scalynko/TamaParaGenerator's data.json (a community
-// Tamagotchi Paradise tool, see git log for the URL), which lists a real
-// EyePos/MouthPos per named character. Its body/eyes/mouth images turned
-// out to be the exact same native 64x64/64x32/64x32 firmware dimensions as
-// our own sprite sheets, so those coordinates transfer with zero scaling —
-// this is ground truth, not a guess. Each of our 68 tamas got matched to
-// real species name(s) via reference/species_guess.json (color-matched
-// earlier), and eyesOffsetX/Y + mouthOffsetX/Y (Base/Mini, Mini halved for
-// scale) are baked into tamaAtlas.json per tama, loaded automatically on
-// entity/variant switch (see the "bible: x_ y_" hint next to each field
-// below) — still fully overridable, but shouldn't need correction beyond
-// occasional per-tama fine-tuning where the species match itself was
-// ambiguous (see the "bible match" name(s) shown next to the entity
-// selector — a single confident name vs. several candidates averaged).
-const VARIANT_INFO = {
-  base: {
-    canvasHeight: 64,
-    layers: {
-      body: { sheetWidth: 1280, sheetHeight: 64, defaultFrameWidth: 64, defaultOffsetX: 0, defaultOffsetY: 0 },
-      eyes: { sheetWidth: 1280, sheetHeight: 32, defaultFrameWidth: 64, defaultOffsetX: 0, defaultOffsetY: 20 },
-      mouth: { sheetWidth: 1152, sheetHeight: 32, defaultFrameWidth: 64, defaultOffsetX: 0, defaultOffsetY: 32 },
-    },
-  },
-  mini: {
-    canvasHeight: 32,
-    layers: {
-      body: { sheetWidth: 768, sheetHeight: 32, defaultFrameWidth: 32, defaultOffsetX: 0, defaultOffsetY: 0 },
-      eyes: { sheetWidth: 448, sheetHeight: 16, defaultFrameWidth: 32, defaultOffsetX: 0, defaultOffsetY: 10 },
-      mouth: { sheetWidth: 448, sheetHeight: 16, defaultFrameWidth: 32, defaultOffsetX: 0, defaultOffsetY: 16 },
-    },
-  },
-};
-
-function spriteUrl(file) {
-  return `${SPRITE_BASE}${file}`;
-}
-
-function makeDefaultGeom() {
-  const geom = {};
-  for (const [variant, info] of Object.entries(VARIANT_INFO)) {
-    geom[variant] = {};
-    for (const [layer, l] of Object.entries(info.layers)) {
-      geom[variant][layer] = { frameWidth: l.defaultFrameWidth, offsetX: l.defaultOffsetX, offsetY: l.defaultOffsetY };
-    }
-  }
-  return geom;
-}
-
-// Resolves a named entry from animationStates.json into a playable shape:
-// { body: [...], eyes: [...], mouth: [...], faceOffsetX/Y: [...], mirror }.
-// Handles mirrorOf (e.g. walk_right) by pulling the referenced state's
-// frames instead of duplicating them, matching how the data file stores
-// it. eyes/mouth of null (face not yet defined for that body pose) fall
-// back to [0] so there's something to render — not a real answer, just
-// keeps the preview from crashing; same caveat as the SEED_STATES preview
-// rows. faceOffsetX/Y are a per-cycle-frame pixel delta on top of the
-// tama's normal eyes/mouth offset (not a different sprite frame) — e.g.
-// walk's constant sideways shift to stay centered on the leaning body,
-// plus a subtle up-shift on the second step frame; default to no shift.
-function resolveAnimState(name) {
-  const raw = animationStates[name];
-  if (!raw) return null;
-  const target = raw.mirrorOf ? animationStates[raw.mirrorOf] : raw;
-  if (!target) return null;
-  return {
-    body: target.body,
-    eyes: target.eyes ?? [0],
-    mouth: target.mouth ?? [0],
-    faceOffsetX: target.faceOffsetX ?? [0],
-    faceOffsetY: target.faceOffsetY ?? [0],
-    mirror: Boolean(raw.mirrorOf),
-  };
-}
-
-// Renders one horizontal slice of a sprite sheet, scaled up and pixelated.
-// offsetX/offsetY nudge a smaller eyes/mouth strip to sit at the right spot
-// within the taller/wider body canvas.
-function Cropped({ file, frameWidth, sheetHeight, frameIndex, offsetX = 0, offsetY = 0, scale }) {
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: frameWidth * scale,
-        height: sheetHeight * scale,
-        overflow: 'hidden',
-        transform: `translate(${offsetX * scale}px, ${offsetY * scale}px)`,
-      }}
-    >
-      <img
-        src={spriteUrl(file)}
-        style={{
-          position: 'absolute',
-          left: -frameIndex * frameWidth * scale,
-          top: 0,
-          imageRendering: 'pixelated',
-          transform: `scale(${scale})`,
-          transformOrigin: 'top left',
-        }}
-      />
-    </div>
-  );
-}
+// Frame-width/geometry facts and the eyes/mouth bible-offset story are
+// documented in src/game/spriteCompositor.jsx now — this file just wires
+// them into the interactive tuning UI. See that file's header comment for
+// the full derivation (catalog.json subimages counts, Scalynko/
+// TamaParaGenerator's data.json, etc.).
 
 // Full, unsliced sheet with vertical gridlines every frameWidth px, so you
 // can visually confirm the frame width lines up with the art.
