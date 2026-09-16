@@ -151,6 +151,16 @@ function SheetWithGrid({ file, frameWidth, frameIndex, label, sheetWidth, sheetH
 const SEED_STATES = [
   { name: 'idle', variant: 'base', body: 0, eyes: 0, mouth: 0 },
   { name: 'blink', variant: 'base', body: 0, eyes: 9, mouth: 0 },
+  // Walk lives on mini, not base — base's 20 body frames read as reaction
+  // poses (bounce/blush/closed-eye), no leg motion. Confirmed on mametchi
+  // (tama #21)'s mini body sheet (image-366.png): frames 13/14 show a clear
+  // asymmetric mid-step leg pose against the static symmetric-legs pose in
+  // the frames around them (10-12, 16). Eyes/mouth held at neutral (0) for
+  // both — walking shouldn't need a face change, and mini eyes/mouth only
+  // have 14 frames (0-13) so index 14 isn't even valid there. Not yet
+  // confirmed this frame numbering holds on other tamas' mini sheets.
+  { name: 'walk1', variant: 'mini', body: 13, eyes: 0, mouth: 0 },
+  { name: 'walk2', variant: 'mini', body: 14, eyes: 0, mouth: 0 },
 ];
 
 export default function TamaAssembler() {
