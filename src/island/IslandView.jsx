@@ -12,13 +12,14 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { spriteUrl, resolveAnimState } from '../game/spriteData.js';
 import { TamaComposite } from '../game/spriteCompositor.jsx';
 import { createRoamer, stepRoamer, stepAnim } from '../game/movement.js';
+import { getYBoundsForImage683 } from './terrain.js';
 
 const STORAGE_KEY = 'marigold-teacher-data-v1'; // must match TeacherDashboard.jsx
 
 const BACKGROUND_FILE = 'image-683.png';
 const CANVAS_W = 512;
 const CANVAS_H = 512;
-const SCALE = 3; // mini sprites are 32x32 native; this is their on-screen size multiplier
+const SCALE = 1; // mini sprites are 32x32 native; this is their on-screen size multiplier
 const SPRITE_PX = 32 * SCALE;
 
 function loadActiveClass() {
@@ -69,7 +70,7 @@ export default function IslandView() {
       if (!roamers.has(s.id)) {
         roamers.set(
           s.id,
-          createRoamer({ id: s.id, canvasWidth: CANVAS_W, canvasHeight: CANVAS_H, spriteWidth: SPRITE_PX, spriteHeight: SPRITE_PX }),
+          createRoamer({ id: s.id, canvasWidth: CANVAS_W, spriteWidth: SPRITE_PX, spriteHeight: SPRITE_PX, getYBounds: getYBoundsForImage683 }),
         );
       }
     }

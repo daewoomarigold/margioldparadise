@@ -11,11 +11,6 @@
 // snapping), periodic re-aiming with a chance to stop and stand still, and
 // boundary bouncing at the edges of both the ground band and the screen.
 
-// Fraction of canvas height where the "ground" starts — matches the old
-// code's 0.65 (tamas only wander in the bottom ~35% of the screen, leaving
-// sky/background scenery above untouched).
-const GROUND_FRACTION = 0.65;
-
 function randomAngle() {
   // Mostly facing left or right (0 or PI) with a bit of random spread,
   // not fully omnidirectional — matches the old code and suits a sprite
@@ -27,14 +22,21 @@ function randomSpeed() {
   return 0.9 + Math.random() * 0.675;
 }
 
-export function createRoamer({ id, canvasWidth, canvasHeight, spriteWidth, spriteHeight }) {
-  const minY = Math.floor(canvasHeight * GROUND_FRACTION);
-  const maxY = Math.max(minY, canvasHeight - spriteHeight - 4);
+// getYBounds(x, spriteWidth, spriteHeight) => {minY, maxY}: the allowed
+// vertical range for this roamer's TOP-LEFT corner at horizontal position
+// x. Called fresh each step (not just once at creation) so the walkable
+// range can narrow/shift as a roamer moves — e.g. terrain.js's forest
+// carve-out — rather than being one fixed rectangle for the roamer's
+// whole lifetime. See src/island/terrain.js for the background-specific
+// implementation actually used.
+export function createRoamer({ id, canvasWidth, spriteWidth, spriteHeight, getYBounds }) {
   const angle = randomAngle();
   const speed = randomSpeed();
+  const x = 10 + Math.random() * Math.max(0, canvasWidth - spriteWidth - 20);
+  const { minY, maxY } = getYBounds(x, spriteWidth, spriteHeight);
   return {
     id,
-    x: 10 + Math.random() * Math.max(0, canvasWidth - spriteWidth - 20),
+    x,
     y: minY + Math.random() * Math.max(0, maxY - minY),
     vx: Math.cos(angle) * speed,
     vy: 0,
@@ -44,10 +46,9 @@ export function createRoamer({ id, canvasWidth, canvasHeight, spriteWidth, sprit
     state: 'walk', // 'walk' | 'stand'
     stateTimer: 30 + Math.floor(Math.random() * 60),
     steerTimer: 30 + Math.floor(Math.random() * 60),
-    minY,
-    maxY,
     spriteWidth,
     spriteHeight,
+    getYBounds,
     animFrame: 0, // which walk_left frame (0/1) is currently showing
     animTimer: 0,
   };
@@ -91,6 +92,11 @@ export function stepRoamer(r, dt, canvasWidth) {
   r.x += r.vx * dt * 60;
   r.y += r.vy * dt * 60;
 
+  // Re-derive bounds at the (possibly just-moved) x — the walkable Y range
+  // can differ by column (see terrain.js), so this isn't one fixed
+  // rectangle for the roamer's whole lifetime.
+  const { minY, maxY } = r.getYBounds(r.x, r.spriteWidth, r.spriteHeight);
+
   if (r.x <= 0) {
     r.x = 0;
     r.vx = Math.abs(r.vx);
@@ -101,13 +107,13 @@ export function stepRoamer(r, dt, canvasWidth) {
     r.vx = -Math.abs(r.vx);
     r.angle = Math.atan2(r.vy, -Math.abs(r.vx));
   }
-  if (r.y <= r.minY) {
-    r.y = r.minY;
+  if (r.y <= minY) {
+    r.y = minY;
     r.vy = Math.abs(r.vy);
     r.angle = Math.atan2(Math.abs(r.vy), r.vx);
   }
-  if (r.y >= r.maxY) {
-    r.y = r.maxY;
+  if (r.y >= maxY) {
+    r.y = maxY;
     r.vy = -Math.abs(r.vy);
     r.angle = Math.atan2(-Math.abs(r.vy), r.vx);
   }
