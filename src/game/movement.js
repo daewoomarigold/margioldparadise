@@ -19,7 +19,11 @@ function randomAngle() {
 }
 
 function randomSpeed() {
-  return 0.9 + Math.random() * 0.675;
+  // Was 0.9-1.575 (ported straight from the old gotchigarden.html, tuned
+  // for its larger on-screen sprites) — read as "racing" now that sprites
+  // render at native 32x32 instead of 3x upscaled. Slowed to a more
+  // casual pace; adjust further if it still feels too fast/slow.
+  return 0.35 + Math.random() * 0.3;
 }
 
 // getYBounds(x, spriteWidth, spriteHeight) => {minY, maxY}: the allowed
