@@ -159,8 +159,11 @@ const SEED_STATES = [
   // both — walking shouldn't need a face change, and mini eyes/mouth only
   // have 14 frames (0-13) so index 14 isn't even valid there. Not yet
   // confirmed this frame numbering holds on other tamas' mini sheets.
-  { name: 'walk1', variant: 'mini', body: 13, eyes: 0, mouth: 0 },
-  { name: 'walk2', variant: 'mini', body: 14, eyes: 0, mouth: 0 },
+  { name: 'walk_left_1', variant: 'mini', body: 13, eyes: 0, mouth: 0 },
+  { name: 'walk_left_2', variant: 'mini', body: 14, eyes: 0, mouth: 0 },
+  // walk_right isn't a separate row — it's walk_left mirrored (Mirror
+  // checkbox above), not a distinct sprite. See src/data/animationStates.json.
+  //
   // Mini idle/blink — the production build uses mini, not base, so these
   // need their own mini-specific frames rather than reusing base's. Frame
   // 0 reads as the plain neutral pose here too (consistent with base).
@@ -169,6 +172,16 @@ const SEED_STATES = [
   // eyes, frames 5 and 13 are both a clean flat closed-eye dash. Used 5.
   { name: 'idle', variant: 'mini', body: 0, eyes: 0, mouth: 0 },
   { name: 'blink', variant: 'mini', body: 0, eyes: 5, mouth: 0 },
+  // New body-only poses from src/data/animationStates.json — eyes/mouth are
+  // genuinely undefined there (different body orientation, face placement
+  // not yet worked out) but this tool needs *some* frame to render a
+  // preview, so these rows borrow idle's face (0, 0) purely so you can see
+  // the body pose. That is NOT a real answer for where the face goes on a
+  // sideways/backward-facing body — don't treat these eyes/mouth values as
+  // meaningful, only the body frame is confirmed.
+  { name: 'sit_forward', variant: 'mini', body: 7, eyes: 0, mouth: 0 },
+  { name: 'sit_left', variant: 'mini', body: 8, eyes: 0, mouth: 0 },
+  { name: 'sit_back', variant: 'mini', body: 19, eyes: 0, mouth: 0 },
 ];
 
 export default function TamaAssembler() {
