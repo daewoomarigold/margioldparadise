@@ -6,7 +6,7 @@
     "body": [12, 13],
     "eyes": [0],
     "mouth": [0],
-    "faceOffsetX": [-3],
+    "faceOffsetX": [-2],
     "faceOffsetY": [0, -1]
   },
   "walk_right": { "mirrorOf": "walk_left" },
