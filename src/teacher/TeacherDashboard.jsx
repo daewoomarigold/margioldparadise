@@ -19,11 +19,14 @@ const STORAGE_KEY = 'marigold-teacher-data-v1';
 function loadStore() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { classes: [] };
+    if (!raw) return { classes: [], currentClassId: null };
     const parsed = JSON.parse(raw);
-    return { classes: Array.isArray(parsed.classes) ? parsed.classes : [] };
+    return {
+      classes: Array.isArray(parsed.classes) ? parsed.classes : [],
+      currentClassId: parsed.currentClassId ?? null,
+    };
   } catch {
-    return { classes: [] }; // corrupted/blocked storage — start fresh rather than crash
+    return { classes: [], currentClassId: null }; // corrupted/blocked storage — start fresh rather than crash
   }
 }
 
@@ -34,8 +37,9 @@ function uid() {
 }
 
 export default function TeacherDashboard() {
-  const [classes, setClasses] = useState(() => loadStore().classes);
-  const [currentClassId, setCurrentClassId] = useState(null);
+  const initialStore = useState(loadStore)[0];
+  const [classes, setClasses] = useState(initialStore.classes);
+  const [currentClassId, setCurrentClassId] = useState(initialStore.currentClassId);
   const [search, setSearch] = useState('');
   const [showNewClassForm, setShowNewClassForm] = useState(false);
   const [newClassName, setNewClassName] = useState('');
@@ -49,15 +53,18 @@ export default function TeacherDashboard() {
   const toastTimer = useRef(null);
 
   // Persist on every change. Local-only for now — see file header.
+  // currentClassId is saved too so the island view (a separate page reading
+  // the same storage key) knows which class is "live"/being projected,
+  // without needing its own selection UI.
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ classes }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ classes, currentClassId }));
     } catch {
       // storage full/blocked (private window etc.) — data still works for
       // this session, just won't survive a reload; not worth surfacing an
       // error for
     }
-  }, [classes]);
+  }, [classes, currentClassId]);
 
   function toast(msg) {
     setToastMsg(msg);

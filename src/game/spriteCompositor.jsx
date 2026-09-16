@@ -42,7 +42,11 @@ export function Cropped({ file, frameWidth, sheetHeight, frameIndex, offsetX = 0
 // frameWidth*scale x canvasHeight*scale; this renders absolutely within it.
 // mirrored flips the whole composite horizontally (CSS scaleX(-1)) for
 // e.g. walk_right, which is walk_left's data reused, not separate frames.
-export function TamaComposite({ tamaId, variant, frames, scale, mirrored = false }) {
+// faceOffset ({x, y}, optional) adds an extra per-frame pixel nudge to
+// eyes+mouth on top of the bible offset — e.g. an animation state's
+// faceOffsetX/Y (see resolveAnimState in spriteData.js) for the walk
+// cycle's lean-compensation and step up-shift. Not applied to body.
+export function TamaComposite({ tamaId, variant, frames, scale, mirrored = false, faceOffset }) {
   const entity = getTamaEntity(tamaId);
   if (!entity) return null;
   const info = VARIANT_INFO[variant];
@@ -52,7 +56,9 @@ export function TamaComposite({ tamaId, variant, frames, scale, mirrored = false
 
   function offsetFor(layer) {
     const fallback = { x: info.layers[layer].defaultOffsetX, y: info.layers[layer].defaultOffsetY };
-    return bible ? (bible[layer] ?? fallback) : fallback;
+    const base = bible ? (bible[layer] ?? fallback) : fallback;
+    if (!faceOffset) return base;
+    return { x: base.x + faceOffset.x, y: base.y + faceOffset.y };
   }
 
   return (
