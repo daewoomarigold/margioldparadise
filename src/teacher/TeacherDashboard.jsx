@@ -12,7 +12,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import './teacher.css';
-import { newStudentProgress, applyPointsToGrowth, meterFraction, POINTS_PER_GROWTH } from '../game/growth.js';
+import { newStudentProgress, applyPointsToGrowth, meterFraction, findTamaName, POINTS_PER_GROWTH } from '../game/growth.js';
 
 const STORAGE_KEY = 'marigold-teacher-data-v1';
 
@@ -114,6 +114,7 @@ export default function TeacherDashboard() {
       gotchiPts: startingPts,
       pets: [], // legacy field from teacher.html's old shop system — unused now, kept only so existing saved data doesn't break; growth/tamadex live in `growth` instead
       growth: applyPointsToGrowth(newStudentProgress(), startingPts),
+      displayTamaId: 'current', // 'current' = follow whatever's growing now; or a specific tamadex tamaId to show a completed adult instead
     };
     updateCurrentClassStudents((list) => [...list, student]);
     setShowAddStudent(false);
@@ -138,6 +139,15 @@ export default function TeacherDashboard() {
   function setStudentPts(studentId, newPts) {
     const clamped = Math.max(0, Number(newPts) || 0);
     updateCurrentClassStudents((list) => list.map((s) => (s.id === studentId ? withGrowth(s, clamped) : s)));
+  }
+
+  // displayTamaId is 'current' (follow whatever's growing) or a specific
+  // tamadex tamaId — GAME_DESIGN.md: a student can display either the tama
+  // they're currently growing or any adult they've already completed and
+  // logged. Set here on the teacher side for now since there's no
+  // student-facing app yet to let them pick it themselves.
+  function setDisplayTama(studentId, displayTamaId) {
+    updateCurrentClassStudents((list) => list.map((s) => (s.id === studentId ? { ...s, displayTamaId } : s)));
   }
 
   function nudgePts(student, delta) {
@@ -281,7 +291,7 @@ export default function TeacherDashboard() {
                           +
                         </button>
                       </div>
-                      <GrowthStatus student={s} />
+                      <GrowthStatus student={s} onSetDisplayTama={(tamaId) => setDisplayTama(s.id, tamaId)} />
                       <button className="teacher-student-remove" onClick={() => removeStudent(s)}>
                         ✕ Remove
                       </button>
@@ -368,10 +378,13 @@ export default function TeacherDashboard() {
 // Falls back to a fresh (0-progress) growth record for students saved
 // before growth tracking existed, so old localStorage data doesn't crash
 // the dashboard — doesn't persist the fallback, just renders safely.
-function GrowthStatus({ student }) {
+function GrowthStatus({ student, onSetDisplayTama }) {
   const growth = student.growth ?? newStudentProgress();
   const fraction = meterFraction(growth, student.gotchiPts);
   const { stage, name } = growth.currentTama;
+
+  const displayTamaId = student.displayTamaId ?? 'current';
+  const displayName = displayTamaId === 'current' ? name : (findTamaName(displayTamaId) ?? name);
 
   return (
     <div className="teacher-growth-status">
@@ -381,6 +394,21 @@ function GrowthStatus({ student }) {
       <div className="teacher-growth-meter" title={`${Math.round(fraction * POINTS_PER_GROWTH)}/${POINTS_PER_GROWTH} pts to next stage`}>
         <div className="teacher-growth-meter-fill" style={{ width: `${fraction * 100}%` }} />
       </div>
+      <div className="teacher-display-tama">Current Display Tama: {displayName}</div>
+      {growth.tamadex.length > 0 && (
+        <select
+          className="teacher-display-tama-select"
+          value={displayTamaId}
+          onChange={(e) => onSetDisplayTama(e.target.value === 'current' ? 'current' : Number(e.target.value))}
+        >
+          <option value="current">Currently growing ({stage} · {name})</option>
+          {growth.tamadex.map((tamaId) => (
+            <option key={tamaId} value={tamaId}>
+              {findTamaName(tamaId) ?? `#${tamaId}`}
+            </option>
+          ))}
+        </select>
+      )}
     </div>
   );
 }

@@ -1,9 +1,18 @@
 // Growth/rolling logic — pure functions, no DOM/React/storage here. See
 // GAME_DESIGN.md "The new pet mechanic" for the rules this implements:
-//   Baby --(random 1 of 3)--> Toddler --(random 1 of 4)--> Teen
-//        --(random 1 of 4, no dupes)--> Adult
+//   Egg -> Baby --(random 1 of 3)--> Toddler --(random 1 of 4)--> Teen
+//        --(random 1 of 4, no dupes)--> Adult -> (new cycle) Egg -> ...
 // plus the no-dupes/closing rules (teen lines close once fully collected,
 // biomes close + award a secret once all 4 of their teen lines are closed).
+//
+// Egg isn't in GAME_DESIGN.md's growth-chart notation (which starts at
+// Baby) but sprite data for it exists (tamaAtlas.json's separate `egg`
+// entry, not indexed like the other 68), and it's a natural pre-baby
+// stage each new cycle passes through, one meter-fill each way like every
+// other stage. bbmarutchi (growthChart.json's specialBaby) is explicitly
+// "can't be bred with others" per the design doc, so it's deliberately
+// NOT part of this roll chain — a regular cycle can never produce it;
+// how a student would ever get one isn't designed yet.
 //
 // Family tree data lives in src/data/growthChart.json (reconstructed from
 // real sprite indices + shape-matched species names, cross-checked against
@@ -28,19 +37,46 @@ function findTeen(toddlerId, teenId) {
   return findToddler(toddlerId)?.teens.find((t) => t.tamaId === teenId);
 }
 
+// Looks up a species name by tamaId anywhere in the chart (baby, toddlers,
+// teens, adults, secrets, bbmarutchi) — used to resolve a tamadex entry
+// (which only stores the id) back into a display name, e.g. for a "display
+// tama" picker. Returns null if not found (e.g. egg, which has no tamaId).
+export function findTamaName(tamaId) {
+  if (tamaId == null) return null;
+  if (chart.baby.tamaId === tamaId) return chart.baby.name;
+  if (chart.specialBaby.tamaId === tamaId) return chart.specialBaby.name;
+  for (const toddler of chart.toddlers) {
+    if (toddler.tamaId === tamaId) return toddler.name;
+    if (toddler.secret.tamaId === tamaId) return toddler.secret.name;
+    for (const teen of toddler.teens) {
+      if (teen.tamaId === tamaId) return teen.name;
+      const adult = teen.adults.find((a) => a.tamaId === tamaId);
+      if (adult) return adult.name;
+    }
+  }
+  return null;
+}
+
 // Creates a fresh student progression record. tamadex/closedTeens/
 // closedBiomes/secrets persist across growth cycles (a completed adult
 // starts a new baby, but collection history is permanent) — only
 // currentTama resets.
 export function newStudentProgress() {
   return {
-    currentTama: startBaby(),
+    currentTama: startEgg(),
     tamadex: [], // adult + secret tamaIds this student has completed
     closedTeens: [], // teen tamaIds fully collected (can't roll again)
     closedBiomes: [], // toddler tamaIds fully collected (can't roll again)
     unlockedSecrets: [], // secret tamaIds unlocked
     growthConsumedPts: 0, // how many gotchiPts have already been spent on growth steps
   };
+}
+
+function startEgg() {
+  // tamaId stays null — egg isn't indexed into tamaAtlas.json's 68 tamas
+  // like everything else; it's the separate `egg` entry, special-cased by
+  // whichever sprite-rendering code eventually consumes this.
+  return { stage: 'egg', tamaId: null, name: 'egg', toddlerId: null, teenId: null };
 }
 
 function startBaby() {
@@ -57,7 +93,12 @@ export function advanceGrowth(progress) {
   const { stage } = progress.currentTama;
 
   if (stage === 'adult') {
-    // Completed — this life is done and stays in tamadex; start a new baby.
+    // Completed — this life is done and stays in tamadex; a new cycle
+    // starts from an egg, not straight back to baby.
+    return { ...progress, currentTama: startEgg() };
+  }
+
+  if (stage === 'egg') {
     return { ...progress, currentTama: startBaby() };
   }
 
@@ -76,9 +117,9 @@ export function advanceGrowth(progress) {
     const available = toddler.teens.filter((t) => !progress.closedTeens.includes(t.tamaId));
     // available should never be empty here — a toddler only offers itself
     // for rolling (in the baby step above) while it still has open teens —
-    // but fall back to a fresh baby rather than crash if data is ever
+    // but fall back to a fresh cycle rather than crash if data is ever
     // inconsistent (e.g. manually edited save data).
-    if (available.length === 0) return { ...progress, currentTama: startBaby() };
+    if (available.length === 0) return { ...progress, currentTama: startEgg() };
     const teen = pick(available);
     return {
       ...progress,

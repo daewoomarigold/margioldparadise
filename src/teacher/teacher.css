@@ -347,6 +347,24 @@
   background: var(--cyan);
   transition: width 0.2s;
 }
+.teacher-display-tama {
+  font-size: 10px;
+  color: var(--text);
+}
+.teacher-display-tama-select {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 10px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  outline: none;
+  width: 100%;
+}
+.teacher-display-tama-select:focus {
+  border-color: var(--cyan);
+}
 .teacher-pet-badge {
   background: none;
   border: none;
