@@ -14,5 +14,5 @@
   "sit_left": { "body": [7], "eyes": null, "mouth": null },
   "sit_back": { "body": [18], "eyes": null, "mouth": null },
   "happy": { "body": [3], "eyes": [2], "mouth": [1] },
-  "jump_happy": { "body": [0, 3], "eyes": [8], "mouth": [6] }
+  "jump_happy": { "body": [0, 14], "eyes": [8], "mouth": [6], "faceOffsetY": [0, -2] }
 }
