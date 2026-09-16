@@ -1,0 +1,356 @@
+// Teacher dashboard — ported from the old teacher.html (gotchigarden repo),
+// core roster + points loop only for this first pass. Left out on purpose,
+// to be ported later: Google auth (no login gate here yet), CSV roster
+// import, prices panel, seating plan designer, photo/card export.
+//
+// Data layer is local state persisted to localStorage, NOT Supabase — see
+// CLAUDE.md: don't touch/reintroduce Supabase until explicitly asked. The
+// shape below (classes -> students -> {id, name, email, gotchiPts, pets})
+// mirrors the old Supabase schema on purpose so swapping in a real backend
+// later is a matter of replacing the load/save functions, not redesigning
+// the data model or components.
+
+import { useEffect, useRef, useState } from 'react';
+import './teacher.css';
+
+const STORAGE_KEY = 'marigold-teacher-data-v1';
+
+function loadStore() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { classes: [] };
+    const parsed = JSON.parse(raw);
+    return { classes: Array.isArray(parsed.classes) ? parsed.classes : [] };
+  } catch {
+    return { classes: [] }; // corrupted/blocked storage — start fresh rather than crash
+  }
+}
+
+function uid() {
+  return typeof crypto !== 'undefined' && crypto.randomUUID
+    ? crypto.randomUUID()
+    : `id-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+export default function TeacherDashboard() {
+  const [classes, setClasses] = useState(() => loadStore().classes);
+  const [currentClassId, setCurrentClassId] = useState(null);
+  const [search, setSearch] = useState('');
+  const [showNewClassForm, setShowNewClassForm] = useState(false);
+  const [newClassName, setNewClassName] = useState('');
+  const [showAddStudent, setShowAddStudent] = useState(false);
+  const [newStudentName, setNewStudentName] = useState('');
+  const [newStudentEmail, setNewStudentEmail] = useState('');
+  const [newStudentPts, setNewStudentPts] = useState(0);
+  const [showAwardBanner, setShowAwardBanner] = useState(false);
+  const [awardAmount, setAwardAmount] = useState(1);
+  const [toastMsg, setToastMsg] = useState('');
+  const toastTimer = useRef(null);
+
+  // Persist on every change. Local-only for now — see file header.
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ classes }));
+    } catch {
+      // storage full/blocked (private window etc.) — data still works for
+      // this session, just won't survive a reload; not worth surfacing an
+      // error for
+    }
+  }, [classes]);
+
+  function toast(msg) {
+    setToastMsg(msg);
+    clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToastMsg(''), 2200);
+  }
+
+  const currentClass = classes.find((c) => c.id === currentClassId) ?? null;
+  const students = currentClass?.students ?? [];
+  const filteredStudents = students.filter(
+    (s) => !search || s.name.toLowerCase().includes(search.toLowerCase()),
+  );
+
+  const studentCount = students.length;
+  const topPts = studentCount ? Math.max(...students.map((s) => s.gotchiPts)) : 0;
+  const avgPts = studentCount ? Math.round(students.reduce((sum, s) => sum + s.gotchiPts, 0) / studentCount) : 0;
+
+  function updateCurrentClassStudents(updater) {
+    setClasses((prev) => prev.map((c) => (c.id === currentClassId ? { ...c, students: updater(c.students) } : c)));
+  }
+
+  function createClass() {
+    const name = newClassName.trim();
+    if (!name) return;
+    const cls = { id: uid(), name, students: [] };
+    setClasses((prev) => [...prev, cls]);
+    setCurrentClassId(cls.id);
+    setNewClassName('');
+    setShowNewClassForm(false);
+    setSearch('');
+    toast(`Created ${name}`);
+  }
+
+  function selectClass(id) {
+    setCurrentClassId(id);
+    setSearch('');
+  }
+
+  function openAddStudent() {
+    setNewStudentName('');
+    setNewStudentEmail('');
+    setNewStudentPts(0);
+    setShowAddStudent(true);
+  }
+
+  function createStudent() {
+    const name = newStudentName.trim();
+    if (!name) return;
+    const student = {
+      id: uid(),
+      name,
+      email: newStudentEmail.trim(),
+      gotchiPts: Math.max(0, Number(newStudentPts) || 0),
+      pets: [], // pet/growth system isn't built yet — always empty for now
+    };
+    updateCurrentClassStudents((list) => [...list, student]);
+    setShowAddStudent(false);
+    toast(`Added ${name}`);
+  }
+
+  function removeStudent(student) {
+    if (!confirm(`Remove ${student.name}? This cannot be undone.`)) return;
+    updateCurrentClassStudents((list) => list.filter((s) => s.id !== student.id));
+    toast('Student removed');
+  }
+
+  function setStudentPts(studentId, newPts) {
+    const clamped = Math.max(0, Number(newPts) || 0);
+    updateCurrentClassStudents((list) => list.map((s) => (s.id === studentId ? { ...s, gotchiPts: clamped } : s)));
+  }
+
+  function nudgePts(student, delta) {
+    setStudentPts(student.id, student.gotchiPts + delta);
+  }
+
+  function awardAll(sign) {
+    const amt = Math.max(1, Number(awardAmount) || 1) * sign;
+    updateCurrentClassStudents((list) => list.map((s) => ({ ...s, gotchiPts: Math.max(0, s.gotchiPts + amt) })));
+    toast(sign > 0 ? `Awarded ${amt} pts to everyone` : `Deducted ${Math.abs(amt)} pts from everyone`);
+  }
+
+  return (
+    <div className="teacher-root">
+      <header className="teacher-header">
+        <div className="teacher-logo">★ MARIGOLD CORE</div>
+        <div className="teacher-hdr-sep" />
+        <div className="teacher-hdr-class-label">{currentClass ? currentClass.name : 'No class selected'}</div>
+      </header>
+
+      <div className="teacher-main-layout">
+        <div className="teacher-sidebar">
+          <div className="teacher-sidebar-section">
+            <div className="teacher-sidebar-head">Classes</div>
+            {classes.map((cls) => (
+              <button
+                key={cls.id}
+                className={`teacher-class-btn${cls.id === currentClassId ? ' active' : ''}`}
+                onClick={() => selectClass(cls.id)}
+              >
+                {cls.name}
+              </button>
+            ))}
+
+            {showNewClassForm ? (
+              <div className="teacher-new-class-form">
+                <input
+                  type="text"
+                  placeholder="Class name"
+                  value={newClassName}
+                  autoFocus
+                  onChange={(e) => setNewClassName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') createClass();
+                    if (e.key === 'Escape') setShowNewClassForm(false);
+                  }}
+                />
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <button className="teacher-btn green" style={{ flex: 1 }} onClick={createClass}>
+                    Create
+                  </button>
+                  <button className="teacher-btn" onClick={() => setShowNewClassForm(false)}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button className="teacher-btn-new-class" onClick={() => setShowNewClassForm(true)}>
+                + New Class
+              </button>
+            )}
+          </div>
+
+          {currentClass && (
+            <div className="teacher-sidebar-stats">
+              <div className="teacher-sidebar-head">Class Stats</div>
+              <div className="teacher-stat-row">
+                <span className="teacher-stat-label">Students</span>
+                <span className="teacher-stat-value">{studentCount}</span>
+              </div>
+              <div className="teacher-stat-row">
+                <span className="teacher-stat-label">Top pts</span>
+                <span className="teacher-stat-value">{topPts}</span>
+              </div>
+              <div className="teacher-stat-row">
+                <span className="teacher-stat-label">Avg pts</span>
+                <span className="teacher-stat-value">{avgPts}</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="teacher-content">
+          {!currentClass ? (
+            <div className="teacher-empty-state">
+              <div className="teacher-empty-icon">★</div>
+              <div className="teacher-empty-text">Select or create a class to begin</div>
+            </div>
+          ) : (
+            <>
+              <div className="teacher-toolbar">
+                <input
+                  type="text"
+                  placeholder="Search students..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                <div className="teacher-btn-flex" />
+                <button className="teacher-btn green" onClick={openAddStudent}>
+                  + Add Student
+                </button>
+                <button className="teacher-btn yellow" onClick={() => setShowAwardBanner(true)}>
+                  ★ Award All
+                </button>
+              </div>
+
+              {filteredStudents.length === 0 ? (
+                <div className="teacher-empty-state">
+                  <div className="teacher-empty-text">
+                    {search ? 'No students match your search' : 'No students yet — add one to get started'}
+                  </div>
+                </div>
+              ) : (
+                <div className="teacher-student-grid">
+                  {filteredStudents.map((s) => (
+                    <div className="teacher-student-card" key={s.id}>
+                      <div className="teacher-student-name">{s.name}</div>
+                      <div className="teacher-pts-controls">
+                        <button className="teacher-pts-btn minus" onClick={() => nudgePts(s, -10)} title="-10">
+                          −
+                        </button>
+                        <button className="teacher-pts-btn minus" style={{ fontSize: 8 }} onClick={() => nudgePts(s, -1)} title="-1">
+                          -1
+                        </button>
+                        <input
+                          className="teacher-pts-input"
+                          type="number"
+                          value={s.gotchiPts}
+                          min={0}
+                          onChange={(e) => setStudentPts(s.id, e.target.value)}
+                        />
+                        <button
+                          className="teacher-pts-btn plus"
+                          style={{ fontSize: 8, borderColor: 'var(--green)', color: 'var(--green)' }}
+                          onClick={() => nudgePts(s, 1)}
+                          title="+1"
+                        >
+                          +1
+                        </button>
+                        <button className="teacher-pts-btn plus" onClick={() => nudgePts(s, 10)} title="+10">
+                          +
+                        </button>
+                      </div>
+                      <div className="teacher-pet-badge">
+                        👁 {s.pets.length} pet{s.pets.length !== 1 ? 's' : ''}
+                      </div>
+                      <button className="teacher-student-remove" onClick={() => removeStudent(s)}>
+                        ✕ Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {showAwardBanner && (
+                <div className="teacher-award-banner">
+                  <label>Award all students:</label>
+                  <input
+                    type="number"
+                    value={awardAmount}
+                    min={1}
+                    max={9999}
+                    onChange={(e) => setAwardAmount(e.target.value)}
+                  />
+                  <label>pts</label>
+                  <button className="teacher-btn yellow" onClick={() => awardAll(1)}>
+                    ★ Award
+                  </button>
+                  <button className="teacher-btn red" onClick={() => awardAll(-1)}>
+                    − Deduct
+                  </button>
+                  <div className="teacher-btn-flex" />
+                  <button className="teacher-btn" onClick={() => setShowAwardBanner(false)}>
+                    ✕
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+
+      {showAddStudent && (
+        <div className="teacher-modal-backdrop open" onClick={(e) => e.target === e.currentTarget && setShowAddStudent(false)}>
+          <div className="teacher-modal">
+            <div className="teacher-modal-title">Add Student</div>
+            <div className="teacher-field">
+              <label>Name *</label>
+              <input
+                type="text"
+                placeholder="e.g. Alice"
+                value={newStudentName}
+                autoFocus
+                onChange={(e) => setNewStudentName(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && createStudent()}
+              />
+            </div>
+            <div className="teacher-field">
+              <label>Email (optional)</label>
+              <input
+                type="text"
+                placeholder="student@school.com"
+                value={newStudentEmail}
+                onChange={(e) => setNewStudentEmail(e.target.value)}
+              />
+            </div>
+            <div className="teacher-field">
+              <label>Starting GotchiPts</label>
+              <input type="number" min={0} value={newStudentPts} onChange={(e) => setNewStudentPts(e.target.value)} />
+            </div>
+            <div className="teacher-modal-btns">
+              <button className="teacher-btn" onClick={() => setShowAddStudent(false)}>
+                Cancel
+              </button>
+              <button className="teacher-btn green" onClick={createStudent}>
+                Add
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div id="teacher-toast" className={toastMsg ? 'show' : ''}>
+        {toastMsg}
+      </div>
+    </div>
+  );
+}
