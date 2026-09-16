@@ -173,15 +173,15 @@ const SEED_STATES = [
   { name: 'idle', variant: 'base', body: 0, eyes: 0, mouth: 0 },
   { name: 'blink', variant: 'base', body: 0, eyes: 9, mouth: 0 },
   // Walk lives on mini, not base — base's 20 body frames read as reaction
-  // poses (bounce/blush/closed-eye), no leg motion. Confirmed on mametchi
-  // (tama #21)'s mini body sheet (image-366.png): frames 13/14 show a clear
-  // asymmetric mid-step leg pose against the static symmetric-legs pose in
-  // the frames around them (10-12, 16). Eyes/mouth held at neutral (0) for
-  // both — walking shouldn't need a face change, and mini eyes/mouth only
-  // have 14 frames (0-13) so index 14 isn't even valid there. Not yet
-  // confirmed this frame numbering holds on other tamas' mini sheets.
-  { name: 'walk_left_1', variant: 'mini', body: 13, eyes: 0, mouth: 0 },
-  { name: 'walk_left_2', variant: 'mini', body: 14, eyes: 0, mouth: 0 },
+  // poses (bounce/blush/closed-eye), no leg motion. Body frames 12/13 show
+  // an asymmetric mid-step leg pose against the static symmetric-legs pose
+  // around them — originally logged as 13/14 (Taylor counted from 1, not
+  // 0; shifted down by 1, same correction applied to sit_forward/sit_left/
+  // sit_back below). Eyes/mouth held at neutral (0) for both — walking
+  // shouldn't need a face change. Confirmed holding up across several
+  // different-body-shape tamas, not just mametchi.
+  { name: 'walk_left_1', variant: 'mini', body: 12, eyes: 0, mouth: 0 },
+  { name: 'walk_left_2', variant: 'mini', body: 13, eyes: 0, mouth: 0 },
   // walk_right isn't a separate row — it's walk_left mirrored (Mirror
   // checkbox above), not a distinct sprite. See src/data/animationStates.json.
   //
@@ -200,9 +200,9 @@ const SEED_STATES = [
   // the body pose. That is NOT a real answer for where the face goes on a
   // sideways/backward-facing body — don't treat these eyes/mouth values as
   // meaningful, only the body frame is confirmed.
-  { name: 'sit_forward', variant: 'mini', body: 7, eyes: 0, mouth: 0 },
-  { name: 'sit_left', variant: 'mini', body: 8, eyes: 0, mouth: 0 },
-  { name: 'sit_back', variant: 'mini', body: 19, eyes: 0, mouth: 0 },
+  { name: 'sit_forward', variant: 'mini', body: 6, eyes: 0, mouth: 0 },
+  { name: 'sit_left', variant: 'mini', body: 7, eyes: 0, mouth: 0 },
+  { name: 'sit_back', variant: 'mini', body: 18, eyes: 0, mouth: 0 },
 ];
 
 export default function TamaAssembler() {

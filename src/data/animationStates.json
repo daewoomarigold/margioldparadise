@@ -2,9 +2,9 @@
   "_comment": "Canonical animation state definitions, mini variant. body is a list of frame indices to cycle through (single-element = static pose). eyes/mouth are null where face positioning hasn't been figured out yet for that body orientation — sit_forward/sit_left/sit_back are new body poses whose face placement is a later task, not yet safe to assume matches the default forward-facing idle position. walk_right is derived from walk_left by horizontal mirroring (CSS scaleX(-1) or equivalent), not a separate sprite — see TamaAssembler's Mirror toggle to preview it.",
   "idle": { "body": [0], "eyes": [0], "mouth": [0] },
   "blink": { "body": [0], "eyes": [5], "mouth": [0] },
-  "walk_left": { "body": [13, 14], "eyes": [0], "mouth": [0] },
+  "walk_left": { "body": [12, 13], "eyes": [0], "mouth": [0] },
   "walk_right": { "mirrorOf": "walk_left" },
-  "sit_forward": { "body": [7], "eyes": null, "mouth": null },
-  "sit_left": { "body": [8], "eyes": null, "mouth": null },
-  "sit_back": { "body": [19], "eyes": null, "mouth": null }
+  "sit_forward": { "body": [6], "eyes": null, "mouth": null },
+  "sit_left": { "body": [7], "eyes": null, "mouth": null },
+  "sit_back": { "body": [18], "eyes": null, "mouth": null }
 }
