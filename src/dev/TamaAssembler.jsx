@@ -161,6 +161,14 @@ const SEED_STATES = [
   // confirmed this frame numbering holds on other tamas' mini sheets.
   { name: 'walk1', variant: 'mini', body: 13, eyes: 0, mouth: 0 },
   { name: 'walk2', variant: 'mini', body: 14, eyes: 0, mouth: 0 },
+  // Mini idle/blink — the production build uses mini, not base, so these
+  // need their own mini-specific frames rather than reusing base's. Frame
+  // 0 reads as the plain neutral pose here too (consistent with base).
+  // Blink: mini eyes only has 14 frames total; cropped and upscaled all of
+  // them on mametchi (tama #21, image-367.png) — frame 0 and 6 are open dot
+  // eyes, frames 5 and 13 are both a clean flat closed-eye dash. Used 5.
+  { name: 'idle', variant: 'mini', body: 0, eyes: 0, mouth: 0 },
+  { name: 'blink', variant: 'mini', body: 0, eyes: 5, mouth: 0 },
 ];
 
 export default function TamaAssembler() {
@@ -170,7 +178,7 @@ export default function TamaAssembler() {
   );
 
   const [entityIndex, setEntityIndex] = useState(1); // default to the first real tama, not the egg
-  const [variant, setVariant] = useState('base');
+  const [variant, setVariant] = useState('mini'); // production build uses mini, not base
   const [scale, setScale] = useState(6);
   const [mirrored, setMirrored] = useState(false);
   const [geom, setGeom] = useState(makeDefaultGeom);
