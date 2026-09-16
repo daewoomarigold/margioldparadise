@@ -149,8 +149,8 @@ function SheetWithGrid({ file, frameWidth, frameIndex, label, sheetWidth, sheetH
 // through the strip — least confident part of this guess, verify first.
 // Mouth stays neutral (frame 0) for both, since blinking shouldn't move it.
 const SEED_STATES = [
-  { name: 'idle', body: 0, eyes: 0, mouth: 0 },
-  { name: 'blink', body: 0, eyes: 9, mouth: 0 },
+  { name: 'idle', variant: 'base', body: 0, eyes: 0, mouth: 0 },
+  { name: 'blink', variant: 'base', body: 0, eyes: 9, mouth: 0 },
 ];
 
 export default function TamaAssembler() {
@@ -162,6 +162,7 @@ export default function TamaAssembler() {
   const [entityIndex, setEntityIndex] = useState(1); // default to the first real tama, not the egg
   const [variant, setVariant] = useState('base');
   const [scale, setScale] = useState(6);
+  const [mirrored, setMirrored] = useState(false);
   const [geom, setGeom] = useState(makeDefaultGeom);
   const [frames, setFrames] = useState({ body: 0, eyes: 0, mouth: 0 });
   const [states, setStates] = useState(SEED_STATES);
@@ -266,7 +267,10 @@ export default function TamaAssembler() {
 
   function captureState() {
     if (!stateName.trim()) return;
-    setStates((prev) => [...prev, { name: stateName.trim(), body: frames.body, eyes: frames.eyes, mouth: frames.mouth }]);
+    setStates((prev) => [
+      ...prev,
+      { name: stateName.trim(), variant, body: frames.body, eyes: frames.eyes, mouth: frames.mouth },
+    ]);
     setStateName('');
   }
 
@@ -275,6 +279,11 @@ export default function TamaAssembler() {
   }
 
   function loadState(s) {
+    // Older captured states (before variant tracking) have no `variant` —
+    // assume they're from whatever variant is currently selected rather
+    // than silently misapplying base frame indices to the mini sheet or
+    // vice versa.
+    if (s.variant && s.variant !== variant) setVariant(s.variant);
     setFrames({ body: s.body, eyes: s.eyes, mouth: s.mouth });
   }
 
@@ -339,12 +348,19 @@ export default function TamaAssembler() {
           Scale: <input type="number" min={1} max={16} value={scale} onChange={(e) => setScale(Number(e.target.value) || 1)} style={{ width: 48 }} />
         </label>
 
+        <label>
+          <input type="checkbox" checked={mirrored} onChange={(e) => setMirrored(e.target.checked)} /> Mirror (preview facing the other
+          way)
+        </label>
+
         <button onClick={exportStates}>Export states JSON</button>
       </div>
 
       <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', marginBottom: 24 }}>
         <div>
-          <div style={{ fontSize: 12, opacity: 0.7, marginBottom: 4 }}>composited frame</div>
+          <div style={{ fontSize: 12, opacity: 0.7, marginBottom: 4 }}>
+            composited frame{mirrored ? ' (mirrored)' : ''}
+          </div>
           <div
             style={{
               position: 'relative',
@@ -353,6 +369,7 @@ export default function TamaAssembler() {
               background: '#4443',
               outline: '1px dashed #666',
               marginBottom: 8,
+              transform: mirrored ? 'scaleX(-1)' : undefined,
             }}
           >
             {layerNames.map((layer) => (
@@ -457,7 +474,7 @@ export default function TamaAssembler() {
         <table style={{ borderCollapse: 'collapse', fontSize: 13 }}>
           <thead>
             <tr>
-              {['name', 'body', 'eyes', 'mouth', ''].map((h) => (
+              {['name', 'variant', 'body', 'eyes', 'mouth', ''].map((h) => (
                 <th key={h} style={{ textAlign: 'left', borderBottom: '1px solid #555', padding: '2px 8px' }}>
                   {h}
                 </th>
@@ -468,6 +485,7 @@ export default function TamaAssembler() {
             {states.map((s, i) => (
               <tr key={i}>
                 <td style={{ padding: '2px 8px' }}>{s.name}</td>
+                <td style={{ padding: '2px 8px', opacity: s.variant ? 1 : 0.5 }}>{s.variant ?? '(unset)'}</td>
                 <td style={{ padding: '2px 8px' }}>{s.body}</td>
                 <td style={{ padding: '2px 8px' }}>{s.eyes}</td>
                 <td style={{ padding: '2px 8px' }}>{s.mouth}</td>
