@@ -1,12 +1,23 @@
 // 4x4 roster grid shown alongside the island — one tile per student
-// (Taylor's real classes max out at 16), showing their display tama,
+// (Taylor's real classes max out at 16), showing their GROWING tama (not
+// their chosen display tama — see the asymmetric-design note below),
 // growth meter, name, and tamadex progress. Empty slots render as plain
 // placeholders, matching the mockup. Static (idle-pose) sprites, not
 // roaming — this is a dashboard panel, not part of the island canvas
 // itself.
 //
-// Future (not built yet, per the request that added this file): tapping
-// a tile pops out the student's full tamadex, and later an item shop.
+// Asymmetric by design: the island field shows whatever tama a student
+// has chosen to display (resolveDisplayTama in growth.js — 'current'
+// growing tama by default, or a specific completed adult they picked in
+// the tamadex toast), but this tile always shows growth.currentTama
+// directly regardless of that choice — it's a progress/status readout
+// (paired with the meter right below it), not the showcase. A student
+// mid-toddler can proudly display a finished adult on the island while
+// this tile still tracks the toddler actually growing.
+//
+// Tapping a tile opens the tamadex toast (see TamadexToast.jsx), where a
+// student can change their display tama; a future item shop could pop
+// out from here too.
 
 import { meterFraction, totalCollectible, POINTS_PER_GROWTH } from '../game/growth.js';
 import { TamaComposite } from '../game/spriteCompositor.jsx';
@@ -15,15 +26,6 @@ const GRID_SIZE = 16; // 4x4 — matches the real max class size, not just the c
 const TILE_SCALE = 2; // mini sprites are 32x32 native; on-screen size within the tile
 
 const TOTAL_COLLECTIBLE = totalCollectible();
-
-// Same 'current' | specific-tamadex-tamaId resolution as TeacherDashboard's
-// display-tama picker — kept in sync there since both read the same
-// student.displayTamaId field.
-function resolveDisplayTamaId(student) {
-  const { displayTamaId, growth } = student;
-  if (!displayTamaId || displayTamaId === 'current') return growth.currentTama.tamaId;
-  return displayTamaId;
-}
 
 export default function StudentGrid({ students, onSelectStudent }) {
   const tiles = Array.from({ length: GRID_SIZE }, (_, i) => students[i] ?? null);
@@ -49,8 +51,8 @@ export default function StudentGrid({ students, onSelectStudent }) {
 function StudentTile({ student, onClick }) {
   const growth = student.growth;
   const fraction = meterFraction(growth, student.gotchiPts);
-  const tamaId = resolveDisplayTamaId(student);
-  const isEgg = tamaId == null; // egg stage — TamaComposite's 'egg' entity, not an atlas index
+  const { stage, tamaId } = growth.currentTama; // deliberately the growing tama, not the display tama — see file header
+  const isEgg = stage === 'egg';
 
   return (
     <div style={{ ...tileStyle, cursor: 'pointer' }} onClick={onClick}>

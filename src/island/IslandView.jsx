@@ -13,6 +13,7 @@ import { spriteUrl, resolveAnimState } from '../game/spriteData.js';
 import { TamaComposite } from '../game/spriteCompositor.jsx';
 import { createRoamer, stepRoamer, stepAnim } from '../game/movement.js';
 import { getYBoundsForImage683 } from './terrain.js';
+import { resolveDisplayTama } from '../game/growth.js';
 import StudentGrid from './StudentGrid.jsx';
 import TamadexToast from './TamadexToast.jsx';
 
@@ -24,26 +25,36 @@ const CANVAS_H = 512;
 const SCALE = 1; // mini sprites are 32x32 native; this is their on-screen size multiplier
 const SPRITE_PX = 32 * SCALE;
 
-function loadActiveClass() {
+// The island now writes back (setting a student's display tama from the
+// tamadex toast), not just reads — so it holds the full store (all
+// classes + which one is active), not just a snapshot of the active
+// class, so a write can update one student without clobbering every
+// other class's data.
+function loadStore() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
+    if (!raw) return { classes: [], currentClassId: null };
     const parsed = JSON.parse(raw);
-    const classes = Array.isArray(parsed.classes) ? parsed.classes : [];
-    if (!classes.length) return null;
-    return classes.find((c) => c.id === parsed.currentClassId) ?? classes[0];
+    return {
+      classes: Array.isArray(parsed.classes) ? parsed.classes : [],
+      currentClassId: parsed.currentClassId ?? null,
+    };
   } catch {
-    return null; // corrupted/blocked storage — render the empty state rather than crash
+    return { classes: [], currentClassId: null }; // corrupted/blocked storage — render the empty state rather than crash
   }
 }
 
 export default function IslandView() {
-  const [activeClass, setActiveClass] = useState(loadActiveClass);
+  const [store, setStore] = useState(loadStore);
   const roamersRef = useRef(new Map()); // studentId -> mutable roamer state (see movement.js)
   const lastTsRef = useRef(null);
   const [, setTick] = useState(0); // bumped every animation frame to force a re-render from the refs above
   const [selectedStudentId, setSelectedStudentId] = useState(null); // which student's tamadex toast is open, if any
 
+  const activeClass = useMemo(
+    () => store.classes.find((c) => c.id === store.currentClassId) ?? store.classes[0] ?? null,
+    [store],
+  );
   // Stabilized so the roster-sync effect below doesn't see a "new" array
   // (and re-run its add/remove diff pointlessly) on every animation-frame
   // re-render when there's no active class.
@@ -51,13 +62,38 @@ export default function IslandView() {
 
   // Re-read the store when the teacher dashboard (a separate tab/window,
   // typically) changes it, so the island stays live without a backend.
+  // Doesn't fire for the island's own writes (setDisplayTama below) — the
+  // browser only dispatches `storage` to OTHER tabs/windows — so those
+  // update local state directly instead of waiting for this.
   useEffect(() => {
     function onStorage(e) {
-      if (e.key === STORAGE_KEY) setActiveClass(loadActiveClass());
+      if (e.key === STORAGE_KEY) setStore(loadStore());
     }
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
   }, []);
+
+  // The island can now set a student's display tama (from the tamadex
+  // toast) — persisted back to the same shared store the teacher
+  // dashboard writes to, so it survives reloads and shows up there too.
+  function setDisplayTama(studentId, tamaId) {
+    setStore((prev) => {
+      const next = {
+        ...prev,
+        classes: prev.classes.map((c) =>
+          c.id !== activeClass?.id
+            ? c
+            : { ...c, students: c.students.map((s) => (s.id === studentId ? { ...s, displayTamaId: tamaId } : s)) },
+        ),
+      };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        // storage full/blocked — the change still applies for this session via React state below
+      }
+      return next;
+    });
+  }
 
   // Keep roamer entries in sync with the current roster — add newly-added
   // students, drop removed ones — without resetting anyone already roaming
@@ -165,7 +201,10 @@ export default function IslandView() {
           // stuffed in a ref" anti-pattern the lint rule usually flags.
           const roamer = roamersRef.current.get(s.id);
           if (!growth || !roamer) return null;
-          const { stage, tamaId } = growth.currentTama;
+          // The field shows the CHOSEN display tama, not necessarily what's
+          // growing — see growth.js's resolveDisplayTama and StudentGrid's
+          // header comment for the asymmetric-design rationale.
+          const { stage, tamaId } = resolveDisplayTama(s);
 
           if (stage === 'egg') {
             // Eggs don't roam — fixed near the bottom, matching the old
@@ -210,7 +249,13 @@ export default function IslandView() {
 
       <div style={{ color: '#7070a0', fontSize: 11 }}>{activeClass ? activeClass.name : 'Marigold Island'}</div>
 
-      {selectedStudent && <TamadexToast student={selectedStudent} onClose={() => setSelectedStudentId(null)} />}
+      {selectedStudent && (
+        <TamadexToast
+          student={selectedStudent}
+          onSelectDisplay={(tamaId) => setDisplayTama(selectedStudent.id, tamaId)}
+          onClose={() => setSelectedStudentId(null)}
+        />
+      )}
     </div>
   );
 }

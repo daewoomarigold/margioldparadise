@@ -4,16 +4,22 @@
 // growth.tamadex) show in normal color; uncollected ones show the same
 // sprite silhouetted black via a CSS filter, so the shape/number is
 // visible as a "not yet found" placeholder rather than a blank slot.
+//
+// Clicking a COLLECTED entry sets it as the student's display tama (the
+// one shown roaming on the island field — see growth.js's
+// resolveDisplayTama). The current display tama is highlighted yellow
+// with a star. Uncollected entries aren't clickable — nothing to display.
 
-import { allAdults, findTamaName } from '../game/growth.js';
+import { allAdults, findTamaName, resolveDisplayTama } from '../game/growth.js';
 import { TamaComposite } from '../game/spriteCompositor.jsx';
 
 const CELL_SCALE = 1.5; // mini sprites are 32x32 native
 
-export default function TamadexToast({ student, onClose }) {
+export default function TamadexToast({ student, onSelectDisplay, onClose }) {
   const adults = allAdults();
   const collected = new Set(student.growth.tamadex);
   const collectedCount = adults.filter((a) => collected.has(a.tamaId)).length;
+  const currentDisplayTamaId = resolveDisplayTama(student).tamaId;
 
   return (
     <div style={backdropStyle} onClick={onClose}>
@@ -30,9 +36,22 @@ export default function TamadexToast({ student, onClose }) {
         <div style={gridStyle}>
           {adults.map((a, i) => {
             const got = collected.has(a.tamaId);
+            const isDisplayed = got && a.tamaId === currentDisplayTamaId;
             return (
-              <div key={a.tamaId} style={cellStyle} title={got ? findTamaName(a.tamaId) : '???'}>
-                <div style={numStyle}>{i + 1}</div>
+              <div
+                key={a.tamaId}
+                style={{
+                  ...cellStyle,
+                  ...(isDisplayed ? cellSelectedStyle : null),
+                  cursor: got ? 'pointer' : 'default',
+                }}
+                title={got ? findTamaName(a.tamaId) : '???'}
+                onClick={got ? () => onSelectDisplay(a.tamaId) : undefined}
+              >
+                <div style={numStyle}>
+                  {isDisplayed && <span style={starStyle}>★</span>}
+                  {i + 1}
+                </div>
                 <div style={{ filter: got ? 'none' : 'brightness(0)', opacity: got ? 1 : 0.6 }}>
                   <TamaComposite tamaId={a.tamaId} variant="mini" frames={{ body: 0, eyes: 0, mouth: 0 }} scale={CELL_SCALE} />
                 </div>
@@ -114,7 +133,21 @@ const cellStyle = {
   padding: 4,
 };
 
+const cellSelectedStyle = {
+  border: '1px solid #ffe066',
+  background: 'rgba(255, 224, 102, 0.1)',
+  boxShadow: '0 0 0 1px #ffe066',
+};
+
 const numStyle = {
   fontSize: 8,
   color: '#7070a0',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 2,
+};
+
+const starStyle = {
+  color: '#ffe066',
+  fontSize: 9,
 };

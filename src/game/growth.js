@@ -57,6 +57,25 @@ export function findTamaName(tamaId) {
   return null;
 }
 
+// Resolves a student's displayTamaId into what should actually render:
+// { tamaId, stage }. 'current' (or unset) follows whatever's growing
+// right now (including egg — the field roaming code uses `stage` to
+// decide whether this should roam or sit still); a specific tamadex
+// tamaId (a completed adult/secret the student picked to show off
+// instead) always resolves to 'adult' stage, since tamadex entries are
+// never anything else. This is the single source of truth for "what tama
+// does the FIELD show" — see StudentGrid.jsx for the tile, which
+// deliberately shows growth.currentTama directly instead (the asymmetric
+// design: field shows the chosen display tama, tile always shows what's
+// actively growing).
+export function resolveDisplayTama(student) {
+  const { displayTamaId, growth } = student;
+  if (!displayTamaId || displayTamaId === 'current') {
+    return { tamaId: growth.currentTama.tamaId, stage: growth.currentTama.stage };
+  }
+  return { tamaId: displayTamaId, stage: 'adult' };
+}
+
 // Total possible tamadex entries: every adult across all teen lines (48)
 // plus the 3 biome secrets — matches GAME_DESIGN.md's "only completed
 // adults count as tamadex entries" (secrets are adult-tier awards, not a
