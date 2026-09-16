@@ -158,12 +158,12 @@
     "confidence": "high"
   },
   "16": {
-    "stage": "adult",
+    "stage": "baby",
     "candidates": [
-      "kametchi"
+      "bbmarutchi"
     ],
     "confidence": "high-shape-matched",
-    "shapeMatchScore": 0.821,
+    "shapeMatchScore": 1.0,
     "shapeMatchMargin": 0.098
   },
   "17": {
@@ -493,9 +493,9 @@
   "53": {
     "stage": "adult",
     "candidates": [
-      "pochitchi"
+      "oretatchi"
     ],
-    "confidence": "high-shape-matched",
+    "confidence": "medium-family-tree-resolved",
     "shapeMatchScore": 0.767,
     "shapeMatchMargin": 0.059
   },

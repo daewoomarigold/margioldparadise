@@ -374,20 +374,20 @@
       "eyesMini": "image-337.png",
       "mouthMini": "image-338.png",
       "eyesOffsetXBase": 0,
-      "eyesOffsetYBase": 26,
+      "eyesOffsetYBase": 24,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 30,
+      "mouthOffsetYBase": 32,
       "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 13,
+      "eyesOffsetYMini": 12,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 15,
+      "mouthOffsetYMini": 16,
       "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "kametchi"
+        "bbmarutchi"
       ],
-      "shapeMatchScore": 0.821,
-      "shapeMatchMargin": 0.098,
-      "shapeMatchRunnerUp": "sheeptchi"
+      "shapeMatchScore": 1.0,
+      "shapeMatchMargin": null,
+      "shapeMatchRunnerUp": "kametchi (was wrong \u2014 bbmarutchi wasn't in the original adult-only candidate pool)"
     },
     {
       "id": 17,
@@ -1261,21 +1261,21 @@
       "bodyMini": "image-558.png",
       "eyesMini": "image-559.png",
       "mouthMini": "image-560.png",
-      "eyesOffsetXBase": -1,
-      "eyesOffsetYBase": 7,
+      "eyesOffsetXBase": -9,
+      "eyesOffsetYBase": 13,
       "mouthOffsetXBase": 0,
-      "mouthOffsetYBase": 16,
-      "eyesOffsetXMini": 0,
-      "eyesOffsetYMini": 4,
+      "mouthOffsetYBase": 18,
+      "eyesOffsetXMini": -5,
+      "eyesOffsetYMini": 7,
       "mouthOffsetXMini": 0,
-      "mouthOffsetYMini": 8,
+      "mouthOffsetYMini": 9,
       "offsetSource": "bible-shape-matched",
       "offsetSourceNames": [
-        "pochitchi"
+        "oretatchi"
       ],
-      "shapeMatchScore": 0.767,
-      "shapeMatchMargin": 0.059,
-      "shapeMatchRunnerUp": "sebiretchi"
+      "shapeMatchScore": 0.768,
+      "shapeMatchMargin": 0.001,
+      "shapeMatchRunnerUp": "pochitchi (near-tie by shape alone; resolved via family-tree completeness \u2014 pochitchi already placed at index 18, oretatchi was the one adult missing from the full 48-name roster)"
     },
     {
       "id": 54,

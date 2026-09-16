@@ -12,6 +12,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import './teacher.css';
+import { newStudentProgress, applyPointsToGrowth, meterFraction, POINTS_PER_GROWTH } from '../game/growth.js';
 
 const STORAGE_KEY = 'marigold-teacher-data-v1';
 
@@ -105,12 +106,14 @@ export default function TeacherDashboard() {
   function createStudent() {
     const name = newStudentName.trim();
     if (!name) return;
+    const startingPts = Math.max(0, Number(newStudentPts) || 0);
     const student = {
       id: uid(),
       name,
       email: newStudentEmail.trim(),
-      gotchiPts: Math.max(0, Number(newStudentPts) || 0),
-      pets: [], // pet/growth system isn't built yet — always empty for now
+      gotchiPts: startingPts,
+      pets: [], // legacy field from teacher.html's old shop system — unused now, kept only so existing saved data doesn't break; growth/tamadex live in `growth` instead
+      growth: applyPointsToGrowth(newStudentProgress(), startingPts),
     };
     updateCurrentClassStudents((list) => [...list, student]);
     setShowAddStudent(false);
@@ -123,9 +126,18 @@ export default function TeacherDashboard() {
     toast('Student removed');
   }
 
+  // Points and growth always move together — anywhere gotchiPts changes,
+  // growth gets recomputed from the new total in the same update, so the
+  // meter/stage can never drift out of sync with the displayed points.
+  function withGrowth(student, newPts) {
+    const gotchiPts = Math.max(0, newPts);
+    const growth = applyPointsToGrowth(student.growth ?? newStudentProgress(), gotchiPts);
+    return { ...student, gotchiPts, growth };
+  }
+
   function setStudentPts(studentId, newPts) {
     const clamped = Math.max(0, Number(newPts) || 0);
-    updateCurrentClassStudents((list) => list.map((s) => (s.id === studentId ? { ...s, gotchiPts: clamped } : s)));
+    updateCurrentClassStudents((list) => list.map((s) => (s.id === studentId ? withGrowth(s, clamped) : s)));
   }
 
   function nudgePts(student, delta) {
@@ -134,7 +146,7 @@ export default function TeacherDashboard() {
 
   function awardAll(sign) {
     const amt = Math.max(1, Number(awardAmount) || 1) * sign;
-    updateCurrentClassStudents((list) => list.map((s) => ({ ...s, gotchiPts: Math.max(0, s.gotchiPts + amt) })));
+    updateCurrentClassStudents((list) => list.map((s) => withGrowth(s, s.gotchiPts + amt)));
     toast(sign > 0 ? `Awarded ${amt} pts to everyone` : `Deducted ${Math.abs(amt)} pts from everyone`);
   }
 
@@ -269,9 +281,7 @@ export default function TeacherDashboard() {
                           +
                         </button>
                       </div>
-                      <div className="teacher-pet-badge">
-                        👁 {s.pets.length} pet{s.pets.length !== 1 ? 's' : ''}
-                      </div>
+                      <GrowthStatus student={s} />
                       <button className="teacher-student-remove" onClick={() => removeStudent(s)}>
                         ✕ Remove
                       </button>
@@ -350,6 +360,26 @@ export default function TeacherDashboard() {
 
       <div id="teacher-toast" className={toastMsg ? 'show' : ''}>
         {toastMsg}
+      </div>
+    </div>
+  );
+}
+
+// Falls back to a fresh (0-progress) growth record for students saved
+// before growth tracking existed, so old localStorage data doesn't crash
+// the dashboard — doesn't persist the fallback, just renders safely.
+function GrowthStatus({ student }) {
+  const growth = student.growth ?? newStudentProgress();
+  const fraction = meterFraction(growth, student.gotchiPts);
+  const { stage, name } = growth.currentTama;
+
+  return (
+    <div className="teacher-growth-status">
+      <div className="teacher-growth-label">
+        {stage} · {name}
+      </div>
+      <div className="teacher-growth-meter" title={`${Math.round(fraction * POINTS_PER_GROWTH)}/${POINTS_PER_GROWTH} pts to next stage`}>
+        <div className="teacher-growth-meter-fill" style={{ width: `${fraction * 100}%` }} />
       </div>
     </div>
   );

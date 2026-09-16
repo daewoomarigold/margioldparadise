@@ -1,0 +1,307 @@
+{
+  "_comment": "Canonical growth chart family tree, reconstructed from real tamaAtlas.json indices + shape-matched species names, cross-checked against the reference growth chart image. tamaId is the index into tamaAtlas.json's tamas array (sprite/offset lookup); name is the real species name (bible lookup for eyes/mouth position data). baby -> 1 of 3 toddlers -> 1 of that toddler's 4 teens -> 1 of that teen's 4 adults (excluding already-collected ones \u2014 see src/game/growth.js for the actual roll/no-dupe/closing logic). specialBaby (bbmarutchi, tamaId 16) is a separate non-breedable baby variant, not part of the normal roll chain.",
+  "baby": {
+    "tamaId": 0,
+    "name": "babymarutchi"
+  },
+  "specialBaby": {
+    "tamaId": 16,
+    "name": "bbmarutchi"
+  },
+  "toddlers": [
+    {
+      "tamaId": 1,
+      "name": "landkid",
+      "teens": [
+        {
+          "tamaId": 4,
+          "name": "roaryoung",
+          "adults": [
+            {
+              "tamaId": 17,
+              "name": "meowtchi"
+            },
+            {
+              "tamaId": 18,
+              "name": "pochitchi"
+            },
+            {
+              "tamaId": 19,
+              "name": "gumax"
+            },
+            {
+              "tamaId": 20,
+              "name": "ratchi"
+            }
+          ]
+        },
+        {
+          "tamaId": 5,
+          "name": "toddleyoung",
+          "adults": [
+            {
+              "tamaId": 21,
+              "name": "mametchi"
+            },
+            {
+              "tamaId": 22,
+              "name": "mimitchi"
+            },
+            {
+              "tamaId": 23,
+              "name": "molmotchi"
+            },
+            {
+              "tamaId": 24,
+              "name": "sheeptchi"
+            }
+          ]
+        },
+        {
+          "tamaId": 6,
+          "name": "lickyoung",
+          "adults": [
+            {
+              "tamaId": 25,
+              "name": "sebiretchi"
+            },
+            {
+              "tamaId": 26,
+              "name": "leopatchi"
+            },
+            {
+              "tamaId": 27,
+              "name": "elizardotchi"
+            },
+            {
+              "tamaId": 28,
+              "name": "heavytchi"
+            }
+          ]
+        },
+        {
+          "tamaId": 7,
+          "name": "sproutyoung",
+          "adults": [
+            {
+              "tamaId": 29,
+              "name": "furawatchi"
+            },
+            {
+              "tamaId": 30,
+              "name": "tustustchi"
+            },
+            {
+              "tamaId": 31,
+              "name": "potsunentchi"
+            },
+            {
+              "tamaId": 32,
+              "name": "shigemi-san"
+            }
+          ]
+        }
+      ],
+      "secret": {
+        "tamaId": 65,
+        "name": "chodracotchi"
+      }
+    },
+    {
+      "tamaId": 2,
+      "name": "waterkid",
+      "teens": [
+        {
+          "tamaId": 8,
+          "name": "glideyoung",
+          "adults": [
+            {
+              "tamaId": 33,
+              "name": "irukatchi"
+            },
+            {
+              "tamaId": 34,
+              "name": "kametchi"
+            },
+            {
+              "tamaId": 35,
+              "name": "beavertchi"
+            },
+            {
+              "tamaId": 36,
+              "name": "kujiratchi"
+            }
+          ]
+        },
+        {
+          "tamaId": 9,
+          "name": "leapyoung",
+          "adults": [
+            {
+              "tamaId": 37,
+              "name": "axolopatchi"
+            },
+            {
+              "tamaId": 38,
+              "name": "imoritchi"
+            },
+            {
+              "tamaId": 39,
+              "name": "kawazutchi"
+            },
+            {
+              "tamaId": 40,
+              "name": "uruotchi"
+            }
+          ]
+        },
+        {
+          "tamaId": 10,
+          "name": "paddleyoung",
+          "adults": [
+            {
+              "tamaId": 41,
+              "name": "tachutchi"
+            },
+            {
+              "tamaId": 42,
+              "name": "sharktchi"
+            },
+            {
+              "tamaId": 43,
+              "name": "ankotchi"
+            },
+            {
+              "tamaId": 44,
+              "name": "otototchi"
+            }
+          ]
+        },
+        {
+          "tamaId": 11,
+          "name": "floatyoung",
+          "adults": [
+            {
+              "tamaId": 45,
+              "name": "kuraratchi"
+            },
+            {
+              "tamaId": 46,
+              "name": "mendakotchi"
+            },
+            {
+              "tamaId": 47,
+              "name": "amefuratchi"
+            },
+            {
+              "tamaId": 48,
+              "name": "gusokutchi"
+            }
+          ]
+        }
+      ],
+      "secret": {
+        "tamaId": 66,
+        "name": "mermarintchi"
+      }
+    },
+    {
+      "tamaId": 3,
+      "name": "skykid",
+      "teens": [
+        {
+          "tamaId": 12,
+          "name": "flapyoung",
+          "adults": [
+            {
+              "tamaId": 49,
+              "name": "horhotchi"
+            },
+            {
+              "tamaId": 50,
+              "name": "mongatchi"
+            },
+            {
+              "tamaId": 51,
+              "name": "eagletchi"
+            },
+            {
+              "tamaId": 52,
+              "name": "batchi"
+            }
+          ]
+        },
+        {
+          "tamaId": 13,
+          "name": "chirpyoung",
+          "adults": [
+            {
+              "tamaId": 53,
+              "name": "oretatchi"
+            },
+            {
+              "tamaId": 54,
+              "name": "kabutotchi"
+            },
+            {
+              "tamaId": 55,
+              "name": "tentotchi"
+            },
+            {
+              "tamaId": 56,
+              "name": "hatchitchi"
+            }
+          ]
+        },
+        {
+          "tamaId": 14,
+          "name": "bumbleyoung",
+          "adults": [
+            {
+              "tamaId": 57,
+              "name": "kuchipatchi"
+            },
+            {
+              "tamaId": 58,
+              "name": "batatchi"
+            },
+            {
+              "tamaId": 59,
+              "name": "peacotchi"
+            },
+            {
+              "tamaId": 60,
+              "name": "kiwitchi"
+            }
+          ]
+        },
+        {
+          "tamaId": 15,
+          "name": "rockyyoung",
+          "adults": [
+            {
+              "tamaId": 61,
+              "name": "gemtchi"
+            },
+            {
+              "tamaId": 62,
+              "name": "papillotchi"
+            },
+            {
+              "tamaId": 63,
+              "name": "ishikorotchi"
+            },
+            {
+              "tamaId": 64,
+              "name": "magmatchi"
+            }
+          ]
+        }
+      ],
+      "secret": {
+        "tamaId": 67,
+        "name": "yayacorntchi"
+      }
+    }
+  ]
+}
