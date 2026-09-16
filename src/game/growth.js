@@ -223,15 +223,26 @@ export function advanceGrowth(progress) {
 // the meter and triggering as many growth steps as the points cover (e.g.
 // awarding 25 points at once with a 10-point threshold triggers 2 steps,
 // leaving 5 toward the next). Deducting points never un-advances a stage —
-// growth is a one-way ratchet; it only slows future progress. Returns the
-// new progress object; call with the student's up-to-date gotchiPts after
-// whatever award/deduct just happened.
+// growth is a one-way ratchet; it only slows future progress.
+//
+// Returns { progress, reachedAdultTamaIds } rather than just the progress
+// object — reachedAdultTamaIds lists every adult newly completed during
+// THIS call, in order, which can be more than one if a single point award
+// covers multiple full cycles. Empty if none were reached. Callers that
+// only care about the growth state itself can just destructure
+// `.progress`; this exists so a caller can react to "an adult was just
+// reached" (e.g. TeacherDashboard.jsx pins the field's display tama to a
+// freshly-completed adult, then leaves it alone — see its withGrowth) — a
+// concern growth.js itself deliberately doesn't know about (no student/
+// display concept here, just pure growth math).
 export function applyPointsToGrowth(progress, gotchiPts) {
   let next = progress;
+  const reachedAdultTamaIds = [];
   while (gotchiPts - next.growthConsumedPts >= POINTS_PER_GROWTH) {
     next = { ...advanceGrowth(next), growthConsumedPts: next.growthConsumedPts + POINTS_PER_GROWTH };
+    if (next.currentTama.stage === 'adult') reachedAdultTamaIds.push(next.currentTama.tamaId);
   }
-  return next;
+  return { progress: next, reachedAdultTamaIds };
 }
 
 // 0-1 fraction of the way to the next growth step, clamped so a point

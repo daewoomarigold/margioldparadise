@@ -114,14 +114,20 @@ export default function TeacherDashboard() {
     const name = newStudentName.trim();
     if (!name) return;
     const startingPts = Math.max(0, Number(newStudentPts) || 0);
+    const { progress: growth, reachedAdultTamaIds } = applyPointsToGrowth(newStudentProgress(), startingPts);
     const student = {
       id: uid(),
       name,
       email: newStudentEmail.trim(),
       gotchiPts: startingPts,
       pets: [], // legacy field from teacher.html's old shop system — unused now, kept only so existing saved data doesn't break; growth/tamadex live in `growth` instead
-      growth: applyPointsToGrowth(newStudentProgress(), startingPts),
-      displayTamaId: 'current', // 'current' = follow whatever's growing now; or a specific tamadex tamaId to show a completed adult instead
+      growth,
+      // 'current' = follow whatever's growing now, UNTIL the first adult is
+      // reached — then it pins to that adult and stops auto-advancing (see
+      // withGrowth below); a specific tamadex tamaId always shows that
+      // completed adult instead. Handles the unlikely case of enough
+      // starting points to reach an adult immediately.
+      displayTamaId: reachedAdultTamaIds.at(-1) ?? 'current',
     };
     updateCurrentClassStudents((list) => [...list, student]);
     setShowAddStudent(false);
@@ -137,10 +143,21 @@ export default function TeacherDashboard() {
   // Points and growth always move together — anywhere gotchiPts changes,
   // growth gets recomputed from the new total in the same update, so the
   // meter/stage can never drift out of sync with the displayed points.
+  //
+  // Bug fix: the field used to visibly jump to whatever was growing on
+  // EVERY stage change (egg->baby->...->adult->egg again next cycle),
+  // since displayTamaId defaulted to 'current' and nothing ever moved it
+  // off that. Now: still auto-follow while displayTamaId is 'current' (so
+  // the field shows the pet actually growing, same as before) — but the
+  // moment an adult is newly reached, pin displayTamaId to it so the field
+  // stops advancing there instead of quietly cycling on to the next egg.
+  // Only an explicit tamadex pick (setDisplayTama) moves it after that.
   function withGrowth(student, newPts) {
     const gotchiPts = Math.max(0, newPts);
-    const growth = applyPointsToGrowth(student.growth ?? newStudentProgress(), gotchiPts);
-    return { ...student, gotchiPts, growth };
+    const { progress: growth, reachedAdultTamaIds } = applyPointsToGrowth(student.growth ?? newStudentProgress(), gotchiPts);
+    const stillAutoFollowing = !student.displayTamaId || student.displayTamaId === 'current';
+    const displayTamaId = stillAutoFollowing && reachedAdultTamaIds.length > 0 ? reachedAdultTamaIds.at(-1) : student.displayTamaId;
+    return { ...student, gotchiPts, growth, displayTamaId };
   }
 
   function setStudentPts(studentId, newPts) {
