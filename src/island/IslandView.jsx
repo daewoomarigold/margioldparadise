@@ -14,6 +14,7 @@ import { TamaComposite } from '../game/spriteCompositor.jsx';
 import { createRoamer, stepRoamer, stepAnim } from '../game/movement.js';
 import { getYBoundsForImage683 } from './terrain.js';
 import StudentGrid from './StudentGrid.jsx';
+import TamadexToast from './TamadexToast.jsx';
 
 const STORAGE_KEY = 'marigold-teacher-data-v1'; // must match TeacherDashboard.jsx
 
@@ -41,6 +42,7 @@ export default function IslandView() {
   const roamersRef = useRef(new Map()); // studentId -> mutable roamer state (see movement.js)
   const lastTsRef = useRef(null);
   const [, setTick] = useState(0); // bumped every animation frame to force a re-render from the refs above
+  const [selectedStudentId, setSelectedStudentId] = useState(null); // which student's tamadex toast is open, if any
 
   // Stabilized so the roster-sync effect below doesn't see a "new" array
   // (and re-run its add/remove diff pointlessly) on every animation-frame
@@ -97,6 +99,9 @@ export default function IslandView() {
   }, []);
 
   const walk = resolveAnimState('walk_left'); // shared by all tamas — see animationStates.json
+  // Looked up fresh from `students` (not stored as its own object) so the
+  // toast reflects live growth/points changes from another tab while open.
+  const selectedStudent = students.find((s) => s.id === selectedStudentId) ?? null;
 
   return (
     <div
@@ -200,10 +205,12 @@ export default function IslandView() {
         })}
       </div>
 
-      <StudentGrid students={students} />
+      <StudentGrid students={students} onSelectStudent={(s) => setSelectedStudentId(s.id)} />
       </div>
 
       <div style={{ color: '#7070a0', fontSize: 11 }}>{activeClass ? activeClass.name : 'Marigold Island'}</div>
+
+      {selectedStudent && <TamadexToast student={selectedStudent} onClose={() => setSelectedStudentId(null)} />}
     </div>
   );
 }

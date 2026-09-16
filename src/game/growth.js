@@ -72,6 +72,21 @@ export function totalCollectible() {
   return total;
 }
 
+// Every regular adult (48, no secrets) in a fixed order — the natural
+// order they appear in growthChart.json (toddler, then that toddler's
+// teens in order, then each teen's adults in order). Used for a numbered
+// tamadex grid; the order is stable across calls since it just reads the
+// static chart data.
+export function allAdults() {
+  const adults = [];
+  for (const toddler of chart.toddlers) {
+    for (const teen of toddler.teens) {
+      adults.push(...teen.adults);
+    }
+  }
+  return adults;
+}
+
 // Creates a fresh student progression record. tamadex/closedTeens/
 // closedBiomes/secrets persist across growth cycles (a completed adult
 // starts a new baby, but collection history is permanent) — only

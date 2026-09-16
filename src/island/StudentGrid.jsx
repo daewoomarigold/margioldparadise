@@ -25,7 +25,7 @@ function resolveDisplayTamaId(student) {
   return displayTamaId;
 }
 
-export default function StudentGrid({ students }) {
+export default function StudentGrid({ students, onSelectStudent }) {
   const tiles = Array.from({ length: GRID_SIZE }, (_, i) => students[i] ?? null);
 
   return (
@@ -39,19 +39,21 @@ export default function StudentGrid({ students }) {
         maxWidth: '100%',
       }}
     >
-      {tiles.map((s, i) => (s ? <StudentTile key={s.id} student={s} /> : <EmptyTile key={`empty-${i}`} />))}
+      {tiles.map((s, i) =>
+        s ? <StudentTile key={s.id} student={s} onClick={() => onSelectStudent(s)} /> : <EmptyTile key={`empty-${i}`} />,
+      )}
     </div>
   );
 }
 
-function StudentTile({ student }) {
+function StudentTile({ student, onClick }) {
   const growth = student.growth;
   const fraction = meterFraction(growth, student.gotchiPts);
   const tamaId = resolveDisplayTamaId(student);
   const isEgg = tamaId == null; // egg stage — TamaComposite's 'egg' entity, not an atlas index
 
   return (
-    <div style={tileStyle}>
+    <div style={{ ...tileStyle, cursor: 'pointer' }} onClick={onClick}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 32 * TILE_SCALE }}>
         <TamaComposite tamaId={isEgg ? 'egg' : tamaId} variant="mini" frames={{ body: 0, eyes: 0, mouth: 0 }} scale={TILE_SCALE} />
       </div>
