@@ -14,6 +14,7 @@ import { TamaComposite } from '../game/spriteCompositor.jsx';
 import { createRoamer, stepRoamer, stepAnim } from '../game/movement.js';
 import { getYBoundsForImage683 } from './terrain.js';
 import { resolveDisplayTama } from '../game/growth.js';
+import { playTap, playAddPoint } from '../sound.js';
 import StudentGrid from './StudentGrid.jsx';
 import TamadexToast from './TamadexToast.jsx';
 
@@ -77,6 +78,7 @@ export default function IslandView() {
   const lastTsRef = useRef(null);
   const [, setTick] = useState(0); // bumped every animation frame to force a re-render from the refs above
   const [selectedStudentId, setSelectedStudentId] = useState(null); // which student's tamadex toast is open, if any
+  const prevPtsRef = useRef(null); // Map<studentId, gotchiPts> as of the last render, or null before the first — see the points-sound effect below
 
   const activeClass = useMemo(
     () => store.classes.find((c) => c.id === store.currentClassId) ?? store.classes[0] ?? null,
@@ -99,6 +101,45 @@ export default function IslandView() {
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
   }, []);
+
+  // Global button-tap sound — scoped to this view only, not the teacher
+  // dashboard, since this (the projected/class-facing page) is the one
+  // that should actually be heard. Ported from the old gotchigarden.html's
+  // document-wide click listener (see that repo's AUDIO section): fires
+  // for any button/link click anywhere in this view (class switcher,
+  // student tiles, tamadex toast) without needing per-button wiring.
+  useEffect(() => {
+    function onClick(e) {
+      const btn = e.target.closest('button, a[role="button"]');
+      if (btn) playTap();
+    }
+    document.addEventListener('click', onClick, { capture: true });
+    return () => document.removeEventListener('click', onClick, { capture: true });
+  }, []);
+
+  // "A student's points went up" sound — the teacher dashboard is a
+  // separate tab/page that does the actual awarding, so this view has to
+  // detect the increase itself rather than call the sound directly: track
+  // each student's gotchiPts as of the last render and compare on every
+  // change to `students` (which fires on the dashboard's write via the
+  // cross-tab `storage` listener above, same mechanism the hatch-detection
+  // logic used to use on this page). Skips the very first run (nothing to
+  // compare against yet — would otherwise fire once for every student's
+  // starting balance on load) and any student not seen before (a roster
+  // change, not a points change). Plays once per batch of changes, not
+  // once per student, same as the dashboard's own "Award All" used to.
+  useEffect(() => {
+    const prevPts = prevPtsRef.current;
+    const nextPts = new Map(students.map((s) => [s.id, s.gotchiPts]));
+    if (prevPts) {
+      const anyIncrease = students.some((s) => {
+        const prior = prevPts.get(s.id);
+        return prior != null && s.gotchiPts > prior;
+      });
+      if (anyIncrease) playAddPoint();
+    }
+    prevPtsRef.current = nextPts;
+  }, [students]);
 
   // Switches which class is "active" (roamed/shown here) — persisted back
   // to the same shared store the teacher dashboard reads/writes, same
