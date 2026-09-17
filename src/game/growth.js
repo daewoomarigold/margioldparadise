@@ -117,7 +117,7 @@ export function newStudentProgress() {
     closedTeens: [], // teen tamaIds fully collected (can't roll again)
     closedBiomes: [], // toddler tamaIds fully collected (can't roll again)
     unlockedSecrets: [], // secret tamaIds unlocked
-    growthConsumedPts: 0, // how many gotchiPts have already been spent on growth steps
+    growthConsumedPts: 0, // how much of lifetimePts has already been spent on growth steps
   };
 }
 
@@ -219,11 +219,17 @@ export function advanceGrowth(progress) {
   return progress;
 }
 
-// Applies a change in gotchiPts to a student's growth progress, advancing
-// the meter and triggering as many growth steps as the points cover (e.g.
-// awarding 25 points at once with a 10-point threshold triggers 2 steps,
-// leaving 5 toward the next). Deducting points never un-advances a stage —
-// growth is a one-way ratchet; it only slows future progress.
+// Applies a change in a student's LIFETIME points (total ever earned —
+// never decreases; see TeacherDashboard.jsx's applyPtsChange for how that's
+// kept separate from the spendable gotchiPts currency balance) to their
+// growth progress, advancing the meter and triggering as many growth steps
+// as the points cover (e.g. earning 25 lifetime points at once with a
+// 10-point threshold triggers 2 steps, leaving 5 toward the next).
+// growthConsumedPts naturally makes this a one-way ratchet already (the
+// while loop below only ever runs forward), but since the caller is now
+// expected to pass a monotonically-increasing value in the first place
+// (spending currency never lowers it), there's no longer a "deduction"
+// case to guard here at all — growth can only ever move forward.
 //
 // Returns { progress, reachedAdultTamaIds } rather than just the progress
 // object — reachedAdultTamaIds lists every adult newly completed during
@@ -232,22 +238,25 @@ export function advanceGrowth(progress) {
 // only care about the growth state itself can just destructure
 // `.progress`; this exists so a caller can react to "an adult was just
 // reached" (e.g. TeacherDashboard.jsx pins the field's display tama to a
-// freshly-completed adult, then leaves it alone — see its withGrowth) — a
-// concern growth.js itself deliberately doesn't know about (no student/
-// display concept here, just pure growth math).
-export function applyPointsToGrowth(progress, gotchiPts) {
+// freshly-completed adult, then leaves it alone — see its applyPtsChange)
+// — a concern growth.js itself deliberately doesn't know about (no
+// student/display/currency concept here, just pure growth math).
+export function applyPointsToGrowth(progress, lifetimePts) {
   let next = progress;
   const reachedAdultTamaIds = [];
-  while (gotchiPts - next.growthConsumedPts >= POINTS_PER_GROWTH) {
+  while (lifetimePts - next.growthConsumedPts >= POINTS_PER_GROWTH) {
     next = { ...advanceGrowth(next), growthConsumedPts: next.growthConsumedPts + POINTS_PER_GROWTH };
     if (next.currentTama.stage === 'adult') reachedAdultTamaIds.push(next.currentTama.tamaId);
   }
   return { progress: next, reachedAdultTamaIds };
 }
 
-// 0-1 fraction of the way to the next growth step, clamped so a point
-// deduction never shows a negative/overfull bar.
-export function meterFraction(progress, gotchiPts) {
-  const remainder = gotchiPts - progress.growthConsumedPts;
+// 0-1 fraction of the way to the next growth step. Takes lifetimePts (see
+// applyPointsToGrowth above), not the spendable currency balance, so
+// spending never moves this bar. Still clamped defensively — old saved
+// data or a manually-edited lifetimePts could in principle sit below
+// growthConsumedPts.
+export function meterFraction(progress, lifetimePts) {
+  const remainder = lifetimePts - progress.growthConsumedPts;
   return Math.max(0, Math.min(1, remainder / POINTS_PER_GROWTH));
 }

@@ -63,7 +63,7 @@ export default function StudentGrid({ students, onSelectStudent }) {
 
 function StudentTile({ student, onClick }) {
   const growth = student.growth;
-  const fraction = meterFraction(growth, student.gotchiPts);
+  const fraction = meterFraction(growth, student.lifetimePts ?? student.gotchiPts);
   const { stage, tamaId } = growth.currentTama; // deliberately the growing tama, not the display tama — see file header
   const isEgg = stage === 'egg';
 

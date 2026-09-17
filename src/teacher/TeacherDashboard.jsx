@@ -5,10 +5,18 @@
 //
 // Data layer is local state persisted to localStorage, NOT Supabase — see
 // CLAUDE.md: don't touch/reintroduce Supabase until explicitly asked. The
-// shape below (classes -> students -> {id, name, email, gotchiPts, pets})
-// mirrors the old Supabase schema on purpose so swapping in a real backend
-// later is a matter of replacing the load/save functions, not redesigning
-// the data model or components.
+// shape below (classes -> students -> {id, name, email, gotchiPts,
+// lifetimePts, pets}) mirrors the old Supabase schema on purpose so
+// swapping in a real backend later is a matter of replacing the load/save
+// functions, not redesigning the data model or components.
+//
+// gotchiPts vs lifetimePts: gotchiPts is a spendable currency balance —
+// it goes up on award and down on deduction/spend (a future item shop
+// spends this same balance). lifetimePts is the total ever earned and
+// only ever goes up; it's what actually drives the growth meter
+// (growth.js's applyPointsToGrowth/meterFraction), so deducting or
+// spending gotchiPts can never shrink or un-advance a pet's growth — see
+// applyPtsChange below for exactly how the two stay in sync.
 
 import { useEffect, useRef, useState } from 'react';
 import './teacher.css';
@@ -114,17 +122,21 @@ export default function TeacherDashboard() {
     const name = newStudentName.trim();
     if (!name) return;
     const startingPts = Math.max(0, Number(newStudentPts) || 0);
+    // A brand-new student's starting balance counts as already-earned —
+    // gotchiPts and lifetimePts both start equal, same as applyPtsChange
+    // would treat an increase from 0.
     const { progress: growth, reachedAdultTamaIds } = applyPointsToGrowth(newStudentProgress(), startingPts);
     const student = {
       id: uid(),
       name,
       email: newStudentEmail.trim(),
       gotchiPts: startingPts,
+      lifetimePts: startingPts,
       pets: [], // legacy field from teacher.html's old shop system — unused now, kept only so existing saved data doesn't break; growth/tamadex live in `growth` instead
       growth,
       // 'current' = follow whatever's growing now, UNTIL the first adult is
       // reached — then it pins to that adult and stops auto-advancing (see
-      // withGrowth below); a specific tamadex tamaId always shows that
+      // applyPtsChange below); a specific tamadex tamaId always shows that
       // completed adult instead. Handles the unlikely case of enough
       // starting points to reach an adult immediately.
       displayTamaId: reachedAdultTamaIds.at(-1) ?? 'current',
@@ -140,29 +152,44 @@ export default function TeacherDashboard() {
     toast('Student removed');
   }
 
-  // Points and growth always move together — anywhere gotchiPts changes,
-  // growth gets recomputed from the new total in the same update, so the
-  // meter/stage can never drift out of sync with the displayed points.
+  // Sets a student's gotchiPts (the spendable currency balance) to
+  // newGotchiPts, and separately tracks lifetimePts (total ever earned,
+  // never decreases) which is what actually drives growth — see the file
+  // header comment. Only the earned PORTION of an increase counts toward
+  // lifetimePts: raising gotchiPts from 5 to 8 adds 3 to lifetimePts (an
+  // award), but lowering it from 8 to 5 (a deduction, or a future shop
+  // spend) adds nothing — lifetimePts, and therefore the growth meter and
+  // stage, is untouched. This is how "spending points doesn't deplete the
+  // meter" is actually enforced, not just documented.
   //
-  // Bug fix: the field used to visibly jump to whatever was growing on
-  // EVERY stage change (egg->baby->...->adult->egg again next cycle),
-  // since displayTamaId defaulted to 'current' and nothing ever moved it
-  // off that. Now: still auto-follow while displayTamaId is 'current' (so
-  // the field shows the pet actually growing, same as before) — but the
+  // Bug fix (pre-dates the currency/lifetime split, still applies): the
+  // field used to visibly jump to whatever was growing on EVERY stage
+  // change (egg->baby->...->adult->egg again next cycle), since
+  // displayTamaId defaulted to 'current' and nothing ever moved it off
+  // that. Now: still auto-follow while displayTamaId is 'current' (so the
+  // field shows the pet actually growing, same as before) — but the
   // moment an adult is newly reached, pin displayTamaId to it so the field
   // stops advancing there instead of quietly cycling on to the next egg.
   // Only an explicit tamadex pick (setDisplayTama) moves it after that.
-  function withGrowth(student, newPts) {
-    const gotchiPts = Math.max(0, newPts);
-    const { progress: growth, reachedAdultTamaIds } = applyPointsToGrowth(student.growth ?? newStudentProgress(), gotchiPts);
+  function applyPtsChange(student, newGotchiPts) {
+    const gotchiPts = Math.max(0, Number(newGotchiPts) || 0);
+    const priorGotchiPts = student.gotchiPts ?? 0;
+    // Migration fallback: students saved before this split only have
+    // gotchiPts, which (under the old single-number model) already fully
+    // reflected everything they'd earned — so treat that as their starting
+    // lifetimePts rather than resetting their meter to 0.
+    const priorLifetimePts = student.lifetimePts ?? priorGotchiPts;
+    const earnedDelta = Math.max(0, gotchiPts - priorGotchiPts);
+    const lifetimePts = priorLifetimePts + earnedDelta;
+
+    const { progress: growth, reachedAdultTamaIds } = applyPointsToGrowth(student.growth ?? newStudentProgress(), lifetimePts);
     const stillAutoFollowing = !student.displayTamaId || student.displayTamaId === 'current';
     const displayTamaId = stillAutoFollowing && reachedAdultTamaIds.length > 0 ? reachedAdultTamaIds.at(-1) : student.displayTamaId;
-    return { ...student, gotchiPts, growth, displayTamaId };
+    return { ...student, gotchiPts, lifetimePts, growth, displayTamaId };
   }
 
   function setStudentPts(studentId, newPts) {
-    const clamped = Math.max(0, Number(newPts) || 0);
-    updateCurrentClassStudents((list) => list.map((s) => (s.id === studentId ? withGrowth(s, clamped) : s)));
+    updateCurrentClassStudents((list) => list.map((s) => (s.id === studentId ? applyPtsChange(s, newPts) : s)));
   }
 
   // displayTamaId is 'current' (follow whatever's growing) or a specific
@@ -180,7 +207,7 @@ export default function TeacherDashboard() {
 
   function awardAll(sign) {
     const amt = Math.max(1, Number(awardAmount) || 1) * sign;
-    updateCurrentClassStudents((list) => list.map((s) => withGrowth(s, s.gotchiPts + amt)));
+    updateCurrentClassStudents((list) => list.map((s) => applyPtsChange(s, s.gotchiPts + amt)));
     toast(sign > 0 ? `Awarded ${amt} pts to everyone` : `Deducted ${Math.abs(amt)} pts from everyone`);
   }
 
@@ -404,7 +431,7 @@ export default function TeacherDashboard() {
 // the dashboard — doesn't persist the fallback, just renders safely.
 function GrowthStatus({ student, onSetDisplayTama }) {
   const growth = student.growth ?? newStudentProgress();
-  const fraction = meterFraction(growth, student.gotchiPts);
+  const fraction = meterFraction(growth, student.lifetimePts ?? student.gotchiPts);
   const { stage, name } = growth.currentTama;
 
   const displayTamaId = student.displayTamaId ?? 'current';
