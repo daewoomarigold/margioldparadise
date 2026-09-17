@@ -1,9 +1,9 @@
 {
   "egg": {
-    "bodyBase": "image-231.png",
+    "bodyBase": "image-234.png",
     "eyesBase": "image-232.png",
     "mouthBase": "image-233.png",
-    "bodyMini": "image-234.png",
+    "bodyMini": "image-231.png",
     "eyesMini": "image-235.png",
     "mouthMini": "image-236.png"
   },
