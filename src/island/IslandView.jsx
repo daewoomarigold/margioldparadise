@@ -93,9 +93,18 @@ export default function IslandView() {
   // document-wide click listener (see that repo's AUDIO section): fires
   // for any button/link click anywhere in this view (class switcher,
   // student tiles, tamadex toast) without needing per-button wiring.
+  //
+  // [role="button"] (not just an actual <button>/<a>) matters here — the
+  // student tile (StudentGrid.jsx) and the tamadex's tama-select cells
+  // (TamadexToast.jsx) are styled divs with an onClick, not real <button>
+  // elements (their pixel-art tile look doesn't want default button
+  // chrome), so they're marked role="button" specifically so this catches
+  // them too. Bug fix: this used to only match `button, a[role="button"]`
+  // — an actual <a> tag with the role, not any element — so those tile
+  // clicks never played anything.
   useEffect(() => {
     function onClick(e) {
-      const btn = e.target.closest('button, a[role="button"]');
+      const btn = e.target.closest('button, [role="button"]');
       if (btn) playTap();
     }
     document.addEventListener('click', onClick, { capture: true });

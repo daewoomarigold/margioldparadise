@@ -40,6 +40,7 @@ export default function TamadexToast({ student, onSelectDisplay, onClose }) {
             return (
               <div
                 key={a.tamaId}
+                role={got ? 'button' : undefined}
                 style={{
                   ...cellStyle,
                   ...(isDisplayed ? cellSelectedStyle : null),

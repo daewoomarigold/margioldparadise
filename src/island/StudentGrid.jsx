@@ -218,7 +218,11 @@ function StudentTile({ student, onClick }) {
   const flashMs = evo?.phase === 'flashIn' ? EVO_FLASH_IN_MS : evo?.phase === 'flashOut' ? EVO_FLASH_OUT_MS : 0;
 
   return (
-    <div style={{ ...tileStyle, ...tileBgStyle, cursor: 'pointer' }} onClick={onClick}>
+    <div
+      role="button"
+      style={{ ...tileStyle, ...tileBgStyle, cursor: 'pointer' }}
+      onClick={onClick}
+    >
       <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', height: 32 * TILE_SCALE }}>
         {!showing.hidden && (
           <div style={{ position: 'relative', transform: `translateX(${(showing.shakeX || 0) + (showing.walkX || 0)}px)` }}>
