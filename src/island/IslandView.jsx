@@ -24,6 +24,7 @@ const CANVAS_W = 512;
 const CANVAS_H = 512;
 const SCALE = 1; // mini sprites are 32x32 native; this is their on-screen size multiplier
 const SPRITE_PX = 32 * SCALE;
+const HATCH_FRAME_MS = 350; // per-frame duration for the one-shot egg_hatch playback
 
 // The island now writes back (setting a student's display tama from the
 // tamadex toast), not just reads — so it holds the full store (all
@@ -50,6 +51,9 @@ export default function IslandView() {
   const lastTsRef = useRef(null);
   const [, setTick] = useState(0); // bumped every animation frame to force a re-render from the refs above
   const [selectedStudentId, setSelectedStudentId] = useState(null); // which student's tamadex toast is open, if any
+  const prevStagesRef = useRef(new Map()); // studentId -> last-seen display stage, to detect an egg->baby transition
+  const hatchStateRef = useRef(new Map()); // studentId -> { startedAt, frame } while egg_hatch is playing one-shot
+  const studentsRef = useRef([]); // kept fresh via the effect below so the rAF loop always sees the latest roster without restarting itself
 
   const activeClass = useMemo(
     () => store.classes.find((c) => c.id === store.currentClassId) ?? store.classes[0] ?? null,
@@ -59,6 +63,9 @@ export default function IslandView() {
   // (and re-run its add/remove diff pointlessly) on every animation-frame
   // re-render when there's no active class.
   const students = useMemo(() => activeClass?.students ?? [], [activeClass]);
+  useEffect(() => {
+    studentsRef.current = students;
+  }, [students]);
 
   // Re-read the store when the teacher dashboard (a separate tab/window,
   // typically) changes it, so the island stays live without a backend.
@@ -115,6 +122,13 @@ export default function IslandView() {
     }
   }, [students]);
 
+  // Static lookups (same object every call, pure function over the JSON
+  // import) — fine to capture once in the rAF effect's closure below even
+  // though that effect only runs on mount ([] deps).
+  const walk = resolveAnimState('walk_left');
+  const eggRock = resolveAnimState('egg_rock');
+  const eggHatch = resolveAnimState('egg_hatch');
+
   useEffect(() => {
     let raf;
     function frame(ts) {
@@ -127,14 +141,40 @@ export default function IslandView() {
         stepRoamer(roamer, dt, CANVAS_W);
         stepAnim(roamer, dt);
       }
+
+      // Detect egg -> non-egg transitions and manage the one-shot
+      // egg_hatch playback. Done here (not during render) since it writes
+      // to refs — imperative per-frame state, same as the roamer stepping
+      // above, not something render should be doing.
+      for (const s of studentsRef.current) {
+        const currentStage = resolveDisplayTama(s).stage;
+        const prevStage = prevStagesRef.current.get(s.id);
+        if (prevStage === 'egg' && currentStage !== 'egg' && !hatchStateRef.current.has(s.id)) {
+          hatchStateRef.current.set(s.id, { startedAt: ts, frame: 0 });
+        }
+        prevStagesRef.current.set(s.id, currentStage);
+
+        const hatch = hatchStateRef.current.get(s.id);
+        if (hatch) {
+          const frameIdx = Math.floor((ts - hatch.startedAt) / HATCH_FRAME_MS);
+          if (frameIdx >= eggHatch.body.length) {
+            hatchStateRef.current.delete(s.id); // playback finished — display switches to the new stage next render
+          } else {
+            hatch.frame = frameIdx;
+          }
+        }
+      }
+
       setTick((t) => t + 1);
       raf = requestAnimationFrame(frame);
     }
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);
+    // eggHatch is static data (resolveAnimState over the JSON import) —
+    // same value every render, safe to omit; runs once by design.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const walk = resolveAnimState('walk_left'); // shared by all tamas — see animationStates.json
   // Looked up fresh from `students` (not stored as its own object) so the
   // toast reflects live growth/points changes from another tab while open.
   const selectedStudent = students.find((s) => s.id === selectedStudentId) ?? null;
@@ -206,15 +246,33 @@ export default function IslandView() {
           // header comment for the asymmetric-design rationale.
           const { stage, tamaId } = resolveDisplayTama(s);
 
-          if (stage === 'egg') {
-            // Eggs don't roam — fixed near the bottom, matching the old
-            // gotchigarden.html's "eggs don't move" behavior.
+          // Same fixed spot for both — eggs (and the hatch moment right
+          // after one) don't roam, matching the old gotchigarden.html's
+          // "eggs don't move" behavior.
+          const eggSpotStyle = { position: 'absolute', left: CANVAS_W / 2 - SPRITE_PX / 2, top: CANVAS_H * 0.78 };
+
+          const hatch = hatchStateRef.current.get(s.id);
+          if (hatch) {
+            // One-shot egg_hatch playback in progress — keep showing this
+            // even though `stage` may have already flipped to baby, so the
+            // transition reads as "hatching" rather than an instant swap.
             return (
-              <div
-                key={s.id}
-                style={{ position: 'absolute', left: CANVAS_W / 2 - SPRITE_PX / 2, top: CANVAS_H * 0.78 }}
-              >
-                <TamaComposite tamaId="egg" variant="mini" frames={{ body: 0, eyes: 0, mouth: 0 }} scale={SCALE} />
+              <div key={s.id} style={eggSpotStyle}>
+                <TamaComposite tamaId="egg" variant="mini" frames={{ body: eggHatch.body[hatch.frame], eyes: 0, mouth: 0 }} scale={SCALE} />
+                <NameTag name={s.name} />
+              </div>
+            );
+          }
+
+          if (stage === 'egg') {
+            return (
+              <div key={s.id} style={eggSpotStyle}>
+                <TamaComposite
+                  tamaId="egg"
+                  variant="mini"
+                  frames={{ body: eggRock.body[roamer.animFrame % eggRock.body.length], eyes: 0, mouth: 0 }}
+                  scale={SCALE}
+                />
                 <NameTag name={s.name} />
               </div>
             );

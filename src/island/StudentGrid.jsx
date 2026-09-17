@@ -31,6 +31,7 @@ const TILE_ANIM_FPS = 2; // was 4 — read as too fast for a small in-place idle
 
 const TOTAL_COLLECTIBLE = totalCollectible();
 const WALKING_FORWARD = resolveAnimState('walking_forward');
+const EGG_ROCK = resolveAnimState('egg_rock');
 
 export default function StudentGrid({ students, onSelectStudent }) {
   const tiles = Array.from({ length: GRID_SIZE }, (_, i) => students[i] ?? null);
@@ -61,16 +62,16 @@ function StudentTile({ student, onClick }) {
 
   // Cycles walking_forward's 2 body frames in place — no position movement
   // (this is a static tile, not the roaming island), just a "still alive"
-  // animation. Eggs don't animate — stays on the egg's own frame 0.
+  // animation. Eggs get the same treatment via egg_rock instead (no face
+  // to animate, so faceOffset stays unused for them).
   const [animFrame, setAnimFrame] = useState(0);
   useEffect(() => {
-    if (isEgg) return;
     const id = setInterval(() => setAnimFrame((f) => f + 1), 1000 / TILE_ANIM_FPS);
     return () => clearInterval(id);
-  }, [isEgg]);
+  }, []);
 
   const frames = isEgg
-    ? { body: 0, eyes: 0, mouth: 0 }
+    ? { body: EGG_ROCK.body[animFrame % EGG_ROCK.body.length], eyes: 0, mouth: 0 }
     : {
         body: WALKING_FORWARD.body[animFrame % WALKING_FORWARD.body.length],
         eyes: WALKING_FORWARD.eyes[animFrame % WALKING_FORWARD.eyes.length],
