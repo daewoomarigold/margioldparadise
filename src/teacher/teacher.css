@@ -1,7 +1,8 @@
 /* Teacher dashboard — dark theme design system ported from the old
-   teacher.html (see gotchigarden repo). Auth/CSV-import/prices/seating/
-   photo-export intentionally left out of this first pass — see
-   TeacherDashboard.jsx's header comment for scope. */
+   teacher.html (see gotchigarden repo). Auth/prices/seating/photo-export
+   intentionally left out of this first pass — see TeacherDashboard.jsx's
+   header comment for scope. (CSV import was originally on this list too,
+   but has since been added.) */
 
 .teacher-root {
   --bg: #0e0e1a;
@@ -142,6 +143,65 @@
 .teacher-btn-new-class:hover {
   border-color: var(--green);
   color: var(--green);
+}
+.teacher-btn-new-class.import:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+/* A class row pairs the (flex-grown) class-select button with a small
+   delete icon button, replacing the old bare .teacher-class-btn list. */
+.teacher-class-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.teacher-class-row .teacher-class-btn {
+  flex: 1;
+  margin-bottom: 0;
+}
+.teacher-class-delete-btn {
+  flex-shrink: 0;
+  width: 24px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.teacher-class-delete-btn:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+/* CSV import preview (inside a .teacher-modal) */
+.teacher-csv-summary {
+  font-size: 11px;
+  color: var(--muted);
+}
+.teacher-csv-summary strong {
+  color: var(--text);
+}
+.teacher-csv-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--raised);
+}
+.teacher-csv-row {
+  font-size: 10px;
+  color: var(--muted);
+  padding: 5px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.teacher-csv-row:last-child {
+  border-bottom: none;
 }
 .teacher-sidebar-stats {
   display: flex;

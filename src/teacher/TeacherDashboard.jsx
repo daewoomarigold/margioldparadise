@@ -1,7 +1,8 @@
 // Teacher dashboard — ported from the old teacher.html (gotchigarden repo),
 // core roster + points loop only for this first pass. Left out on purpose,
-// to be ported later: Google auth (no login gate here yet), CSV roster
-// import, prices panel, seating plan designer, photo/card export.
+// to be ported later: Google auth (no login gate here yet), prices panel,
+// seating plan designer, photo/card export. CSV roster import was
+// originally on this list too — see parseClassCsv below for that one.
 //
 // Data layer is local state persisted to localStorage, NOT Supabase — see
 // CLAUDE.md: don't touch/reintroduce Supabase until explicitly asked. The
@@ -44,6 +45,109 @@ function uid() {
     : `id-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+// Splits one CSV line into fields, honoring double-quoted fields (so a
+// quoted name like "Lee, Grace" doesn't get cut in half) and "" as an
+// escaped quote inside one. The old teacher.html's parser just did
+// line.split(','), which breaks on real school-exported sheets more often
+// than you'd like — this is the one deliberate improvement over a literal
+// port.
+function splitCsvLine(line) {
+  const fields = [];
+  let cur = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (line[i + 1] === '"') {
+          cur += '"';
+          i++;
+        } else {
+          inQuotes = false;
+        }
+      } else {
+        cur += ch;
+      }
+    } else if (ch === '"') {
+      inQuotes = true;
+    } else if (ch === ',') {
+      fields.push(cur.trim());
+      cur = '';
+    } else {
+      cur += ch;
+    }
+  }
+  fields.push(cur.trim());
+  return fields;
+}
+
+// Parses a class roster CSV — same column semantics as the old
+// teacher.html's parseCSV (see that repo): headers matched case-
+// insensitively, a row skipped only when an Active column exists and
+// isn't "yes" (no Active column at all -> everyone's imported), the class
+// name synthesized from Grade + English Class. One CSV = one class, same
+// as before. UUID, if present, becomes the student's id (so re-importing
+// the same roster elsewhere would line up) — otherwise one's generated.
+// Adapted to our local student shape (see createCsvStudent below) instead
+// of Supabase insert rows. Returns { error } on anything unusable, or
+// { className, students } — never both.
+function parseClassCsv(text) {
+  const lines = text
+    .replace(/^﻿/, '') // strip BOM
+    .split(/\r\n|\r|\n/)
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
+  if (lines.length < 2) return { error: 'That CSV has no data rows.' };
+
+  const headers = splitCsvLine(lines[0]).map((h) => h.toLowerCase());
+  const colIndex = (name) => headers.indexOf(name);
+  const idx = {
+    uuid: colIndex('uuid'),
+    name: colIndex('name'),
+    grade: colIndex('grade'),
+    engClass: colIndex('english class'),
+    active: colIndex('active'),
+  };
+  if (idx.name < 0) return { error: 'That CSV needs a "Name" column.' };
+
+  let grade = '';
+  let engClass = '';
+  const students = [];
+  for (const line of lines.slice(1)) {
+    const cols = splitCsvLine(line);
+    if (idx.active >= 0 && (cols[idx.active] ?? '').toLowerCase() !== 'yes') continue;
+    const name = (cols[idx.name] ?? '').trim();
+    if (!name) continue;
+    grade = cols[idx.grade] || grade;
+    engClass = cols[idx.engClass] || engClass;
+    const rawId = idx.uuid >= 0 ? cols[idx.uuid] : '';
+    students.push({ id: rawId || undefined, name });
+  }
+  if (students.length === 0) return { error: 'No active students found in that CSV.' };
+
+  const nameParts = [];
+  if (grade) nameParts.push(`Grade ${grade}`);
+  if (engClass) nameParts.push(engClass);
+  return { className: nameParts.join(' — '), students };
+}
+
+// Builds a fresh student record for a CSV-imported row — always starts at
+// 0 points/a fresh egg, same as the old importer's `gotchi_pts: 0`.
+// s.id (the CSV's UUID column, if present) is preserved; otherwise a new
+// one is generated, same as any other student.
+function createCsvStudent(s) {
+  return {
+    id: s.id || uid(),
+    name: s.name,
+    email: '',
+    gotchiPts: 0,
+    lifetimePts: 0,
+    pets: [],
+    growth: newStudentProgress(),
+    displayTamaId: 'current',
+  };
+}
+
 export default function TeacherDashboard() {
   const initialStore = useState(loadStore)[0];
   const [classes, setClasses] = useState(initialStore.classes);
@@ -51,6 +155,9 @@ export default function TeacherDashboard() {
   const [search, setSearch] = useState('');
   const [showNewClassForm, setShowNewClassForm] = useState(false);
   const [newClassName, setNewClassName] = useState('');
+  const [csvPreview, setCsvPreview] = useState(null); // { className, students } once a CSV's been parsed, until confirmed/cancelled
+  const [csvImportName, setCsvImportName] = useState(''); // editable in the preview — the parsed className is just a starting suggestion
+  const csvInputRef = useRef(null);
   const [showAddStudent, setShowAddStudent] = useState(false);
   const [newStudentName, setNewStudentName] = useState('');
   const [newStudentEmail, setNewStudentEmail] = useState('');
@@ -109,6 +216,61 @@ export default function TeacherDashboard() {
   function selectClass(id) {
     setCurrentClassId(id);
     setSearch('');
+  }
+
+  function deleteClass(cls) {
+    if (!confirm(`Delete "${cls.name}" and all ${cls.students.length} of its students? This cannot be undone.`)) return;
+    setClasses((prev) => prev.filter((c) => c.id !== cls.id));
+    if (currentClassId === cls.id) {
+      const remaining = classes.filter((c) => c.id !== cls.id);
+      setCurrentClassId(remaining[0]?.id ?? null);
+      setSearch('');
+    }
+    toast(`Deleted ${cls.name}`);
+  }
+
+  // Opens the OS file picker (the actual <input type="file"> stays hidden
+  // — see the sidebar's "Import CSV" button, which just clicks this ref).
+  function openImportCsv() {
+    csvInputRef.current?.click();
+  }
+
+  // Reads + parses the picked file and opens the preview modal on success.
+  // Doesn't create anything yet — that's confirmImportCsv, so a teacher
+  // can fix up the class name or back out first.
+  function handleCsvFileChange(e) {
+    const file = e.target.files?.[0];
+    e.target.value = ''; // clears the input so picking the same file again still fires onChange
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const result = parseClassCsv(String(ev.target.result ?? ''));
+      if (result.error) {
+        toast(`⚠ ${result.error}`);
+        return;
+      }
+      setCsvPreview(result);
+      // Suggest the filename (minus .csv) when the sheet didn't have
+      // Grade/English Class columns to synthesize a name from.
+      setCsvImportName(result.className || file.name.replace(/\.csv$/i, ''));
+    };
+    reader.onerror = () => toast('⚠ Could not read that file');
+    reader.readAsText(file);
+  }
+
+  function cancelImportCsv() {
+    setCsvPreview(null);
+  }
+
+  function confirmImportCsv() {
+    if (!csvPreview) return;
+    const name = csvImportName.trim() || 'Imported Class';
+    const cls = { id: uid(), name, students: csvPreview.students.map(createCsvStudent) };
+    setClasses((prev) => [...prev, cls]);
+    setCurrentClassId(cls.id);
+    setCsvPreview(null);
+    setSearch('');
+    toast(`Imported ${name} with ${cls.students.length} students`);
   }
 
   function openAddStudent() {
@@ -224,13 +386,17 @@ export default function TeacherDashboard() {
           <div className="teacher-sidebar-section">
             <div className="teacher-sidebar-head">Classes</div>
             {classes.map((cls) => (
-              <button
-                key={cls.id}
-                className={`teacher-class-btn${cls.id === currentClassId ? ' active' : ''}`}
-                onClick={() => selectClass(cls.id)}
-              >
-                {cls.name}
-              </button>
+              <div className="teacher-class-row" key={cls.id}>
+                <button
+                  className={`teacher-class-btn${cls.id === currentClassId ? ' active' : ''}`}
+                  onClick={() => selectClass(cls.id)}
+                >
+                  {cls.name}
+                </button>
+                <button className="teacher-class-delete-btn" title={`Delete ${cls.name}`} onClick={() => deleteClass(cls)}>
+                  ✕
+                </button>
+              </div>
             ))}
 
             {showNewClassForm ? (
@@ -256,9 +422,21 @@ export default function TeacherDashboard() {
                 </div>
               </div>
             ) : (
-              <button className="teacher-btn-new-class" onClick={() => setShowNewClassForm(true)}>
-                + New Class
-              </button>
+              <>
+                <button className="teacher-btn-new-class" onClick={() => setShowNewClassForm(true)}>
+                  + New Class
+                </button>
+                <button className="teacher-btn-new-class import" onClick={openImportCsv}>
+                  ↑ Import CSV
+                </button>
+                <input
+                  ref={csvInputRef}
+                  type="file"
+                  accept=".csv,text/csv"
+                  style={{ display: 'none' }}
+                  onChange={handleCsvFileChange}
+                />
+              </>
             )}
           </div>
 
@@ -413,6 +591,36 @@ export default function TeacherDashboard() {
               </button>
               <button className="teacher-btn green" onClick={createStudent}>
                 Add
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {csvPreview && (
+        <div className="teacher-modal-backdrop open" onClick={(e) => e.target === e.currentTarget && cancelImportCsv()}>
+          <div className="teacher-modal">
+            <div className="teacher-modal-title">Import CSV</div>
+            <div className="teacher-field">
+              <label>Class Name</label>
+              <input type="text" value={csvImportName} autoFocus onChange={(e) => setCsvImportName(e.target.value)} />
+            </div>
+            <div className="teacher-csv-summary">
+              <strong>{csvPreview.students.length}</strong> active student{csvPreview.students.length === 1 ? '' : 's'} found:
+            </div>
+            <div className="teacher-csv-list">
+              {csvPreview.students.map((s, i) => (
+                <div className="teacher-csv-row" key={s.id ?? i}>
+                  {s.name}
+                </div>
+              ))}
+            </div>
+            <div className="teacher-modal-btns">
+              <button className="teacher-btn" onClick={cancelImportCsv}>
+                Cancel
+              </button>
+              <button className="teacher-btn green" onClick={confirmImportCsv}>
+                Import
               </button>
             </div>
           </div>
