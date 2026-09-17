@@ -165,16 +165,6 @@ function StudentTile({ student, onClick }) {
   const { stage, tamaId } = growth.currentTama; // deliberately the growing tama, not the display tama — see file header
   const isEgg = stage === 'egg';
 
-  // Cycles walking_forward's 2 body frames in place — no position movement
-  // (this is a static tile, not the roaming island), just a "still alive"
-  // animation. Eggs get the same treatment via egg_rock instead (no face
-  // to animate, so faceOffset stays unused for them).
-  const [animFrame, setAnimFrame] = useState(0);
-  useEffect(() => {
-    const id = setInterval(() => setAnimFrame((f) => f + 1), 1000 / TILE_ANIM_FPS);
-    return () => clearInterval(id);
-  }, []);
-
   // --- Evolution overlay / coin rain ---------------------------------------
   // See the file header for the full picture. prevSnapshotRef remembers
   // what was showing last render (now including gotchiPts, not just
@@ -184,6 +174,27 @@ function StudentTile({ student, onClick }) {
   // `evo` is null during normal play.
   const prevSnapshotRef = useRef(null);
   const [evo, setEvo] = useState(null);
+
+  // Cycles walking_forward's 2 body frames in place — no position movement
+  // (this is a static tile, not the roaming island), just a "still alive"
+  // animation. Eggs get the same treatment via egg_rock instead (no face
+  // to animate, so faceOffset stays unused for them).
+  //
+  // Paused for the whole time evo is active (bug fix: this used to tick
+  // unconditionally, completely decoupled from the reveal sequence below
+  // — `showing`'s evo-vs-normal branch meant it never actually rendered
+  // during a reveal, but it kept firing/re-rendering underneath the whole
+  // time regardless, which is exactly the "walking/evolving/coin
+  // animations competing" Taylor reported. Depending on `evo` here makes
+  // "pause the idle loop for a reveal, resume once it's back to null" an
+  // explicit guarantee instead of something render logic just happened to
+  // paper over).
+  const [animFrame, setAnimFrame] = useState(0);
+  useEffect(() => {
+    if (evo) return;
+    const id = setInterval(() => setAnimFrame((f) => f + 1), 1000 / TILE_ANIM_FPS);
+    return () => clearInterval(id);
+  }, [evo]);
 
   useEffect(() => {
     const prev = prevSnapshotRef.current;
