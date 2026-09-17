@@ -265,13 +265,15 @@ export default function IslandView() {
           }
 
           if (stage === 'egg') {
+            const eggFrameIdx = roamer.animFrame % eggRock.body.length;
             return (
               <div key={s.id} style={eggSpotStyle}>
                 <TamaComposite
                   tamaId="egg"
                   variant="mini"
-                  frames={{ body: eggRock.body[roamer.animFrame % eggRock.body.length], eyes: 0, mouth: 0 }}
+                  frames={{ body: eggRock.body[eggFrameIdx], eyes: 0, mouth: 0 }}
                   scale={SCALE}
+                  mirrored={eggRock.bodyMirror[eggFrameIdx % eggRock.bodyMirror.length]}
                 />
                 <NameTag name={s.name} />
               </div>

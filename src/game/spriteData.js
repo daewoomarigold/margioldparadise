@@ -91,7 +91,12 @@ export function getBibleOffsets(entity, variant) {
 // on top of the tama's normal eyes/mouth offset (not a different sprite
 // frame) — e.g. walk's constant sideways shift to stay centered on the
 // leaning body, plus a subtle up-shift on the second step frame; default
-// to no shift.
+// to no shift. bodyMirror is a per-cycle-frame boolean (same modulo
+// indexing as body) that flips just that frame — e.g. egg_rock reusing
+// its one tilt frame for both lean directions instead of needing a
+// second drawn frame. Unrelated to `mirror`/mirrorOf below, which flips
+// the whole state (e.g. walk_right reusing walk_left) rather than one
+// frame at a time.
 export function resolveAnimState(name) {
   const raw = animationStates[name];
   if (!raw) return null;
@@ -103,6 +108,7 @@ export function resolveAnimState(name) {
     mouth: target.mouth ?? [0],
     faceOffsetX: target.faceOffsetX ?? [0],
     faceOffsetY: target.faceOffsetY ?? [0],
+    bodyMirror: target.bodyMirror ?? [false],
     mirror: Boolean(raw.mirrorOf),
   };
 }

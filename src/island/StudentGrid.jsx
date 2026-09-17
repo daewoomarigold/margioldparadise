@@ -70,8 +70,9 @@ function StudentTile({ student, onClick }) {
     return () => clearInterval(id);
   }, []);
 
+  const eggFrameIdx = animFrame % EGG_ROCK.body.length;
   const frames = isEgg
-    ? { body: EGG_ROCK.body[animFrame % EGG_ROCK.body.length], eyes: 0, mouth: 0 }
+    ? { body: EGG_ROCK.body[eggFrameIdx], eyes: 0, mouth: 0 }
     : {
         body: WALKING_FORWARD.body[animFrame % WALKING_FORWARD.body.length],
         eyes: WALKING_FORWARD.eyes[animFrame % WALKING_FORWARD.eyes.length],
@@ -83,11 +84,19 @@ function StudentTile({ student, onClick }) {
         x: WALKING_FORWARD.faceOffsetX[animFrame % WALKING_FORWARD.faceOffsetX.length],
         y: WALKING_FORWARD.faceOffsetY[animFrame % WALKING_FORWARD.faceOffsetY.length],
       };
+  const mirrored = isEgg && EGG_ROCK.bodyMirror[eggFrameIdx % EGG_ROCK.bodyMirror.length];
 
   return (
     <div style={{ ...tileStyle, cursor: 'pointer' }} onClick={onClick}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 32 * TILE_SCALE }}>
-        <TamaComposite tamaId={isEgg ? 'egg' : tamaId} variant="mini" frames={frames} scale={TILE_SCALE} faceOffset={faceOffset} />
+        <TamaComposite
+          tamaId={isEgg ? 'egg' : tamaId}
+          variant="mini"
+          frames={frames}
+          scale={TILE_SCALE}
+          mirrored={mirrored}
+          faceOffset={faceOffset}
+        />
       </div>
       <div style={nameStyle}>{student.name}</div>
       <div style={meterTrackStyle} title={`${Math.round(fraction * POINTS_PER_GROWTH)}/${POINTS_PER_GROWTH} pts to next stage`}>
