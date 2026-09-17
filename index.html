@@ -4,10 +4,18 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gotchigarden</title>
+    <title>Marigold Paradise</title>
+    <!--
+      This root page has no app of its own — just a redirect to the
+      teacher dashboard (teacher/index.html), the sensible default when
+      someone lands on the bare site URL. Plain inline script, no
+      React/build step needed for something this trivial. Preserves any
+      query string/hash (e.g. an OAuth redirect landing here) rather than
+      dropping it.
+    -->
+    <script>
+      location.replace('teacher/' + location.search + location.hash)
+    </script>
   </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+  <body></body>
 </html>

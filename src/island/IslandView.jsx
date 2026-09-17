@@ -10,7 +10,11 @@
 // read path; whatever device projects this needs its own sign-in, same
 // account, same row-level-security rules as everywhere else).
 //
-// Not wired into navigation yet — open with /?view=island.
+// Its own page — island/index.html + src/islandMain.jsx — served at
+// /island/, separate from the teacher dashboard's /teacher/ (see
+// vite.config.js's multi-page build comment for why: mirrors the old
+// gotchigarden repo's two separate static pages instead of one SPA
+// faking routes via a query param).
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { spriteUrl, resolveAnimState } from '../game/spriteData.js';

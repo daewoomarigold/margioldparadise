@@ -58,8 +58,9 @@ export function useAuth() {
     // dashboard, is still the placeholder http://localhost:3000 every
     // project starts with — see CLAUDE.md's Database section). Even with
     // that fixed, the client's OTHER default is window.location.origin,
-    // which drops the path entirely (/margioldparadise/, or /margioldparadise/?view=island
-    // for the island) — window.location.href preserves the full current
+    // which drops the path entirely (/margioldparadise/teacher/ vs
+    // /margioldparadise/island/ — two separate pages, see
+    // vite.config.js) — window.location.href preserves the full current
     // URL, so sign-in from either page returns to that same page instead
     // of always landing back on the dashboard.
     supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.href } }).then(({ error: err }) => {

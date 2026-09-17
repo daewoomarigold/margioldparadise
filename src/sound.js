@@ -25,7 +25,9 @@ function makeSfx(file, volume) {
   };
 }
 
-// Global button/link click — see App.jsx's document-wide click listener.
+// Global button/link click — see IslandView.jsx's document-wide click
+// listener (island-only, not the teacher dashboard — see that file's
+// header comment for why).
 export const playTap = makeSfx('tap.mp3', 0.5);
 
 // A student's points went up — see TeacherDashboard.jsx's setStudentPts/

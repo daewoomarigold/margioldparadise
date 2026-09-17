@@ -4,7 +4,8 @@
 // This tool lets you step each layer separately, see the composite live, and
 // capture named states into a table you can export.
 //
-// Not part of the production build — see the DEV-gated import in main.jsx.
+// Not part of the production build — see the DEV-gated import in
+// src/teacherMain.jsx.
 // Open with: npm run dev, then visit /?dev=assembler
 
 import { useEffect, useMemo, useState } from 'react';
