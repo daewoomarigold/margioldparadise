@@ -59,14 +59,16 @@
 //
 // Tile-only, by request — the island field's roamers are untouched.
 //
-// Coin cascade ("Tama Time" — see TeacherDashboard.jsx/useClassroomStore.js's
+// Coin rain ("Tama Time" — see TeacherDashboard.jsx/useClassroomStore.js's
 // pendingPts/distributeClass): whenever a tile's gotchiPts increases, a
-// burst of bouncing coin icons plays first — one beat per point, capped at
-// MAX_COIN_BEATS, each firing playAddPoint() — before falling straight
-// into the evolution sequence above if the growth stage ALSO changed as
-// part of the same distribute. Both reveals are driven by the same `evo`
-// state machine/detection effect below; a pts-only change (no stage
-// change) just plays the coin part and stops.
+// shower of falling coin icons plays first — one drop per point, capped
+// at RAIN_MAX_DROPS, staggered so several are visibly falling at once
+// (that's the "raining," not one-at-a-time), each firing playAddPoint()
+// as it spawns — before falling straight into the evolution sequence
+// above if the growth stage ALSO changed as part of the same distribute.
+// Both reveals are driven by the same `evo` state machine/detection
+// effect below; a pts-only change (no stage change) just plays the rain
+// and stops.
 
 import { useEffect, useRef, useState } from 'react';
 import { meterFraction, POINTS_PER_GROWTH } from '../game/growth.js';
@@ -110,11 +112,15 @@ const EVO_WALKOFF_DISTANCE_PX = 100; // comfortably past a tile's sprite-area wi
 const EVO_GONE_MS = 250; // empty beat once it's off-tile, before the egg appears
 const EVO_EGG_APPEAR_MS = 450; // holds on the new egg before handing back to normal play
 
-// Coin-cascade timings — one beat per point gotchiPts went up by, capped
-// so a big distribute still reads as "a lot of coins" without dozens of
-// individual pops dragging on.
-const COIN_BEAT_MS = 220; // pacing between successive coin pops
-const MAX_COIN_BEATS = 8;
+// Coin-rain timings — one drop per point gotchiPts went up by, capped so
+// a big distribute still reads as "a lot of coins" without going on
+// forever. Coins spawn faster than they fall (SPAWN < FALL), so several
+// are always mid-fall together — that overlap is what makes it read as
+// rain instead of a metronome of single coins.
+const RAIN_MAX_DROPS = 12;
+const RAIN_SPAWN_INTERVAL_MS = 100; // stagger between coins starting to fall
+const RAIN_FALL_MS = 650; // how long one coin takes to fall through the tile
+const RAIN_SPREAD_PX = 70; // horizontal jitter range each coin's fall path is randomized within
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -169,7 +175,7 @@ function StudentTile({ student, onClick }) {
     return () => clearInterval(id);
   }, []);
 
-  // --- Evolution overlay / coin cascade -----------------------------------
+  // --- Evolution overlay / coin rain ---------------------------------------
   // See the file header for the full picture. prevSnapshotRef remembers
   // what was showing last render (now including gotchiPts, not just
   // stage/tamaId); when either changes we still have the OLD identity in
@@ -183,9 +189,9 @@ function StudentTile({ student, onClick }) {
     const prev = prevSnapshotRef.current;
     const isInitialMount = prev == null;
     const tamaChanged = !isInitialMount && (prev.tamaId !== tamaId || prev.stage !== stage);
-    // Only an INCREASE plays the coin cascade — a deduction (or the
+    // Only an INCREASE plays the coin rain — a deduction (or the
     // initial mount) doesn't get one. Not clamped to student.gotchiPts
-    // moving at all here — see MAX_COIN_BEATS below for how a big jump is
+    // moving at all here — see RAIN_MAX_DROPS below for how a big jump is
     // capped, not this.
     const ptsDelta = !isInitialMount && student.gotchiPts > prev.gotchiPts ? student.gotchiPts - prev.gotchiPts : 0;
     prevSnapshotRef.current = { stage, tamaId, gotchiPts: student.gotchiPts };
@@ -195,7 +201,7 @@ function StudentTile({ student, onClick }) {
     const isCancelled = () => cancelled;
     async function run() {
       if (ptsDelta > 0) {
-        await runCoinCascade(ptsDelta, isCancelled, setEvo);
+        await runCoinRain(ptsDelta, isCancelled, setEvo);
         if (isCancelled()) return;
       }
       if (tamaChanged) {
@@ -276,17 +282,19 @@ function StudentTile({ student, onClick }) {
                 faceOffset={showing.faceOffset}
               />
             </div>
-            {showing.coin && (
+            {showing.rainDrops?.map((d) => (
               <img
+                key={d.id}
                 src={COIN_URL}
                 alt=""
                 style={{
-                  ...coinPopStyle,
-                  opacity: showing.coinOpacity ?? 0,
-                  transform: `translate(-50%, ${showing.coinY ?? 0}px)`,
+                  ...coinDropStyle,
+                  left: `calc(50% + ${d.x}px)`,
+                  opacity: d.opacity,
+                  transform: `translate(-50%, ${d.y}px)`,
                 }}
               />
-            )}
+            ))}
           </div>
         )}
       </div>
@@ -302,35 +310,58 @@ function StudentTile({ student, onClick }) {
   );
 }
 
-// One beat per point gotchiPts went up by (capped at MAX_COIN_BEATS) — a
-// coin pops up and fades, playAddPoint() firing right at the start of
-// each beat, so a big award reads as a rapid-fire cascade of successive
-// coin sounds rather than one lump-sum beep. Same rAF-per-frame-value
-// pattern as the shake/wobble beats above (see their own comments for
-// why: already being driven smoothly frame by frame, no CSS transition
-// needed on top).
-async function runCoinCascade(delta, isCancelled, setEvo) {
-  const beats = Math.min(delta, MAX_COIN_BEATS);
-  for (let i = 0; i < beats && !isCancelled(); i++) {
-    playAddPoint();
-    await new Promise((resolve) => {
-      const start = performance.now();
-      function frame(ts) {
-        if (isCancelled()) return resolve();
-        const elapsed = ts - start;
-        if (elapsed >= COIN_BEAT_MS) {
-          resolve();
-          return;
+// One drop per point gotchiPts went up by (capped at RAIN_MAX_DROPS),
+// each falling independently — playAddPoint() firing the moment a drop
+// starts, so a big award reads as a rapid-fire shower of successive coin
+// sounds rather than one lump-sum beep. A single rAF loop drives every
+// drop's fall at once (each drop's own progress computed from how long
+// ago IT spawned, not a shared clock) rather than awaiting one drop
+// before starting the next — that overlap is the whole "rain" effect.
+// Same manual-per-frame-value approach as the shake/wobble beats above
+// (see their own comments for why: already smooth frame by frame, a CSS
+// transition would just add lag on top).
+async function runCoinRain(delta, isCancelled, setEvo) {
+  const dropCount = Math.min(delta, RAIN_MAX_DROPS);
+  // Each drop's horizontal jitter and spawn offset are fixed up front so
+  // they don't change frame to frame — only x is randomized (not y/timing),
+  // giving a scattered-but-still-orderly rain instead of a single column.
+  const dropPlan = Array.from({ length: dropCount }, (_, i) => ({
+    id: i,
+    x: (Math.random() - 0.5) * RAIN_SPREAD_PX,
+    spawnAt: i * RAIN_SPAWN_INTERVAL_MS,
+  }));
+  const soundPlayed = new Set();
+  const totalMs = (dropCount - 1) * RAIN_SPAWN_INTERVAL_MS + RAIN_FALL_MS;
+
+  await new Promise((resolve) => {
+    const start = performance.now();
+    function frame(ts) {
+      if (isCancelled()) return resolve();
+      const elapsed = ts - start;
+
+      const drops = [];
+      for (const d of dropPlan) {
+        if (elapsed < d.spawnAt) continue; // not falling yet
+        if (!soundPlayed.has(d.id)) {
+          playAddPoint();
+          soundPlayed.add(d.id);
         }
-        const t = elapsed / COIN_BEAT_MS; // 0..1 progress through this beat
-        const coinY = -14 * Math.sin(Math.min(t, 1) * Math.PI); // rises then settles back — 0 at both ends, peak mid-beat
-        const coinOpacity = t < 0.15 ? t / 0.15 : t > 0.75 ? Math.max(0, (1 - t) / 0.25) : 1; // quick fade in, hold, fade out
-        setEvo({ phase: 'coin', coinIndex: i, coinY, coinOpacity });
-        requestAnimationFrame(frame);
+        const t = (elapsed - d.spawnAt) / RAIN_FALL_MS;
+        if (t >= 1) continue; // finished falling
+        const y = -10 + t * 55; // starts just above the sprite, falls past its bottom
+        const opacity = t < 0.12 ? t / 0.12 : t > 0.8 ? Math.max(0, (1 - t) / 0.2) : 1; // quick fade in, hold, fade out near the ground
+        drops.push({ id: d.id, x: d.x, y, opacity });
+      }
+      setEvo({ phase: 'coinRain', drops });
+
+      if (elapsed >= totalMs) {
+        resolve();
+        return;
       }
       requestAnimationFrame(frame);
-    });
-  }
+    }
+    requestAnimationFrame(frame);
+  });
 }
 
 // Runs the ported triggerEvolve() choreography, pushing each beat into
@@ -467,16 +498,17 @@ function evoSpriteFor(evo, isEgg, tamaId) {
   const { phase, oldTama, cycleIdx = 0, shakeX = 0, hatchFrameIdx = 0, walkX = 0, walkStep = 0 } = evo;
   const showingOld = phase === 'cycle' || phase === 'shake' || phase === 'hatch' || phase === 'flashIn';
 
-  if (phase === 'coin') {
-    // No oldTama here (runCoinCascade doesn't set one — see its own
+  if (phase === 'coinRain') {
+    // No oldTama here (runCoinRain doesn't set one — see its own
     // comment) — shows the CURRENT sprite in a plain idle pose, since
     // this beat always plays before any evolution sequence would swap it
-    // out anyway. `coin: true` tells the tile to render the bouncing
-    // coin overlay on top (see coinPopStyle).
+    // out anyway. `rainDrops` tells the tile which falling coins to
+    // render on top (see coinDropStyle) — already-positioned {id,x,y,
+    // opacity} objects, nothing left to compute in the render itself.
     const base = isEgg
       ? { tamaId: 'egg', frames: { body: 0, eyes: 0, mouth: 0 }, mirrored: false, faceOffset: undefined }
       : { tamaId, frames: { body: IDLE.body[0], eyes: IDLE.eyes[0], mouth: IDLE.mouth[0] }, mirrored: false, faceOffset: { x: 0, y: 0 } };
-    return { ...base, shakeX: 0, walkX: 0, coin: true, coinY: evo.coinY ?? 0, coinOpacity: evo.coinOpacity ?? 0 };
+    return { ...base, shakeX: 0, walkX: 0, rainDrops: evo.drops ?? [] };
   }
   if (phase === 'hatchWobble') {
     return { tamaId: 'egg', frames: { body: 0, eyes: 0, mouth: 0 }, mirrored: false, faceOffset: undefined, shakeX, walkX: 0 };
@@ -627,15 +659,16 @@ const flashMaskStyle = {
   filter: 'brightness(0) invert(1)',
 };
 
-// One coin-cascade beat — see runCoinCascade. Positioned near the
-// sprite's head and nudged up/faded via inline opacity/transform driven
-// per-rAF-frame by that function (not a CSS transition — same reasoning
-// as shakeX/walkX above: it's already being driven smoothly frame by
-// frame, a transition would just add lag on top).
-const coinPopStyle = {
+// One coin-rain drop — see runCoinRain. `left` is overridden per-drop
+// (horizontal jitter); top/transform give it a starting point just above
+// the sprite that the per-frame translateY then falls away from.
+// opacity/transform driven directly per-rAF-frame by that function (not a
+// CSS transition — same reasoning as shakeX/walkX above: it's already
+// being driven smoothly frame by frame, a transition would just add lag
+// on top).
+const coinDropStyle = {
   position: 'absolute',
   top: '15%',
-  left: '50%',
   width: 12,
   height: 12,
   imageRendering: 'pixelated',

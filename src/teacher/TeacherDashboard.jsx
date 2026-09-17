@@ -25,12 +25,13 @@
 // is happening, so nothing about a pet should change until Taylor wants
 // it to. distributeAll below applies everything queued at once — see
 // useClassroomStore.js's distributeClass and StudentGrid.jsx's reveal
-// animation (the coin cascade + evolution playback that reacts to it).
+// animation (the coin rain + evolution playback that reacts to it).
 
 import { useRef, useState } from 'react';
 import './teacher.css';
 import { newStudentProgress, meterFraction, findTamaName, POINTS_PER_GROWTH } from '../game/growth.js';
 import { spriteUrl } from '../game/spriteData.js';
+import { playAddPoint } from '../sound.js';
 import { useAuth } from '../auth/useAuth.js';
 import { useClassroomStore } from '../data/useClassroomStore.js';
 import LoginScreen from '../auth/LoginScreen.jsx';
@@ -265,10 +266,19 @@ export default function TeacherDashboard() {
 
   // Thin wrapper so the rest of this file can keep calling setPendingPts
   // by id (matches the input/button handlers below) — the store itself
-  // just needs the student object, for its id.
+  // just needs the student object, for its id. Also the single choke
+  // point for the dashboard's own audio cue: an immediate playAddPoint()
+  // right when Taylor queues points, distinct from (and in addition to)
+  // the island's rapid coin-rain cascade that plays later at Distribute —
+  // this one's just "did my tap register," so it only fires on an actual
+  // increase, not a deduction, and doesn't wait for any realtime
+  // round-trip (unlike the old pre-pending design, which reacted to
+  // gotchiPts changing over realtime — this reacts to the click itself).
   function setPendingPts(studentId, newPending) {
     const student = students.find((s) => s.id === studentId);
-    if (student) store.setPendingPts(student, newPending);
+    if (!student) return;
+    if (Math.trunc(Number(newPending) || 0) > (student.pendingPts ?? 0)) playAddPoint();
+    store.setPendingPts(student, newPending);
   }
 
   function nudgePendingPts(student, delta) {
@@ -277,13 +287,14 @@ export default function TeacherDashboard() {
 
   async function awardAll(sign) {
     const amt = Math.max(1, Number(awardAmount) || 1) * sign;
+    if (sign > 0) playAddPoint();
     await store.awardAllPendingPts(students, sign, awardAmount);
     toast(sign > 0 ? `Queued ${amt} pts for everyone` : `Queued a ${Math.abs(amt)}-pt deduction for everyone`);
   }
 
   // "Tama Time" — applies every queued pendingPts at once (see
   // useClassroomStore.js's distributeClass) and clears it. The reveal
-  // itself (coin cascade + any evolution) plays on the island
+  // itself (coin rain + any evolution) plays on the island
   // (StudentGrid.jsx), reacting to the same write — nothing to trigger
   // from here beyond the write itself.
   async function distributeAll() {

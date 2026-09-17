@@ -31,7 +31,10 @@ function makeSfx(file, volume) {
 export const playTap = makeSfx('tap.mp3', 0.5);
 
 // A student's points went up — fired directly from StudentGrid.jsx's
-// coin-cascade reveal (one call per beat, see runCoinCascade), which
+// coin-rain reveal (one call per falling coin, see runCoinRain), which
 // plays on gotchiPts increasing — see useClassroomStore.js's
-// distributeClass ("Tama Time"), the only thing that still moves it.
+// distributeClass ("Tama Time"), the only thing that still moves it. Also
+// fired immediately by TeacherDashboard.jsx as a click-confirmation cue
+// whenever pendingPts is raised — a separate, more direct use of the same
+// sound.
 export const playAddPoint = makeSfx('addpoint.mp3', 0.6);
