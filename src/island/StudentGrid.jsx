@@ -2,9 +2,10 @@
 // (Taylor's real classes max out at 16), showing their GROWING tama (not
 // their chosen display tama — see the asymmetric-design note below),
 // growth meter, name, and tamadex progress. Empty slots render as plain
-// placeholders, matching the mockup. Static (idle-pose) sprites, not
-// roaming — this is a dashboard panel, not part of the island canvas
-// itself.
+// placeholders, matching the mockup. Tamas play the "walking_forward"
+// animation state (a face-the-camera walk-in-place, body frames [4,5],
+// static eyes/mouth) in place — no roaming/movement, this is a dashboard
+// panel, not part of the island canvas itself.
 //
 // Asymmetric by design: the island field shows whatever tama a student
 // has chosen to display (resolveDisplayTama in growth.js — 'current'
@@ -19,13 +20,17 @@
 // student can change their display tama; a future item shop could pop
 // out from here too.
 
+import { useEffect, useState } from 'react';
 import { meterFraction, totalCollectible, POINTS_PER_GROWTH } from '../game/growth.js';
+import { resolveAnimState } from '../game/spriteData.js';
 import { TamaComposite } from '../game/spriteCompositor.jsx';
 
 const GRID_SIZE = 16; // 4x4 — matches the real max class size, not just the current roster
 const TILE_SCALE = 2; // mini sprites are 32x32 native; on-screen size within the tile
+const TILE_ANIM_FPS = 4; // matches the island's walk pace, for visual consistency
 
 const TOTAL_COLLECTIBLE = totalCollectible();
+const WALKING_FORWARD = resolveAnimState('walking_forward');
 
 export default function StudentGrid({ students, onSelectStudent }) {
   const tiles = Array.from({ length: GRID_SIZE }, (_, i) => students[i] ?? null);
@@ -54,10 +59,28 @@ function StudentTile({ student, onClick }) {
   const { stage, tamaId } = growth.currentTama; // deliberately the growing tama, not the display tama — see file header
   const isEgg = stage === 'egg';
 
+  // Cycles walking_forward's 2 body frames in place — no position movement
+  // (this is a static tile, not the roaming island), just a "still alive"
+  // animation. Eggs don't animate — stays on the egg's own frame 0.
+  const [animFrame, setAnimFrame] = useState(0);
+  useEffect(() => {
+    if (isEgg) return;
+    const id = setInterval(() => setAnimFrame((f) => f + 1), 1000 / TILE_ANIM_FPS);
+    return () => clearInterval(id);
+  }, [isEgg]);
+
+  const frames = isEgg
+    ? { body: 0, eyes: 0, mouth: 0 }
+    : {
+        body: WALKING_FORWARD.body[animFrame % WALKING_FORWARD.body.length],
+        eyes: WALKING_FORWARD.eyes[animFrame % WALKING_FORWARD.eyes.length],
+        mouth: WALKING_FORWARD.mouth[animFrame % WALKING_FORWARD.mouth.length],
+      };
+
   return (
     <div style={{ ...tileStyle, cursor: 'pointer' }} onClick={onClick}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 32 * TILE_SCALE }}>
-        <TamaComposite tamaId={isEgg ? 'egg' : tamaId} variant="mini" frames={{ body: 0, eyes: 0, mouth: 0 }} scale={TILE_SCALE} />
+        <TamaComposite tamaId={isEgg ? 'egg' : tamaId} variant="mini" frames={frames} scale={TILE_SCALE} />
       </div>
       <div style={nameStyle}>{student.name}</div>
       <div style={meterTrackStyle} title={`${Math.round(fraction * POINTS_PER_GROWTH)}/${POINTS_PER_GROWTH} pts to next stage`}>
