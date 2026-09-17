@@ -1,12 +1,18 @@
 -- Marigold Paradise — Supabase schema.
 --
--- Run this once in the Supabase SQL Editor on a fresh project. See
--- CLAUDE.md's Database section for the setup steps this fits into
--- (creating the project, enabling the Google auth provider, etc).
+-- Run this once in the Supabase SQL Editor on a fresh project — it
+-- describes the full current end-state, so a fresh project needs nothing
+-- from supabase/migrations/ (that directory is for applying incremental
+-- changes to a project that's already running an older version of this
+-- file). See CLAUDE.md's Database section for the setup steps this fits
+-- into (creating the project, enabling the Google auth provider, etc).
 --
 -- Three tables, all scoped to the signed-in teacher via row-level
 -- security (owner_id = auth.uid()) — no anonymous/public read path by
--- design (see CLAUDE.md: the island view also requires sign-in).
+-- design (see CLAUDE.md: the island view also requires sign-in). On top
+-- of that, every policy also requires is_allowed_owner() below — the app
+-- is explicitly locked to two accounts for now (see that function's own
+-- comment for how to change that later).
 --
 -- `growth` stores the whole progress object src/game/growth.js already
 -- works with (currentTama, tamadex, closedTeens, closedBiomes,
@@ -62,26 +68,44 @@ create trigger students_set_updated_at
 before update on public.students
 for each row execute function public.set_updated_at();
 
+-- Locked down to two accounts for now (explicit request — may open up
+-- later, not designed yet). Every policy below ANDs this in alongside its
+-- owner_id check. To change the list: redefine this function (a plain
+-- `create or replace`, no need to touch the policies themselves) and keep
+-- src/auth/useAuth.js's ALLOWED_EMAILS in sync — that one's just a client-
+-- side convenience check (instant sign-out instead of a broken dashboard),
+-- this function is what actually enforces it.
+create or replace function public.is_allowed_owner()
+returns boolean as $$
+  select auth.email() in ('glover.taylorjames@gmail.com', 'daewoomarigold@gmail.com');
+$$ language sql stable;
+
 alter table public.classes enable row level security;
 alter table public.students enable row level security;
 alter table public.user_settings enable row level security;
 
 create policy "owner full access" on public.classes
   for all
-  using (owner_id = auth.uid())
-  with check (owner_id = auth.uid());
+  using (owner_id = auth.uid() and public.is_allowed_owner())
+  with check (owner_id = auth.uid() and public.is_allowed_owner());
 
 -- students has no owner_id of its own — ownership is via its class, same
 -- as the app's own model (a student only ever exists inside one class).
 create policy "owner full access via class" on public.students
   for all
-  using (exists (select 1 from public.classes c where c.id = class_id and c.owner_id = auth.uid()))
-  with check (exists (select 1 from public.classes c where c.id = class_id and c.owner_id = auth.uid()));
+  using (
+    exists (select 1 from public.classes c where c.id = class_id and c.owner_id = auth.uid())
+    and public.is_allowed_owner()
+  )
+  with check (
+    exists (select 1 from public.classes c where c.id = class_id and c.owner_id = auth.uid())
+    and public.is_allowed_owner()
+  );
 
 create policy "owner full access" on public.user_settings
   for all
-  using (owner_id = auth.uid())
-  with check (owner_id = auth.uid());
+  using (owner_id = auth.uid() and public.is_allowed_owner())
+  with check (owner_id = auth.uid() and public.is_allowed_owner());
 
 -- Realtime: both TeacherDashboard and IslandView subscribe to changes on
 -- all three tables (src/data/useClassroomStore.js) so every signed-in

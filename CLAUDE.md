@@ -45,13 +45,25 @@ GAME_DESIGN.md for why). Data layer is `src/data/useClassroomStore.js`
   (see "Working across devices" below), `.env` won't have carried over —
   recreate it from `.env.example` before running `npm run dev`; ask Taylor
   for the values if you don't have them.
-- **Schema changes**: edit `supabase/schema.sql` to describe the intended
-  state, but Taylor has to actually run the change in the Supabase SQL
-  Editor — there's no CLI/migration tooling wired up, so a schema edit here
+- **Schema changes**: edit `supabase/schema.sql` (the fresh-install
+  baseline) AND add an incremental file under `supabase/migrations/`
+  describing just the change, since Taylor's project already exists —
+  `schema.sql` alone won't re-run against a project that already has these
+  tables. Either way, Taylor has to actually run it in the Supabase SQL
+  Editor — there's no CLI/migration tooling wired up, so an edit here
   doesn't take effect until they do that.
 - **RLS**: every table is scoped to `owner_id = auth.uid()` (students via
-  their class's owner). No public/unauthenticated read path — the island
-  view requires sign-in too, same account, for exactly this reason.
+  their class's owner) AND `public.is_allowed_owner()`. No public/
+  unauthenticated read path — the island view requires sign-in too, same
+  account, for exactly this reason.
+- **Locked to two accounts** (`glover.taylorjames@gmail.com`,
+  `daewoomarigold@gmail.com`) — explicit request, "may open it up" later
+  but that's undesigned/unscoped, don't build toward it unprompted.
+  Enforced twice: `public.is_allowed_owner()` (schema.sql — the real
+  enforcement) and `src/auth/useAuth.js`'s `ALLOWED_EMAILS` (client-side,
+  for an instant sign-out/clear message instead of a dashboard that just
+  fails against RLS on every request). Keep both in sync if this ever
+  changes.
 - Don't touch or reintroduce anything from the *old* `gotchigarden`
   Supabase project (its schema doesn't match this app's data model at all)
   unless Taylor explicitly asks.
