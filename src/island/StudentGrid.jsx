@@ -22,7 +22,7 @@
 
 import { useEffect, useState } from 'react';
 import { meterFraction, totalCollectible, POINTS_PER_GROWTH } from '../game/growth.js';
-import { resolveAnimState } from '../game/spriteData.js';
+import { resolveAnimState, spriteUrl } from '../game/spriteData.js';
 import { TamaComposite } from '../game/spriteCompositor.jsx';
 
 const GRID_SIZE = 16; // 4x4 — matches the real max class size, not just the current roster
@@ -32,6 +32,13 @@ const TILE_ANIM_FPS = 2; // was 4 — read as too fast for a small in-place idle
 const TOTAL_COLLECTIBLE = totalCollectible();
 const WALKING_FORWARD = resolveAnimState('walking_forward');
 const EGG_ROCK = resolveAnimState('egg_rock');
+
+// Grass-and-tree background for occupied tiles (empty slots stay plain —
+// see EmptyTile). A dark scrim is layered under it so the name/meter/dex
+// text (styled for the old flat dark background) stays legible over the
+// lighter art; imageRendering:pixelated keeps it crisp since the tile is
+// smaller on-screen than the sprite's native 128x128.
+const TILE_BG_URL = spriteUrl('image-1402.png');
 
 export default function StudentGrid({ students, onSelectStudent }) {
   const tiles = Array.from({ length: GRID_SIZE }, (_, i) => students[i] ?? null);
@@ -87,7 +94,7 @@ function StudentTile({ student, onClick }) {
   const mirrored = isEgg && EGG_ROCK.bodyMirror[eggFrameIdx % EGG_ROCK.bodyMirror.length];
 
   return (
-    <div style={{ ...tileStyle, cursor: 'pointer' }} onClick={onClick}>
+    <div style={{ ...tileStyle, ...tileBgStyle, cursor: 'pointer' }} onClick={onClick}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 32 * TILE_SCALE }}>
         <TamaComposite
           tamaId={isEgg ? 'egg' : tamaId}
@@ -115,7 +122,7 @@ function EmptyTile() {
 
 const tileStyle = {
   aspectRatio: '1 / 1',
-  background: '#22223a',
+  backgroundColor: '#22223a', // fallback beneath the image/scrim (StudentTile) or plain background (EmptyTile)
   border: '1px solid #2e2e4e',
   borderRadius: 6,
   display: 'flex',
@@ -129,6 +136,15 @@ const tileStyle = {
   fontFamily: 'ui-monospace, monospace',
 };
 
+// Layered on top of tileStyle for occupied tiles only — a dark scrim under
+// the grass art so the light-on-dark text styles below stay readable.
+const tileBgStyle = {
+  backgroundImage: `linear-gradient(rgba(10, 10, 20, 0.5), rgba(10, 10, 20, 0.5)), url(${TILE_BG_URL})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  imageRendering: 'pixelated',
+};
+
 const nameStyle = {
   fontSize: 10,
   color: '#e0e0f0',
@@ -137,6 +153,7 @@ const nameStyle = {
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   maxWidth: '100%',
+  textShadow: '0 1px 2px rgba(0, 0, 0, 0.8)',
 };
 
 const meterTrackStyle = {
@@ -156,5 +173,6 @@ const meterFillStyle = {
 
 const dexStyle = {
   fontSize: 8,
-  color: '#7070a0',
+  color: '#b0b0d0', // lightened from #7070a0 — the muted tone read too low-contrast over the grass background
+  textShadow: '0 1px 2px rgba(0, 0, 0, 0.8)',
 };
