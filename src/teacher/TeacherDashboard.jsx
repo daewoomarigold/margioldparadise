@@ -1,15 +1,13 @@
 // Teacher dashboard — ported from the old teacher.html (gotchigarden repo),
 // core roster + points loop only for this first pass. Left out on purpose,
-// to be ported later: Google auth (no login gate here yet), prices panel,
-// seating plan designer, photo/card export. CSV roster import was
-// originally on this list too — see parseClassCsv below for that one.
+// to be ported later: prices panel, seating plan designer, photo/card
+// export. CSV roster import and Google auth were originally on this list
+// too — see parseClassCsv below and src/auth/useAuth.js — both since done.
 //
-// Data layer is local state persisted to localStorage, NOT Supabase — see
-// CLAUDE.md: don't touch/reintroduce Supabase until explicitly asked. The
-// shape below (classes -> students -> {id, name, email, gotchiPts,
-// lifetimePts, pets}) mirrors the old Supabase schema on purpose so
-// swapping in a real backend later is a matter of replacing the load/save
-// functions, not redesigning the data model or components.
+// Data layer is Supabase (see src/data/useClassroomStore.js and
+// supabase/schema.sql) — this file just calls that hook's mutation
+// functions and renders whatever it returns; no storage/sync code lives
+// here anymore.
 //
 // gotchiPts vs lifetimePts: gotchiPts is a spendable currency balance —
 // it goes up on award and down on deduction/spend (a future item shop
@@ -17,33 +15,15 @@
 // only ever goes up; it's what actually drives the growth meter
 // (growth.js's applyPointsToGrowth/meterFraction), so deducting or
 // spending gotchiPts can never shrink or un-advance a pet's growth — see
-// applyPtsChange below for exactly how the two stay in sync.
+// useClassroomStore.js's applyPtsChange for exactly how the two stay in
+// sync (moved there since it's now the thing actually writing points).
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import './teacher.css';
-import { newStudentProgress, applyPointsToGrowth, meterFraction, findTamaName, POINTS_PER_GROWTH } from '../game/growth.js';
-
-const STORAGE_KEY = 'marigold-teacher-data-v1';
-
-function loadStore() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { classes: [], currentClassId: null };
-    const parsed = JSON.parse(raw);
-    return {
-      classes: Array.isArray(parsed.classes) ? parsed.classes : [],
-      currentClassId: parsed.currentClassId ?? null,
-    };
-  } catch {
-    return { classes: [], currentClassId: null }; // corrupted/blocked storage — start fresh rather than crash
-  }
-}
-
-function uid() {
-  return typeof crypto !== 'undefined' && crypto.randomUUID
-    ? crypto.randomUUID()
-    : `id-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-}
+import { newStudentProgress, meterFraction, findTamaName, POINTS_PER_GROWTH } from '../game/growth.js';
+import { useAuth } from '../auth/useAuth.js';
+import { useClassroomStore } from '../data/useClassroomStore.js';
+import LoginScreen from '../auth/LoginScreen.jsx';
 
 // Splits one CSV line into fields, honoring double-quoted fields (so a
 // quoted name like "Lee, Grace" doesn't get cut in half) and "" as an
@@ -87,9 +67,9 @@ function splitCsvLine(line) {
 // isn't "yes" (no Active column at all -> everyone's imported), the class
 // name synthesized from Grade + English Class. One CSV = one class, same
 // as before. UUID, if present, becomes the student's id (so re-importing
-// the same roster elsewhere would line up) — otherwise one's generated.
-// Adapted to our local student shape (see createCsvStudent below) instead
-// of Supabase insert rows. Returns { error } on anything unusable, or
+// the same roster elsewhere would line up, and lines up with
+// useClassroomStore's createCsvClass inserting it explicitly) — otherwise
+// Supabase generates one. Returns { error } on anything unusable, or
 // { className, students } — never both.
 function parseClassCsv(text) {
   const lines = text
@@ -131,27 +111,13 @@ function parseClassCsv(text) {
   return { className: nameParts.join(' — '), students };
 }
 
-// Builds a fresh student record for a CSV-imported row — always starts at
-// 0 points/a fresh egg, same as the old importer's `gotchi_pts: 0`.
-// s.id (the CSV's UUID column, if present) is preserved; otherwise a new
-// one is generated, same as any other student.
-function createCsvStudent(s) {
-  return {
-    id: s.id || uid(),
-    name: s.name,
-    email: '',
-    gotchiPts: 0,
-    lifetimePts: 0,
-    pets: [],
-    growth: newStudentProgress(),
-    displayTamaId: 'current',
-  };
-}
-
 export default function TeacherDashboard() {
-  const initialStore = useState(loadStore)[0];
-  const [classes, setClasses] = useState(initialStore.classes);
-  const [currentClassId, setCurrentClassId] = useState(initialStore.currentClassId);
+  const auth = useAuth();
+  // Called unconditionally regardless of auth state (rules of hooks) —
+  // the hook itself no-ops until there's a real session (see its header
+  // comment), so this is safe even before sign-in.
+  const store = useClassroomStore(auth.session);
+
   const [search, setSearch] = useState('');
   const [showNewClassForm, setShowNewClassForm] = useState(false);
   const [newClassName, setNewClassName] = useState('');
@@ -167,28 +133,19 @@ export default function TeacherDashboard() {
   const [toastMsg, setToastMsg] = useState('');
   const toastTimer = useRef(null);
 
-  // Persist on every change. Local-only for now — see file header.
-  // currentClassId is saved too so the island view (a separate page reading
-  // the same storage key) knows which class is "live"/being projected,
-  // without needing its own selection UI.
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ classes, currentClassId }));
-    } catch {
-      // storage full/blocked (private window etc.) — data still works for
-      // this session, just won't survive a reload; not worth surfacing an
-      // error for
-    }
-  }, [classes, currentClassId]);
-
   function toast(msg) {
     setToastMsg(msg);
     clearTimeout(toastTimer.current);
     toastTimer.current = setTimeout(() => setToastMsg(''), 2200);
   }
 
+  if (auth.loading) return <LoadingScreen text="Signing in…" />;
+  if (!auth.session) return <LoginScreen onSignIn={auth.signInWithGoogle} error={auth.error} />;
+  if (store.loading) return <LoadingScreen text="Loading your classes…" />;
+
+  const { classes, students: allStudents, currentClassId } = store;
   const currentClass = classes.find((c) => c.id === currentClassId) ?? null;
-  const students = currentClass?.students ?? [];
+  const students = allStudents.filter((s) => s.classId === currentClassId);
   const filteredStudents = students.filter(
     (s) => !search || s.name.toLowerCase().includes(search.toLowerCase()),
   );
@@ -197,16 +154,12 @@ export default function TeacherDashboard() {
   const topPts = studentCount ? Math.max(...students.map((s) => s.gotchiPts)) : 0;
   const avgPts = studentCount ? Math.round(students.reduce((sum, s) => sum + s.gotchiPts, 0) / studentCount) : 0;
 
-  function updateCurrentClassStudents(updater) {
-    setClasses((prev) => prev.map((c) => (c.id === currentClassId ? { ...c, students: updater(c.students) } : c)));
-  }
-
-  function createClass() {
+  async function createClass() {
     const name = newClassName.trim();
     if (!name) return;
-    const cls = { id: uid(), name, students: [] };
-    setClasses((prev) => [...prev, cls]);
-    setCurrentClassId(cls.id);
+    const cls = await store.createClass(name);
+    if (!cls) return;
+    await store.selectClass(cls.id);
     setNewClassName('');
     setShowNewClassForm(false);
     setSearch('');
@@ -214,16 +167,17 @@ export default function TeacherDashboard() {
   }
 
   function selectClass(id) {
-    setCurrentClassId(id);
+    store.selectClass(id);
     setSearch('');
   }
 
-  function deleteClass(cls) {
-    if (!confirm(`Delete "${cls.name}" and all ${cls.students.length} of its students? This cannot be undone.`)) return;
-    setClasses((prev) => prev.filter((c) => c.id !== cls.id));
+  async function deleteClass(cls) {
+    const clsStudentCount = allStudents.filter((s) => s.classId === cls.id).length;
+    if (!confirm(`Delete "${cls.name}" and all ${clsStudentCount} of its students? This cannot be undone.`)) return;
+    const remaining = classes.filter((c) => c.id !== cls.id);
+    await store.deleteClass(cls);
     if (currentClassId === cls.id) {
-      const remaining = classes.filter((c) => c.id !== cls.id);
-      setCurrentClassId(remaining[0]?.id ?? null);
+      await store.selectClass(remaining[0]?.id ?? null);
       setSearch('');
     }
     toast(`Deleted ${cls.name}`);
@@ -262,15 +216,15 @@ export default function TeacherDashboard() {
     setCsvPreview(null);
   }
 
-  function confirmImportCsv() {
+  async function confirmImportCsv() {
     if (!csvPreview) return;
     const name = csvImportName.trim() || 'Imported Class';
-    const cls = { id: uid(), name, students: csvPreview.students.map(createCsvStudent) };
-    setClasses((prev) => [...prev, cls]);
-    setCurrentClassId(cls.id);
+    const result = await store.createCsvClass(name, csvPreview.students);
+    if (!result) return;
+    await store.selectClass(result.classId);
     setCsvPreview(null);
     setSearch('');
-    toast(`Imported ${name} with ${cls.students.length} students`);
+    toast(`Imported ${name} with ${result.count} students`);
   }
 
   function openAddStudent() {
@@ -280,96 +234,36 @@ export default function TeacherDashboard() {
     setShowAddStudent(true);
   }
 
-  function createStudent() {
+  async function createStudent() {
     const name = newStudentName.trim();
     if (!name) return;
-    const startingPts = Math.max(0, Number(newStudentPts) || 0);
-    // A brand-new student's starting balance counts as already-earned —
-    // gotchiPts and lifetimePts both start equal, same as applyPtsChange
-    // would treat an increase from 0.
-    const { progress: growth, reachedAdultTamaIds } = applyPointsToGrowth(newStudentProgress(), startingPts);
-    const student = {
-      id: uid(),
-      name,
-      email: newStudentEmail.trim(),
-      gotchiPts: startingPts,
-      lifetimePts: startingPts,
-      pets: [], // legacy field from teacher.html's old shop system — unused now, kept only so existing saved data doesn't break; growth/tamadex live in `growth` instead
-      growth,
-      // 'current' = follow whatever's growing now, UNTIL the first adult is
-      // reached — then it pins to that adult and stops auto-advancing (see
-      // applyPtsChange below); a specific tamadex tamaId always shows that
-      // completed adult instead. Handles the unlikely case of enough
-      // starting points to reach an adult immediately.
-      displayTamaId: reachedAdultTamaIds.at(-1) ?? 'current',
-    };
-    updateCurrentClassStudents((list) => [...list, student]);
+    await store.createStudent(currentClassId, { name, email: newStudentEmail, startingPts: newStudentPts });
     setShowAddStudent(false);
     toast(`Added ${name}`);
   }
 
-  function removeStudent(student) {
+  async function removeStudent(student) {
     if (!confirm(`Remove ${student.name}? This cannot be undone.`)) return;
-    updateCurrentClassStudents((list) => list.filter((s) => s.id !== student.id));
+    await store.removeStudent(student.id);
     toast('Student removed');
   }
 
-  // Sets a student's gotchiPts (the spendable currency balance) to
-  // newGotchiPts, and separately tracks lifetimePts (total ever earned,
-  // never decreases) which is what actually drives growth — see the file
-  // header comment. Only the earned PORTION of an increase counts toward
-  // lifetimePts: raising gotchiPts from 5 to 8 adds 3 to lifetimePts (an
-  // award), but lowering it from 8 to 5 (a deduction, or a future shop
-  // spend) adds nothing — lifetimePts, and therefore the growth meter and
-  // stage, is untouched. This is how "spending points doesn't deplete the
-  // meter" is actually enforced, not just documented.
-  //
-  // Bug fix (pre-dates the currency/lifetime split, still applies): the
-  // field used to visibly jump to whatever was growing on EVERY stage
-  // change (egg->baby->...->adult->egg again next cycle), since
-  // displayTamaId defaulted to 'current' and nothing ever moved it off
-  // that. Now: still auto-follow while displayTamaId is 'current' (so the
-  // field shows the pet actually growing, same as before) — but the
-  // moment an adult is newly reached, pin displayTamaId to it so the field
-  // stops advancing there instead of quietly cycling on to the next egg.
-  // Only an explicit tamadex pick (setDisplayTama) moves it after that.
-  function applyPtsChange(student, newGotchiPts) {
-    const gotchiPts = Math.max(0, Number(newGotchiPts) || 0);
-    const priorGotchiPts = student.gotchiPts ?? 0;
-    // Migration fallback: students saved before this split only have
-    // gotchiPts, which (under the old single-number model) already fully
-    // reflected everything they'd earned — so treat that as their starting
-    // lifetimePts rather than resetting their meter to 0.
-    const priorLifetimePts = student.lifetimePts ?? priorGotchiPts;
-    const earnedDelta = Math.max(0, gotchiPts - priorGotchiPts);
-    const lifetimePts = priorLifetimePts + earnedDelta;
-
-    const { progress: growth, reachedAdultTamaIds } = applyPointsToGrowth(student.growth ?? newStudentProgress(), lifetimePts);
-    const stillAutoFollowing = !student.displayTamaId || student.displayTamaId === 'current';
-    const displayTamaId = stillAutoFollowing && reachedAdultTamaIds.length > 0 ? reachedAdultTamaIds.at(-1) : student.displayTamaId;
-    return { ...student, gotchiPts, lifetimePts, growth, displayTamaId };
-  }
-
+  // Thin wrapper so the rest of this file can keep calling setStudentPts
+  // by id (matches the input/button handlers below) — the store itself
+  // needs the current student object to compute the gotchiPts/lifetimePts
+  // delta (see useClassroomStore.js's applyPtsChange).
   function setStudentPts(studentId, newPts) {
-    updateCurrentClassStudents((list) => list.map((s) => (s.id === studentId ? applyPtsChange(s, newPts) : s)));
-  }
-
-  // displayTamaId is 'current' (follow whatever's growing) or a specific
-  // tamadex tamaId — GAME_DESIGN.md: a student can display either the tama
-  // they're currently growing or any adult they've already completed and
-  // logged. Set here on the teacher side for now since there's no
-  // student-facing app yet to let them pick it themselves.
-  function setDisplayTama(studentId, displayTamaId) {
-    updateCurrentClassStudents((list) => list.map((s) => (s.id === studentId ? { ...s, displayTamaId } : s)));
+    const student = students.find((s) => s.id === studentId);
+    if (student) store.setStudentPts(student, newPts);
   }
 
   function nudgePts(student, delta) {
     setStudentPts(student.id, student.gotchiPts + delta);
   }
 
-  function awardAll(sign) {
+  async function awardAll(sign) {
     const amt = Math.max(1, Number(awardAmount) || 1) * sign;
-    updateCurrentClassStudents((list) => list.map((s) => applyPtsChange(s, s.gotchiPts + amt)));
+    await store.awardAllPts(students, sign, awardAmount);
     toast(sign > 0 ? `Awarded ${amt} pts to everyone` : `Deducted ${Math.abs(amt)} pts from everyone`);
   }
 
@@ -379,6 +273,11 @@ export default function TeacherDashboard() {
         <div className="teacher-logo">★ MARIGOLD CORE</div>
         <div className="teacher-hdr-sep" />
         <div className="teacher-hdr-class-label">{currentClass ? currentClass.name : 'No class selected'}</div>
+        <div className="teacher-btn-flex" />
+        <div style={{ fontSize: 10, color: 'var(--muted)', marginRight: 10 }}>{auth.session.user.email}</div>
+        <button className="teacher-btn" onClick={auth.signOut}>
+          Sign out
+        </button>
       </header>
 
       <div className="teacher-main-layout">
@@ -520,7 +419,7 @@ export default function TeacherDashboard() {
                           +
                         </button>
                       </div>
-                      <GrowthStatus student={s} onSetDisplayTama={(tamaId) => setDisplayTama(s.id, tamaId)} />
+                      <GrowthStatus student={s} onSetDisplayTama={(tamaId) => store.setDisplayTama(s.id, tamaId)} />
                       <button className="teacher-student-remove" onClick={() => removeStudent(s)}>
                         ✕ Remove
                       </button>
@@ -627,16 +526,35 @@ export default function TeacherDashboard() {
         </div>
       )}
 
-      <div id="teacher-toast" className={toastMsg ? 'show' : ''}>
-        {toastMsg}
+      <div id="teacher-toast" className={toastMsg || store.error ? 'show' : ''}>
+        {store.error ? `⚠ ${store.error}` : toastMsg}
       </div>
     </div>
   );
 }
 
+function LoadingScreen({ text }) {
+  return (
+    <div
+      style={{
+        minHeight: '100svh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#0e0e1a',
+        color: '#7070a0',
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: 12,
+      }}
+    >
+      {text}
+    </div>
+  );
+}
+
 // Falls back to a fresh (0-progress) growth record for students saved
-// before growth tracking existed, so old localStorage data doesn't crash
-// the dashboard — doesn't persist the fallback, just renders safely.
+// before growth tracking existed, so old data doesn't crash the
+// dashboard — doesn't persist the fallback, just renders safely.
 function GrowthStatus({ student, onSetDisplayTama }) {
   const growth = student.growth ?? newStudentProgress();
   const fraction = meterFraction(growth, student.lifetimePts ?? student.gotchiPts);

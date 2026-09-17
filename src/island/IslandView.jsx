@@ -1,10 +1,14 @@
 // The shared "island" — every student's display tama roaming together on
 // one background, meant to be projected in class (see GAME_DESIGN.md "The
-// shared island"). First mockup: reads the same localStorage the teacher
-// dashboard writes to (no backend yet — see TeacherDashboard.jsx's header
-// comment), shows the currently-active class's students, and roams each
-// one using physics ported from the old gotchigarden.html (see
-// src/game/movement.js).
+// shared island"). Reads the same Supabase data the teacher dashboard
+// writes to (see src/data/useClassroomStore.js and supabase/schema.sql),
+// shows the currently-active class's students, and roams each one using
+// physics ported from the old gotchigarden.html (see src/game/movement.js).
+//
+// Requires sign-in, same as the teacher dashboard — see src/auth/useAuth.js
+// and CLAUDE.md's Database section for why (no public/unauthenticated
+// read path; whatever device projects this needs its own sign-in, same
+// account, same row-level-security rules as everywhere else).
 //
 // Not wired into navigation yet — open with /?view=island.
 
@@ -15,10 +19,11 @@ import { createRoamer, stepRoamer, stepAnim } from '../game/movement.js';
 import { getYBoundsForImage683 } from './terrain.js';
 import { resolveDisplayTama } from '../game/growth.js';
 import { playTap, playAddPoint } from '../sound.js';
+import { useAuth } from '../auth/useAuth.js';
+import { useClassroomStore } from '../data/useClassroomStore.js';
+import LoginScreen from '../auth/LoginScreen.jsx';
 import StudentGrid from './StudentGrid.jsx';
 import TamadexToast from './TamadexToast.jsx';
-
-const STORAGE_KEY = 'marigold-teacher-data-v1'; // must match TeacherDashboard.jsx
 
 const BACKGROUND_FILE = 'image-683.png';
 const CANVAS_W = 512;
@@ -27,8 +32,8 @@ const SCALE = 1; // mini sprites are 32x32 native; this is their on-screen size 
 const SPRITE_PX = 32 * SCALE;
 
 // Class switcher — lets the island itself change which class is active
-// (currentClassId in the shared store) instead of requiring the teacher
-// dashboard's sidebar for that. See selectClass below.
+// (currentClassId, via useClassroomStore's selectClass) instead of
+// requiring the teacher dashboard's sidebar for that.
 const classSwitcherStyle = {
   display: 'flex',
   gap: 8,
@@ -53,27 +58,13 @@ const classBtnActiveStyle = {
   color: '#ffe066',
 };
 
-// The island now writes back (setting a student's display tama from the
-// tamadex toast), not just reads — so it holds the full store (all
-// classes + which one is active), not just a snapshot of the active
-// class, so a write can update one student without clobbering every
-// other class's data.
-function loadStore() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { classes: [], currentClassId: null };
-    const parsed = JSON.parse(raw);
-    return {
-      classes: Array.isArray(parsed.classes) ? parsed.classes : [],
-      currentClassId: parsed.currentClassId ?? null,
-    };
-  } catch {
-    return { classes: [], currentClassId: null }; // corrupted/blocked storage — render the empty state rather than crash
-  }
-}
-
 export default function IslandView() {
-  const [store, setStore] = useState(loadStore);
+  const auth = useAuth();
+  // Called unconditionally regardless of auth state (rules of hooks) —
+  // the hook itself no-ops until there's a real session, see its header
+  // comment.
+  const store = useClassroomStore(auth.session);
+
   const roamersRef = useRef(new Map()); // studentId -> mutable roamer state (see movement.js)
   const lastTsRef = useRef(null);
   const [, setTick] = useState(0); // bumped every animation frame to force a re-render from the refs above
@@ -81,26 +72,16 @@ export default function IslandView() {
   const prevPtsRef = useRef(null); // Map<studentId, gotchiPts> as of the last render, or null before the first — see the points-sound effect below
 
   const activeClass = useMemo(
-    () => store.classes.find((c) => c.id === store.currentClassId) ?? store.classes[0] ?? null,
-    [store],
+    () => store.classes.find((c) => c.id === store.currentClassId) ?? null,
+    [store.classes, store.currentClassId],
   );
   // Stabilized so the roster-sync effect below doesn't see a "new" array
   // (and re-run its add/remove diff pointlessly) on every animation-frame
-  // re-render when there's no active class.
-  const students = useMemo(() => activeClass?.students ?? [], [activeClass]);
-
-  // Re-read the store when the teacher dashboard (a separate tab/window,
-  // typically) changes it, so the island stays live without a backend.
-  // Doesn't fire for the island's own writes (setDisplayTama below) — the
-  // browser only dispatches `storage` to OTHER tabs/windows — so those
-  // update local state directly instead of waiting for this.
-  useEffect(() => {
-    function onStorage(e) {
-      if (e.key === STORAGE_KEY) setStore(loadStore());
-    }
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
-  }, []);
+  // re-render when the underlying data hasn't actually changed.
+  const students = useMemo(
+    () => store.students.filter((s) => s.classId === store.currentClassId),
+    [store.students, store.currentClassId],
+  );
 
   // Global button-tap sound — scoped to this view only, not the teacher
   // dashboard, since this (the projected/class-facing page) is the one
@@ -118,16 +99,16 @@ export default function IslandView() {
   }, []);
 
   // "A student's points went up" sound — the teacher dashboard is a
-  // separate tab/page that does the actual awarding, so this view has to
-  // detect the increase itself rather than call the sound directly: track
-  // each student's gotchiPts as of the last render and compare on every
-  // change to `students` (which fires on the dashboard's write via the
-  // cross-tab `storage` listener above, same mechanism the hatch-detection
-  // logic used to use on this page). Skips the very first run (nothing to
-  // compare against yet — would otherwise fire once for every student's
-  // starting balance on load) and any student not seen before (a roster
-  // change, not a points change). Plays once per batch of changes, not
-  // once per student, same as the dashboard's own "Award All" used to.
+  // separate page/device that does the actual awarding, so this view has
+  // to detect the increase itself rather than call the sound directly:
+  // track each student's gotchiPts as of the last render and compare on
+  // every change to `students` (which now fires whenever
+  // useClassroomStore's realtime subscription pulls in a change from any
+  // device, not just a same-browser tab). Skips the very first run
+  // (nothing to compare against yet — would otherwise fire once for every
+  // student's starting balance on load) and any student not seen before
+  // (a roster change, not a points change). Plays once per batch of
+  // changes, not once per student, same as "Award All" already batches.
   useEffect(() => {
     const prevPts = prevPtsRef.current;
     const nextPts = new Map(students.map((s) => [s.id, s.gotchiPts]));
@@ -140,46 +121,6 @@ export default function IslandView() {
     }
     prevPtsRef.current = nextPts;
   }, [students]);
-
-  // Switches which class is "active" (roamed/shown here) — persisted back
-  // to the same shared store the teacher dashboard reads/writes, same
-  // write pattern as setDisplayTama below, so it survives reloads and the
-  // dashboard picks it up too (that's what currentClassId already existed
-  // for — see loadStore's header comment — this was just the one place
-  // nothing let you change it besides the dashboard's own sidebar).
-  function selectClass(classId) {
-    setStore((prev) => {
-      const next = { ...prev, currentClassId: classId };
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } catch {
-        // storage full/blocked — the change still applies for this session via React state below
-      }
-      return next;
-    });
-  }
-
-  // The island can now set a student's display tama (from the tamadex
-  // toast) — persisted back to the same shared store the teacher
-  // dashboard writes to, so it survives reloads and shows up there too.
-  function setDisplayTama(studentId, tamaId) {
-    setStore((prev) => {
-      const next = {
-        ...prev,
-        classes: prev.classes.map((c) =>
-          c.id !== activeClass?.id
-            ? c
-            : { ...c, students: c.students.map((s) => (s.id === studentId ? { ...s, displayTamaId: tamaId } : s)) },
-        ),
-      };
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } catch {
-        // storage full/blocked — the change still applies for this session via React state below
-      }
-      return next;
-    });
-  }
 
   // Keep roamer entries in sync with the current roster — add newly-added
   // students, drop removed ones — without resetting anyone already roaming
@@ -226,13 +167,18 @@ export default function IslandView() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  if (auth.loading) return <LoadingScreen text="Signing in…" />;
+  if (!auth.session) return <LoginScreen onSignIn={auth.signInWithGoogle} error={auth.error} />;
+  if (store.loading) return <LoadingScreen text="Loading…" />;
+
   // Looked up fresh from `students` (not stored as its own object) so the
-  // toast reflects live growth/points changes from another tab while open.
+  // toast reflects live growth/points changes from another device while open.
   const selectedStudent = students.find((s) => s.id === selectedStudentId) ?? null;
 
   return (
     <div
       style={{
+        position: 'relative',
         minHeight: '100svh',
         display: 'flex',
         flexDirection: 'column',
@@ -245,12 +191,32 @@ export default function IslandView() {
         boxSizing: 'border-box',
       }}
     >
+      <button
+        onClick={auth.signOut}
+        title={auth.session.user.email}
+        style={{
+          position: 'absolute',
+          top: 10,
+          right: 10,
+          background: 'none',
+          border: '1px solid #2e2e4e',
+          color: '#7070a0',
+          borderRadius: 4,
+          padding: '4px 8px',
+          fontSize: 10,
+          fontFamily: 'inherit',
+          cursor: 'pointer',
+        }}
+      >
+        Sign out
+      </button>
+
       {store.classes.length > 0 && (
         <div style={classSwitcherStyle}>
           {store.classes.map((c) => (
             <button
               key={c.id}
-              onClick={() => selectClass(c.id)}
+              onClick={() => store.selectClass(c.id)}
               style={{ ...classBtnStyle, ...(c.id === activeClass?.id ? classBtnActiveStyle : null) }}
             >
               {c.name}
@@ -354,10 +320,29 @@ export default function IslandView() {
       {selectedStudent && (
         <TamadexToast
           student={selectedStudent}
-          onSelectDisplay={(tamaId) => setDisplayTama(selectedStudent.id, tamaId)}
+          onSelectDisplay={(tamaId) => store.setDisplayTama(selectedStudent.id, tamaId)}
           onClose={() => setSelectedStudentId(null)}
         />
       )}
+    </div>
+  );
+}
+
+function LoadingScreen({ text }) {
+  return (
+    <div
+      style={{
+        minHeight: '100svh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#0e0e1a',
+        color: '#7070a0',
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: 12,
+      }}
+    >
+      {text}
     </div>
   );
 }

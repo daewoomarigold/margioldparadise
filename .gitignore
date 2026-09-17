@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Supabase project credentials — see .env.example for the required vars.
+.env
+
 # Local-only reference material (large / redundant with public/sprites or
 # unused) — kept on disk for browsing, not tracked. catalog.json + README are
 # small and useful so those ARE tracked.

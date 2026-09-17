@@ -75,11 +75,11 @@ Sprite sheets are Taylor's own (not the stock Tamagotchi Paradise art), based on
 - Repo: [github.com/daewoomarigold/margioldparadise](https://github.com/daewoomarigold/margioldparadise)
 - Live site: https://daewoomarigold.github.io/margioldparadise/
 - Local development happens on Taylor's MacBook (Claude Code CLI installed locally, repo cloned, `gh` handles GitHub auth), this is where real commits and pushes happen
-- Database: the old Supabase project is currently paused (free-tier inactivity) and has other known issues. Fixing/replacing it is a separate, later task, don't touch Supabase integration unless explicitly asked
+- Database: now on a **new** Supabase project (the old one stayed paused/untouched — its schema was built for the old shop/timer pet system and doesn't fit this rewrite). Real-time sync and Google sign-in are both live. See `CLAUDE.md`'s Database section and `supabase/schema.sql` for the actual setup
 
 ## Open questions (not yet decided)
 
 - What exactly changes in the `teacher.html` overhaul, beyond "it needs one." Does it need new capabilities, or mainly a design/usability pass on what it already does?
 - What are the actual names/theme for the 3 toddler biomes and their species lines (the chart's Land/Water/Sky are placeholders since this uses custom sprites)?
 - The clothing/cosmetic drops system (intentionally undesigned for now)
-- Whether/how to replace Supabase, and what to do about its current paused state
+- ~~Whether/how to replace Supabase~~ — done, see "Technical setup" above

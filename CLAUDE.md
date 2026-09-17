@@ -30,10 +30,31 @@ earlier version of the site.
 
 ## Database
 
-- The previous version used Supabase.
-- Supabase has known issues that need fixing, but that work is intentionally
-  **not** part of this initial rewrite/setup. Don't touch or reintroduce
-  Supabase integration unless Taylor explicitly asks for it.
+Wired to Supabase (a **new** project, not the old paused one — see
+GAME_DESIGN.md for why). Data layer is `src/data/useClassroomStore.js`
+(shared by both the teacher dashboard and the island view) + the schema in
+`supabase/schema.sql`. Real-time sync (Supabase Realtime) and sign-in
+(Google OAuth via Supabase Auth, `src/auth/`) are both live — see
+`src/supabaseClient.js`.
+
+- **Env vars**: `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`, read from a
+  local `.env` (gitignored — copy `.env.example` and fill in real values;
+  see the Supabase dashboard's Project Settings → API) and from GitHub
+  Actions secrets of the same names for the live deploy (see
+  `.github/workflows/deploy.yml`). If you're on a fresh Cowork container
+  (see "Working across devices" below), `.env` won't have carried over —
+  recreate it from `.env.example` before running `npm run dev`; ask Taylor
+  for the values if you don't have them.
+- **Schema changes**: edit `supabase/schema.sql` to describe the intended
+  state, but Taylor has to actually run the change in the Supabase SQL
+  Editor — there's no CLI/migration tooling wired up, so a schema edit here
+  doesn't take effect until they do that.
+- **RLS**: every table is scoped to `owner_id = auth.uid()` (students via
+  their class's owner). No public/unauthenticated read path — the island
+  view requires sign-in too, same account, for exactly this reason.
+- Don't touch or reintroduce anything from the *old* `gotchigarden`
+  Supabase project (its schema doesn't match this app's data model at all)
+  unless Taylor explicitly asks.
 
 ## Working across devices
 
