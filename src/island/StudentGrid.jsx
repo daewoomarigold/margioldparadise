@@ -44,6 +44,11 @@ const EGG_ROCK = resolveAnimState('egg_rock');
 // smaller on-screen than the sprite's native 128x128.
 const TILE_BG_URL = spriteUrl('image-1402.png');
 
+// The in-universe "gotchi coin" icon (16x16), used instead of a generic ★
+// so the currency reads as an actual game item rather than an abstract
+// rating symbol.
+const COIN_URL = spriteUrl('image-95.png');
+
 export default function StudentGrid({ students, onSelectStudent }) {
   const tiles = Array.from({ length: GRID_SIZE }, (_, i) => students[i] ?? null);
 
@@ -113,7 +118,10 @@ function StudentTile({ student, onClick }) {
       <div style={meterTrackStyle} title={`${Math.round(fraction * POINTS_PER_GROWTH)}/${POINTS_PER_GROWTH} pts to next stage`}>
         <div style={{ ...meterFillStyle, width: `${fraction * 100}%` }} />
       </div>
-      <div style={ptsStyle}>★ {student.gotchiPts}</div>
+      <div style={ptsStyle}>
+        <img src={COIN_URL} alt="" style={coinIconStyle} />
+        {student.gotchiPts}
+      </div>
     </div>
   );
 }
@@ -177,4 +185,13 @@ const ptsStyle = {
   fontSize: 8,
   color: '#ffe066', // matches the teacher dashboard's ★-prefixed currency styling (Award button, tamadex star)
   textShadow: '0 1px 2px rgba(0, 0, 0, 0.8)',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 3,
+};
+
+const coinIconStyle = {
+  width: 10,
+  height: 10,
+  imageRendering: 'pixelated',
 };
