@@ -212,7 +212,7 @@ function StudentTile({ student, onClick }) {
     const isCancelled = () => cancelled;
     async function run() {
       if (ptsDelta > 0) {
-        await runCoinRain(ptsDelta, isCancelled, setEvo);
+        await runCoinRain(prev, ptsDelta, isCancelled, setEvo);
         if (isCancelled()) return;
       }
       if (tamaChanged) {
@@ -331,7 +331,7 @@ function StudentTile({ student, onClick }) {
 // Same manual-per-frame-value approach as the shake/wobble beats above
 // (see their own comments for why: already smooth frame by frame, a CSS
 // transition would just add lag on top).
-async function runCoinRain(delta, isCancelled, setEvo) {
+async function runCoinRain(oldTama, delta, isCancelled, setEvo) {
   const dropCount = Math.min(delta, RAIN_MAX_DROPS);
   // Each drop's horizontal jitter and spawn offset are fixed up front so
   // they don't change frame to frame — only x is randomized (not y/timing),
@@ -363,7 +363,7 @@ async function runCoinRain(delta, isCancelled, setEvo) {
         const opacity = t < 0.12 ? t / 0.12 : t > 0.8 ? Math.max(0, (1 - t) / 0.2) : 1; // quick fade in, hold, fade out near the ground
         drops.push({ id: d.id, x: d.x, y, opacity });
       }
-      setEvo({ phase: 'coinRain', drops });
+      setEvo({ phase: 'coinRain', oldTama, drops });
 
       if (elapsed >= totalMs) {
         resolve();
@@ -510,15 +510,20 @@ function evoSpriteFor(evo, isEgg, tamaId) {
   const showingOld = phase === 'cycle' || phase === 'shake' || phase === 'hatch' || phase === 'flashIn';
 
   if (phase === 'coinRain') {
-    // No oldTama here (runCoinRain doesn't set one — see its own
-    // comment) — shows the CURRENT sprite in a plain idle pose, since
-    // this beat always plays before any evolution sequence would swap it
-    // out anyway. `rainDrops` tells the tile which falling coins to
-    // render on top (see coinDropStyle) — already-positioned {id,x,y,
-    // opacity} objects, nothing left to compute in the render itself.
-    const base = isEgg
+    // Shows oldTama, NOT the isEgg/tamaId params — bug fix: those params
+    // are the tile's CURRENT props, which by this point already reflect
+    // the post-distribute result (growth/tamaId update in the same write
+    // pendingPts/gotchiPts do), not what the student had a moment ago.
+    // Using them here meant the coin rain flashed the NEW tama in first,
+    // then the evolution sequence's own (correctly oldTama-based) phases
+    // snapped back to the OLD one right after — exactly the "new tama,
+    // then the old one reappears" glitch this fixes. `rainDrops` tells
+    // the tile which falling coins to render on top (see coinDropStyle)
+    // — already-positioned {id,x,y,opacity} objects, nothing left to
+    // compute in the render itself.
+    const base = oldTama.stage === 'egg'
       ? { tamaId: 'egg', frames: { body: 0, eyes: 0, mouth: 0 }, mirrored: false, faceOffset: undefined }
-      : { tamaId, frames: { body: IDLE.body[0], eyes: IDLE.eyes[0], mouth: IDLE.mouth[0] }, mirrored: false, faceOffset: { x: 0, y: 0 } };
+      : { tamaId: oldTama.tamaId, frames: { body: IDLE.body[0], eyes: IDLE.eyes[0], mouth: IDLE.mouth[0] }, mirrored: false, faceOffset: { x: 0, y: 0 } };
     return { ...base, shakeX: 0, walkX: 0, rainDrops: evo.drops ?? [] };
   }
   if (phase === 'hatchWobble') {
