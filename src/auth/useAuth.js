@@ -53,7 +53,16 @@ export function useAuth() {
 
   function signInWithGoogle() {
     setError('');
-    supabase.auth.signInWithOAuth({ provider: 'google' }).then(({ error: err }) => {
+    // Explicit redirectTo, not the default — left unset, auth-js falls
+    // back to Supabase's "Site URL" setting (which, unless changed in the
+    // dashboard, is still the placeholder http://localhost:3000 every
+    // project starts with — see CLAUDE.md's Database section). Even with
+    // that fixed, the client's OTHER default is window.location.origin,
+    // which drops the path entirely (/margioldparadise/, or /margioldparadise/?view=island
+    // for the island) — window.location.href preserves the full current
+    // URL, so sign-in from either page returns to that same page instead
+    // of always landing back on the dashboard.
+    supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.href } }).then(({ error: err }) => {
       if (err) setError(err.message);
     });
   }
