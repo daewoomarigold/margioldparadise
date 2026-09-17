@@ -24,7 +24,8 @@ const CANVAS_W = 512;
 const CANVAS_H = 512;
 const SCALE = 1; // mini sprites are 32x32 native; this is their on-screen size multiplier
 const SPRITE_PX = 32 * SCALE;
-const HATCH_FRAME_MS = 350; // per-frame duration for the one-shot egg_hatch playback
+const HATCH_WOBBLE_MS = 700; // suspense beat on the resting egg (raw frame 0, not part of egg_hatch's own body array) before cracking starts, sliding side to side
+const HATCH_FRAME_MS = 500; // was 350 — per-frame duration for the crack/burst playback itself, held a bit longer
 
 // The island now writes back (setting a student's display tama from the
 // tamadex toast), not just reads — so it holds the full store (all
@@ -150,17 +151,25 @@ export default function IslandView() {
         const currentStage = resolveDisplayTama(s).stage;
         const prevStage = prevStagesRef.current.get(s.id);
         if (prevStage === 'egg' && currentStage !== 'egg' && !hatchStateRef.current.has(s.id)) {
-          hatchStateRef.current.set(s.id, { startedAt: ts, frame: 0 });
+          hatchStateRef.current.set(s.id, { startedAt: ts, frame: 0, wobbling: true, wobbleX: 0 });
         }
         prevStagesRef.current.set(s.id, currentStage);
 
         const hatch = hatchStateRef.current.get(s.id);
         if (hatch) {
-          const frameIdx = Math.floor((ts - hatch.startedAt) / HATCH_FRAME_MS);
-          if (frameIdx >= eggHatch.body.length) {
-            hatchStateRef.current.delete(s.id); // playback finished — display switches to the new stage next render
+          const elapsed = ts - hatch.startedAt;
+          if (elapsed < HATCH_WOBBLE_MS) {
+            // Still wobbling on the resting egg — no frame progression yet.
+            hatch.wobbling = true;
+            hatch.wobbleX = Math.sin((elapsed / 90) * Math.PI * 2) * 3;
           } else {
-            hatch.frame = frameIdx;
+            hatch.wobbling = false;
+            const frameIdx = Math.floor((elapsed - HATCH_WOBBLE_MS) / HATCH_FRAME_MS);
+            if (frameIdx >= eggHatch.body.length) {
+              hatchStateRef.current.delete(s.id); // playback finished — display switches to the new stage next render
+            } else {
+              hatch.frame = frameIdx;
+            }
           }
         }
       }
@@ -256,9 +265,20 @@ export default function IslandView() {
             // One-shot egg_hatch playback in progress — keep showing this
             // even though `stage` may have already flipped to baby, so the
             // transition reads as "hatching" rather than an instant swap.
+            // While wobbling, it's raw sprite frame 0 (the resting egg —
+            // not part of egg_hatch's own body array) sliding side to
+            // side; once the wobble beat ends it switches to egg_hatch's
+            // actual crack/burst frames, held still.
             return (
               <div key={s.id} style={eggSpotStyle}>
-                <TamaComposite tamaId="egg" variant="mini" frames={{ body: eggHatch.body[hatch.frame], eyes: 0, mouth: 0 }} scale={SCALE} />
+                <div style={{ transform: `translateX(${hatch.wobbling ? hatch.wobbleX : 0}px)` }}>
+                  <TamaComposite
+                    tamaId="egg"
+                    variant="mini"
+                    frames={{ body: hatch.wobbling ? 0 : eggHatch.body[hatch.frame], eyes: 0, mouth: 0 }}
+                    scale={SCALE}
+                  />
+                </div>
                 <NameTag name={s.name} />
               </div>
             );

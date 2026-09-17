@@ -82,7 +82,8 @@ const WALK = resolveAnimState('walk_left'); // reused for the adult->new-egg "wa
 // before the reveal.
 const EVO_CYCLE_STEP_MS = 250; // matches the original's cycle cadence exactly
 const EVO_CYCLE_STEPS = 8; // 8 * 250ms = 2s, same total as the original's stand+cycle buildup
-const EVO_HATCH_FRAME_MS = 350; // matches IslandView's own one-shot egg_hatch playback
+const EVO_HATCH_WOBBLE_MS = 700; // suspense beat on the resting egg (raw frame 0, not part of egg_hatch's own body array) before cracking starts, sliding side to side — matches IslandView's own wobble
+const EVO_HATCH_FRAME_MS = 500; // was 350 — matches IslandView's own one-shot egg_hatch playback, held a bit longer
 const EVO_SHAKE_MS = 1200; // was 1500 in the original
 const EVO_FLASH_IN_MS = 650; // was 350 — slower ramp to white
 const EVO_FLASH_HOLD_MS = 450; // new — a beat held at full white before the reveal starts
@@ -262,6 +263,26 @@ function StudentTile({ student, onClick }) {
 // transforming, not the result.
 async function runEvolution(oldTama, isCancelled, setEvo) {
   if (oldTama.stage === 'egg') {
+    // Suspense beat before cracking starts: the resting egg (raw frame 0,
+    // not part of egg_hatch's own [2,3,4] body array) wobbles side to
+    // side — same shape as IslandView's own lead-in wobble.
+    await new Promise((resolve) => {
+      const start = performance.now();
+      function frame(ts) {
+        if (isCancelled()) return resolve();
+        const elapsed = ts - start;
+        if (elapsed >= EVO_HATCH_WOBBLE_MS) {
+          resolve();
+          return;
+        }
+        const shakeX = Math.sin((elapsed / 90) * Math.PI * 2) * 3;
+        setEvo({ phase: 'hatchWobble', oldTama, shakeX });
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    });
+    if (isCancelled()) return;
+
     // Play the real hatch crack/burst frames (egg_hatch — see
     // animationStates.json) instead of the idle/happy cycle an egg has no
     // face for. Same per-frame timing IslandView uses for its own
@@ -357,8 +378,9 @@ async function runNewCycleSequence(oldTama, isCancelled, setEvo) {
 }
 
 // Resolves an in-progress evolution's phase into what TamaComposite should
-// render. cycle/shake/hatch/flashIn/wave/walkoff still show the OLD pet
-// (idle/happy alternating for cycle, a static idle pose while shaking, the
+// render. cycle/shake/hatchWobble/hatch/flashIn/wave/walkoff still show
+// the OLD pet (idle/happy alternating for cycle, a static idle pose while
+// shaking, the resting egg sliding side to side during hatchWobble, the
 // live egg_hatch frame while hatching, a happy pose while waving, walking
 // frames while sliding off); flashHold/flashOut/celebrate/eggAppear show
 // the NEW one (current isEgg/tamaId — the actual props the tile was
@@ -368,6 +390,9 @@ function evoSpriteFor(evo, isEgg, tamaId) {
   const { phase, oldTama, cycleIdx = 0, shakeX = 0, hatchFrameIdx = 0, walkX = 0, walkStep = 0 } = evo;
   const showingOld = phase === 'cycle' || phase === 'shake' || phase === 'hatch' || phase === 'flashIn';
 
+  if (phase === 'hatchWobble') {
+    return { tamaId: 'egg', frames: { body: 0, eyes: 0, mouth: 0 }, mirrored: false, faceOffset: undefined, shakeX, walkX: 0 };
+  }
   if (phase === 'hatch') {
     return { tamaId: 'egg', frames: { body: EGG_HATCH.body[hatchFrameIdx], eyes: 0, mouth: 0 }, mirrored: false, faceOffset: undefined, shakeX: 0, walkX: 0 };
   }
