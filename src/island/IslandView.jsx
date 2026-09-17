@@ -74,6 +74,17 @@ export default function IslandView() {
   const [, setTick] = useState(0); // bumped every animation frame to force a re-render from the refs above
   const [selectedStudentId, setSelectedStudentId] = useState(null); // which student's tamadex toast is open, if any
   const prevPtsRef = useRef(null); // Map<studentId, gotchiPts> as of the last render, or null before the first — see the points-sound effect below
+  // Browsers block audio.play() triggered by something OTHER than a
+  // direct user gesture (e.g. the realtime-triggered playAddPoint below)
+  // until a real gesture has happened somewhere on this page — normally
+  // any click anywhere satisfies that, but this page is meant to sit
+  // backgrounded (behind slides, say) while points get awarded from a
+  // SEPARATE tab/device, so it may never receive one on its own. Tracks
+  // whether that's happened yet so a one-time prompt can ask for it — see
+  // the "Click to enable sound" button below. Resets on reload (that's
+  // the browser's real requirement, not just this app's UI) — see that
+  // button for the persistent alternative (a Chrome site-setting).
+  const [audioUnlocked, setAudioUnlocked] = useState(false);
 
   const activeClass = useMemo(
     () => store.classes.find((c) => c.id === store.currentClassId) ?? null,
@@ -223,6 +234,37 @@ export default function IslandView() {
       >
         Sign out
       </button>
+
+      {!audioUnlocked && (
+        // One click anywhere satisfies the browser's requirement — this
+        // button doesn't call playTap() itself; the existing document-wide
+        // click listener above already does, for every click on this
+        // page, and that's what actually counts as the gesture. This is
+        // just a deliberate, visible target for it before the tab gets
+        // backgrounded, plus the audible tap IS the "yes, it worked"
+        // confirmation. See audioUnlocked's own comment for the fuller
+        // picture (and a persistent alternative to clicking this every
+        // reload — a Chrome site-setting).
+        <button
+          onClick={() => setAudioUnlocked(true)}
+          title="Browsers block sound triggered by something other than a click (like points arriving from another device) until you've clicked something on this page at least once — do that here before backgrounding this tab."
+          style={{
+            position: 'absolute',
+            top: 10,
+            left: 10,
+            background: 'rgba(255, 224, 102, 0.12)',
+            border: '1px solid #ffe066',
+            color: '#ffe066',
+            borderRadius: 4,
+            padding: '4px 8px',
+            fontSize: 10,
+            fontFamily: 'inherit',
+            cursor: 'pointer',
+          }}
+        >
+          🔊 Click to enable sound
+        </button>
+      )}
 
       {store.classes.length > 0 && (
         <div style={classSwitcherStyle}>
