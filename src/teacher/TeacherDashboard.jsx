@@ -22,6 +22,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './teacher.css';
 import { newStudentProgress, applyPointsToGrowth, meterFraction, findTamaName, POINTS_PER_GROWTH } from '../game/growth.js';
+import { playAddPoint } from '../sound.js';
 
 const STORAGE_KEY = 'marigold-teacher-data-v1';
 
@@ -351,6 +352,13 @@ export default function TeacherDashboard() {
   }
 
   function setStudentPts(studentId, newPts) {
+    // Sound plays here (not in nudgePts) so it covers every path that can
+    // raise a student's points — the +1/+10 buttons (which just call this
+    // with a delta already applied) and typing a bigger number directly
+    // into the input.
+    const clamped = Math.max(0, Number(newPts) || 0);
+    const prev = students.find((s) => s.id === studentId);
+    if (prev && clamped > (prev.gotchiPts ?? 0)) playAddPoint();
     updateCurrentClassStudents((list) => list.map((s) => (s.id === studentId ? applyPtsChange(s, newPts) : s)));
   }
 
@@ -370,6 +378,7 @@ export default function TeacherDashboard() {
   function awardAll(sign) {
     const amt = Math.max(1, Number(awardAmount) || 1) * sign;
     updateCurrentClassStudents((list) => list.map((s) => applyPtsChange(s, s.gotchiPts + amt)));
+    if (sign > 0) playAddPoint(); // once for the whole class-wide award, not once per student
     toast(sign > 0 ? `Awarded ${amt} pts to everyone` : `Deducted ${Math.abs(amt)} pts from everyone`);
   }
 
