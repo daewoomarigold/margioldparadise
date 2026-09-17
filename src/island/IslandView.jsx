@@ -24,8 +24,6 @@ const CANVAS_W = 512;
 const CANVAS_H = 512;
 const SCALE = 1; // mini sprites are 32x32 native; this is their on-screen size multiplier
 const SPRITE_PX = 32 * SCALE;
-const HATCH_WOBBLE_MS = 700; // suspense beat on the resting egg (raw frame 0, not part of egg_hatch's own body array) before cracking starts, sliding side to side
-const HATCH_FRAME_MS = 500; // was 350 — per-frame duration for the crack/burst playback itself, held a bit longer
 
 // Class switcher — lets the island itself change which class is active
 // (currentClassId in the shared store) instead of requiring the teacher
@@ -79,9 +77,6 @@ export default function IslandView() {
   const lastTsRef = useRef(null);
   const [, setTick] = useState(0); // bumped every animation frame to force a re-render from the refs above
   const [selectedStudentId, setSelectedStudentId] = useState(null); // which student's tamadex toast is open, if any
-  const prevStagesRef = useRef(new Map()); // studentId -> last-seen display stage, to detect an egg->baby transition
-  const hatchStateRef = useRef(new Map()); // studentId -> { startedAt, frame } while egg_hatch is playing one-shot
-  const studentsRef = useRef([]); // kept fresh via the effect below so the rAF loop always sees the latest roster without restarting itself
 
   const activeClass = useMemo(
     () => store.classes.find((c) => c.id === store.currentClassId) ?? store.classes[0] ?? null,
@@ -91,9 +86,6 @@ export default function IslandView() {
   // (and re-run its add/remove diff pointlessly) on every animation-frame
   // re-render when there's no active class.
   const students = useMemo(() => activeClass?.students ?? [], [activeClass]);
-  useEffect(() => {
-    studentsRef.current = students;
-  }, [students]);
 
   // Re-read the store when the teacher dashboard (a separate tab/window,
   // typically) changes it, so the island stays live without a backend.
@@ -168,12 +160,10 @@ export default function IslandView() {
     }
   }, [students]);
 
-  // Static lookups (same object every call, pure function over the JSON
+  // Static lookup (same object every call, pure function over the JSON
   // import) — fine to capture once in the rAF effect's closure below even
   // though that effect only runs on mount ([] deps).
   const walk = resolveAnimState('walk_left');
-  const eggRock = resolveAnimState('egg_rock');
-  const eggHatch = resolveAnimState('egg_hatch');
 
   useEffect(() => {
     let raf;
@@ -188,45 +178,11 @@ export default function IslandView() {
         stepAnim(roamer, dt);
       }
 
-      // Detect egg -> non-egg transitions and manage the one-shot
-      // egg_hatch playback. Done here (not during render) since it writes
-      // to refs — imperative per-frame state, same as the roamer stepping
-      // above, not something render should be doing.
-      for (const s of studentsRef.current) {
-        const currentStage = resolveDisplayTama(s).stage;
-        const prevStage = prevStagesRef.current.get(s.id);
-        if (prevStage === 'egg' && currentStage !== 'egg' && !hatchStateRef.current.has(s.id)) {
-          hatchStateRef.current.set(s.id, { startedAt: ts, frame: 0, wobbling: true, wobbleX: 0 });
-        }
-        prevStagesRef.current.set(s.id, currentStage);
-
-        const hatch = hatchStateRef.current.get(s.id);
-        if (hatch) {
-          const elapsed = ts - hatch.startedAt;
-          if (elapsed < HATCH_WOBBLE_MS) {
-            // Still wobbling on the resting egg — no frame progression yet.
-            hatch.wobbling = true;
-            hatch.wobbleX = Math.sin((elapsed / 90) * Math.PI * 2) * 3;
-          } else {
-            hatch.wobbling = false;
-            const frameIdx = Math.floor((elapsed - HATCH_WOBBLE_MS) / HATCH_FRAME_MS);
-            if (frameIdx >= eggHatch.body.length) {
-              hatchStateRef.current.delete(s.id); // playback finished — display switches to the new stage next render
-            } else {
-              hatch.frame = frameIdx;
-            }
-          }
-        }
-      }
-
       setTick((t) => t + 1);
       raf = requestAnimationFrame(frame);
     }
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);
-    // eggHatch is static data (resolveAnimState over the JSON import) —
-    // same value every render, safe to omit; runs once by design.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Looked up fresh from `students` (not stored as its own object) so the
@@ -300,6 +256,7 @@ export default function IslandView() {
           </div>
         )}
 
+        {/* eslint-disable-next-line react/refs -- roamersRef is deliberately read during render here; see the comment on `roamer` below for why. */}
         {students.map((s) => {
           const growth = s.growth;
           // Deliberately reading the ref during render: roamersRef is the
@@ -314,50 +271,15 @@ export default function IslandView() {
           // header comment for the asymmetric-design rationale.
           const { stage, tamaId } = resolveDisplayTama(s);
 
-          // Same fixed spot for both — eggs (and the hatch moment right
-          // after one) don't roam, matching the old gotchigarden.html's
-          // "eggs don't move" behavior.
-          const eggSpotStyle = { position: 'absolute', left: CANVAS_W / 2 - SPRITE_PX / 2, top: CANVAS_H * 0.78 };
-
-          const hatch = hatchStateRef.current.get(s.id);
-          if (hatch) {
-            // One-shot egg_hatch playback in progress — keep showing this
-            // even though `stage` may have already flipped to baby, so the
-            // transition reads as "hatching" rather than an instant swap.
-            // While wobbling, it's raw sprite frame 0 (the resting egg —
-            // not part of egg_hatch's own body array) sliding side to
-            // side; once the wobble beat ends it switches to egg_hatch's
-            // actual crack/burst frames, held still.
-            return (
-              <div key={s.id} style={eggSpotStyle}>
-                <div style={{ transform: `translateX(${hatch.wobbling ? hatch.wobbleX : 0}px)` }}>
-                  <TamaComposite
-                    tamaId="egg"
-                    variant="mini"
-                    frames={{ body: hatch.wobbling ? 0 : eggHatch.body[hatch.frame], eyes: 0, mouth: 0 }}
-                    scale={SCALE}
-                  />
-                </div>
-                <NameTag name={s.name} />
-              </div>
-            );
-          }
-
-          if (stage === 'egg') {
-            const eggFrameIdx = roamer.animFrame % eggRock.body.length;
-            return (
-              <div key={s.id} style={eggSpotStyle}>
-                <TamaComposite
-                  tamaId="egg"
-                  variant="mini"
-                  frames={{ body: eggRock.body[eggFrameIdx], eyes: 0, mouth: 0 }}
-                  scale={SCALE}
-                  mirrored={eggRock.bodyMirror[eggFrameIdx % eggRock.bodyMirror.length]}
-                />
-                <NameTag name={s.name} />
-              </div>
-            );
-          }
+          // Eggs never appear on the field, full stop — even a brand new
+          // student who's never grown anything past their very first egg.
+          // The egg/hatch animations (idle rock + crack/burst on
+          // transition) live on the roster tile only now (StudentGrid.jsx)
+          // — the field used to show a stationary rocking egg here too,
+          // but that read as a bug ("eggs appearing on the field") more
+          // than a feature, so it's gone: a student just doesn't show up
+          // on the island until they've hatched.
+          if (stage === 'egg') return null;
 
           const bodyFrame = walk.body[roamer.animFrame % walk.body.length];
           const eyesFrame = walk.eyes[roamer.animFrame % walk.eyes.length];
