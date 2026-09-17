@@ -36,6 +36,7 @@ function rowToStudent(row) {
     email: row.email ?? '',
     gotchiPts: row.gotchi_pts,
     lifetimePts: row.lifetime_pts,
+    pendingPts: row.pending_pts ?? 0,
     growth: row.growth,
     // Stored as text (a column can't be "number or the literal string
     // 'current'") — same union growth.js's resolveDisplayTama already
@@ -55,6 +56,10 @@ function rowToStudent(row) {
 // fix: keeps auto-following whatever's growing while displayTamaId is
 // 'current', but pins it the moment a NEW adult is reached so the field
 // doesn't quietly keep cycling forward.
+//
+// Only ever called from distributeClass below now ("Tama Time" — see its
+// own comment) — during the lesson itself, giving points just moves
+// pending_pts (setPendingPts/awardAllPendingPts), never this.
 function applyPtsChange(student, newGotchiPts) {
   const gotchiPts = Math.max(0, Number(newGotchiPts) || 0);
   const priorGotchiPts = student.gotchiPts ?? 0;
@@ -209,30 +214,54 @@ export function useClassroomStore(session) {
     if (err) setError(err.message);
   }
 
-  // student: the CURRENT student object (from `students` above) — needed
-  // to compute the gotchiPts/lifetimePts delta, see applyPtsChange.
-  async function setStudentPts(student, newGotchiPts) {
-    const next = applyPtsChange(student, newGotchiPts);
-    const { error: err } = await supabase
-      .from('students')
-      .update({
-        gotchi_pts: next.gotchiPts,
-        lifetime_pts: next.lifetimePts,
-        growth: next.growth,
-        display_tama_id: String(next.displayTamaId),
-      })
-      .eq('id', student.id);
+  // The "give points" primitive during a lesson — just moves pending_pts,
+  // no growth math at all (that's the whole point: nothing about a
+  // student's pet should change yet). student: the CURRENT student object,
+  // used only for its id here (newPendingPts is already the absolute value
+  // to write, same calling convention the old setStudentPts had).
+  async function setPendingPts(student, newPendingPts) {
+    const pendingPts = Math.trunc(Number(newPendingPts) || 0);
+    const { error: err } = await supabase.from('students').update({ pending_pts: pendingPts }).eq('id', student.id);
     if (err) setError(err.message);
   }
 
   // classStudents: the current roster (so each gets its OWN delta off its
-  // own current balance) — fired as parallel per-student updates rather
+  // own current pending) — fired as parallel per-student updates rather
   // than a single batch call (Supabase's JS client can't apply a
   // different value per row in one request); classes here max out around
   // 16 students, so this stays cheap.
-  async function awardAllPts(classStudents, sign, amount) {
+  async function awardAllPendingPts(classStudents, sign, amount) {
     const amt = Math.max(1, Number(amount) || 1) * sign;
-    await Promise.all(classStudents.map((s) => setStudentPts(s, s.gotchiPts + amt)));
+    await Promise.all(classStudents.map((s) => setPendingPts(s, (s.pendingPts ?? 0) + amt)));
+  }
+
+  // "Tama Time" — applies every queued pending_pts at once and clears it,
+  // same applyPtsChange growth math the old immediate-award flow used to
+  // run right at award time. Skips anyone with nothing pending entirely —
+  // no write, no realtime event, no reveal for them (see StudentGrid.jsx's
+  // detection effect, which is what actually plays the coin-cascade/
+  // evolution reveal in response to the gotchi_pts/growth this writes).
+  // classStudents: the current roster, same shape awardAllPendingPts uses.
+  async function distributeClass(classStudents) {
+    const pending = classStudents.filter((s) => (s.pendingPts ?? 0) !== 0);
+    await Promise.all(
+      pending.map((s) => {
+        const next = applyPtsChange(s, s.gotchiPts + s.pendingPts);
+        return supabase
+          .from('students')
+          .update({
+            gotchi_pts: next.gotchiPts,
+            lifetime_pts: next.lifetimePts,
+            growth: next.growth,
+            display_tama_id: String(next.displayTamaId),
+            pending_pts: 0,
+          })
+          .eq('id', s.id)
+          .then(({ error: err }) => {
+            if (err) setError(err.message);
+          });
+      }),
+    );
   }
 
   async function setDisplayTama(studentId, displayTamaId) {
@@ -252,8 +281,9 @@ export function useClassroomStore(session) {
     createStudent,
     createCsvClass,
     removeStudent,
-    setStudentPts,
-    awardAllPts,
+    setPendingPts,
+    awardAllPendingPts,
+    distributeClass,
     setDisplayTama,
   };
 }

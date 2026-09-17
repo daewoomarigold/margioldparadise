@@ -58,11 +58,21 @@
 // overflow:hidden, no extra work needed), then the new egg appears.
 //
 // Tile-only, by request — the island field's roamers are untouched.
+//
+// Coin cascade ("Tama Time" — see TeacherDashboard.jsx/useClassroomStore.js's
+// pendingPts/distributeClass): whenever a tile's gotchiPts increases, a
+// burst of bouncing coin icons plays first — one beat per point, capped at
+// MAX_COIN_BEATS, each firing playAddPoint() — before falling straight
+// into the evolution sequence above if the growth stage ALSO changed as
+// part of the same distribute. Both reveals are driven by the same `evo`
+// state machine/detection effect below; a pts-only change (no stage
+// change) just plays the coin part and stops.
 
 import { useEffect, useRef, useState } from 'react';
 import { meterFraction, POINTS_PER_GROWTH } from '../game/growth.js';
 import { resolveAnimState, spriteUrl } from '../game/spriteData.js';
 import { TamaComposite } from '../game/spriteCompositor.jsx';
+import { playAddPoint } from '../sound.js';
 
 const GRID_SIZE = 16; // 4x4 — matches the real max class size, not just the current roster
 const TILE_SCALE = 2; // mini sprites are 32x32 native; on-screen size within the tile
@@ -99,6 +109,12 @@ const EVO_WALK_STEP_MS = 130; // walk-cycle frame swap rate while sliding — qu
 const EVO_WALKOFF_DISTANCE_PX = 100; // comfortably past a tile's sprite-area width, so it's fully clipped by the tile's overflow:hidden before the beat ends
 const EVO_GONE_MS = 250; // empty beat once it's off-tile, before the egg appears
 const EVO_EGG_APPEAR_MS = 450; // holds on the new egg before handing back to normal play
+
+// Coin-cascade timings — one beat per point gotchiPts went up by, capped
+// so a big distribute still reads as "a lot of coins" without dozens of
+// individual pops dragging on.
+const COIN_BEAT_MS = 220; // pacing between successive coin pops
+const MAX_COIN_BEATS = 8;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -153,40 +169,55 @@ function StudentTile({ student, onClick }) {
     return () => clearInterval(id);
   }, []);
 
-  // --- Evolution overlay -------------------------------------------------
-  // See the file header for the full picture. prevTamaRef remembers what
-  // was showing last render; when stage/tamaId changes we still have the
-  // OLD identity in hand (needed for the cycle/shake beats, which show the
-  // pet that's ABOUT to transform, not the new one) before kicking off the
-  // sequence. `evo` is null during normal play.
-  const prevTamaRef = useRef(null);
+  // --- Evolution overlay / coin cascade -----------------------------------
+  // See the file header for the full picture. prevSnapshotRef remembers
+  // what was showing last render (now including gotchiPts, not just
+  // stage/tamaId); when either changes we still have the OLD identity in
+  // hand (needed for the cycle/shake beats, which show the pet that's
+  // ABOUT to transform, not the new one) before kicking off the sequence.
+  // `evo` is null during normal play.
+  const prevSnapshotRef = useRef(null);
   const [evo, setEvo] = useState(null);
 
   useEffect(() => {
-    const prev = prevTamaRef.current;
+    const prev = prevSnapshotRef.current;
     const isInitialMount = prev == null;
-    const changed = !isInitialMount && (prev.tamaId !== tamaId || prev.stage !== stage);
-    prevTamaRef.current = { stage, tamaId };
-    if (!changed) return;
+    const tamaChanged = !isInitialMount && (prev.tamaId !== tamaId || prev.stage !== stage);
+    // Only an INCREASE plays the coin cascade — a deduction (or the
+    // initial mount) doesn't get one. Not clamped to student.gotchiPts
+    // moving at all here — see MAX_COIN_BEATS below for how a big jump is
+    // capped, not this.
+    const ptsDelta = !isInitialMount && student.gotchiPts > prev.gotchiPts ? student.gotchiPts - prev.gotchiPts : 0;
+    prevSnapshotRef.current = { stage, tamaId, gotchiPts: student.gotchiPts };
+    if (!tamaChanged && ptsDelta === 0) return;
 
     let cancelled = false;
     const isCancelled = () => cancelled;
-    // adult -> a fresh egg (the one path that ever lands back on 'egg'
-    // from something other than an egg) gets its own wave/walk-off
-    // sequence instead of the generic cycle/shake/flash one — see the
-    // file header.
-    const sequence = stage === 'egg' && prev.stage !== 'egg' ? runNewCycleSequence(prev, isCancelled, setEvo) : runEvolution(prev, isCancelled, setEvo);
-    sequence.then(() => {
+    async function run() {
+      if (ptsDelta > 0) {
+        await runCoinCascade(ptsDelta, isCancelled, setEvo);
+        if (isCancelled()) return;
+      }
+      if (tamaChanged) {
+        // adult -> a fresh egg (the one path that ever lands back on
+        // 'egg' from something other than an egg) gets its own wave/
+        // walk-off sequence instead of the generic cycle/shake/flash one
+        // — see the file header.
+        const sequence = stage === 'egg' && prev.stage !== 'egg' ? runNewCycleSequence(prev, isCancelled, setEvo) : runEvolution(prev, isCancelled, setEvo);
+        await sequence;
+      }
+    }
+    run().then(() => {
       if (!cancelled) setEvo(null);
     });
     return () => {
       cancelled = true;
     };
-    // Only re-run when the growing tama's identity actually changes —
-    // intentionally not depending on setEvo (stable) or the functions
-    // above (module-level, pure).
+    // Only re-run when the growing tama's identity or gotchiPts actually
+    // changes — intentionally not depending on setEvo (stable) or the
+    // functions above (module-level, pure).
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stage, tamaId]);
+  }, [stage, tamaId, student.gotchiPts]);
 
   const eggFrameIdx = animFrame % EGG_ROCK.body.length;
   const normalFrames = isEgg
@@ -245,6 +276,17 @@ function StudentTile({ student, onClick }) {
                 faceOffset={showing.faceOffset}
               />
             </div>
+            {showing.coin && (
+              <img
+                src={COIN_URL}
+                alt=""
+                style={{
+                  ...coinPopStyle,
+                  opacity: showing.coinOpacity ?? 0,
+                  transform: `translate(-50%, ${showing.coinY ?? 0}px)`,
+                }}
+              />
+            )}
           </div>
         )}
       </div>
@@ -258,6 +300,37 @@ function StudentTile({ student, onClick }) {
       </div>
     </div>
   );
+}
+
+// One beat per point gotchiPts went up by (capped at MAX_COIN_BEATS) — a
+// coin pops up and fades, playAddPoint() firing right at the start of
+// each beat, so a big award reads as a rapid-fire cascade of successive
+// coin sounds rather than one lump-sum beep. Same rAF-per-frame-value
+// pattern as the shake/wobble beats above (see their own comments for
+// why: already being driven smoothly frame by frame, no CSS transition
+// needed on top).
+async function runCoinCascade(delta, isCancelled, setEvo) {
+  const beats = Math.min(delta, MAX_COIN_BEATS);
+  for (let i = 0; i < beats && !isCancelled(); i++) {
+    playAddPoint();
+    await new Promise((resolve) => {
+      const start = performance.now();
+      function frame(ts) {
+        if (isCancelled()) return resolve();
+        const elapsed = ts - start;
+        if (elapsed >= COIN_BEAT_MS) {
+          resolve();
+          return;
+        }
+        const t = elapsed / COIN_BEAT_MS; // 0..1 progress through this beat
+        const coinY = -14 * Math.sin(Math.min(t, 1) * Math.PI); // rises then settles back — 0 at both ends, peak mid-beat
+        const coinOpacity = t < 0.15 ? t / 0.15 : t > 0.75 ? Math.max(0, (1 - t) / 0.25) : 1; // quick fade in, hold, fade out
+        setEvo({ phase: 'coin', coinIndex: i, coinY, coinOpacity });
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    });
+  }
 }
 
 // Runs the ported triggerEvolve() choreography, pushing each beat into
@@ -394,6 +467,17 @@ function evoSpriteFor(evo, isEgg, tamaId) {
   const { phase, oldTama, cycleIdx = 0, shakeX = 0, hatchFrameIdx = 0, walkX = 0, walkStep = 0 } = evo;
   const showingOld = phase === 'cycle' || phase === 'shake' || phase === 'hatch' || phase === 'flashIn';
 
+  if (phase === 'coin') {
+    // No oldTama here (runCoinCascade doesn't set one — see its own
+    // comment) — shows the CURRENT sprite in a plain idle pose, since
+    // this beat always plays before any evolution sequence would swap it
+    // out anyway. `coin: true` tells the tile to render the bouncing
+    // coin overlay on top (see coinPopStyle).
+    const base = isEgg
+      ? { tamaId: 'egg', frames: { body: 0, eyes: 0, mouth: 0 }, mirrored: false, faceOffset: undefined }
+      : { tamaId, frames: { body: IDLE.body[0], eyes: IDLE.eyes[0], mouth: IDLE.mouth[0] }, mirrored: false, faceOffset: { x: 0, y: 0 } };
+    return { ...base, shakeX: 0, walkX: 0, coin: true, coinY: evo.coinY ?? 0, coinOpacity: evo.coinOpacity ?? 0 };
+  }
   if (phase === 'hatchWobble') {
     return { tamaId: 'egg', frames: { body: 0, eyes: 0, mouth: 0 }, mirrored: false, faceOffset: undefined, shakeX, walkX: 0 };
   }
@@ -541,4 +625,19 @@ const flashMaskStyle = {
   inset: 0,
   pointerEvents: 'none',
   filter: 'brightness(0) invert(1)',
+};
+
+// One coin-cascade beat — see runCoinCascade. Positioned near the
+// sprite's head and nudged up/faded via inline opacity/transform driven
+// per-rAF-frame by that function (not a CSS transition — same reasoning
+// as shakeX/walkX above: it's already being driven smoothly frame by
+// frame, a transition would just add lag on top).
+const coinPopStyle = {
+  position: 'absolute',
+  top: '15%',
+  left: '50%',
+  width: 12,
+  height: 12,
+  imageRendering: 'pixelated',
+  pointerEvents: 'none',
 };

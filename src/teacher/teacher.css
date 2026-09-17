@@ -384,6 +384,26 @@
 .teacher-pts-input:focus {
   border-color: var(--yellow);
 }
+/* Confirmed total (static — can't move until Distribute) + a badge for
+   whatever's queued in pendingPts, if anything. */
+.teacher-confirmed-pts {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  color: var(--yellow);
+}
+.teacher-coin-icon {
+  width: 10px;
+  height: 10px;
+  image-rendering: pixelated;
+}
+.teacher-pending-badge {
+  font-family: inherit;
+  font-size: 9px;
+  color: var(--cyan);
+}
 .teacher-growth-status {
   display: flex;
   flex-direction: column;

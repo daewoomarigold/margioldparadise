@@ -22,7 +22,7 @@ import { TamaComposite } from '../game/spriteCompositor.jsx';
 import { createRoamer, stepRoamer, stepAnim } from '../game/movement.js';
 import { getYBoundsForImage683 } from './terrain.js';
 import { resolveDisplayTama } from '../game/growth.js';
-import { playTap, playAddPoint } from '../sound.js';
+import { playTap } from '../sound.js';
 import { useAuth } from '../auth/useAuth.js';
 import { useClassroomStore } from '../data/useClassroomStore.js';
 import LoginScreen from '../auth/LoginScreen.jsx';
@@ -73,7 +73,6 @@ export default function IslandView() {
   const lastTsRef = useRef(null);
   const [, setTick] = useState(0); // bumped every animation frame to force a re-render from the refs above
   const [selectedStudentId, setSelectedStudentId] = useState(null); // which student's tamadex toast is open, if any
-  const prevPtsRef = useRef(null); // Map<studentId, gotchiPts> as of the last render, or null before the first — see the points-sound effect below
   // Browsers block audio.play() triggered by something OTHER than a
   // direct user gesture (e.g. the realtime-triggered playAddPoint below)
   // until a real gesture has happened somewhere on this page — normally
@@ -121,30 +120,6 @@ export default function IslandView() {
     document.addEventListener('click', onClick, { capture: true });
     return () => document.removeEventListener('click', onClick, { capture: true });
   }, []);
-
-  // "A student's points went up" sound — the teacher dashboard is a
-  // separate page/device that does the actual awarding, so this view has
-  // to detect the increase itself rather than call the sound directly:
-  // track each student's gotchiPts as of the last render and compare on
-  // every change to `students` (which now fires whenever
-  // useClassroomStore's realtime subscription pulls in a change from any
-  // device, not just a same-browser tab). Skips the very first run
-  // (nothing to compare against yet — would otherwise fire once for every
-  // student's starting balance on load) and any student not seen before
-  // (a roster change, not a points change). Plays once per batch of
-  // changes, not once per student, same as "Award All" already batches.
-  useEffect(() => {
-    const prevPts = prevPtsRef.current;
-    const nextPts = new Map(students.map((s) => [s.id, s.gotchiPts]));
-    if (prevPts) {
-      const anyIncrease = students.some((s) => {
-        const prior = prevPts.get(s.id);
-        return prior != null && s.gotchiPts > prior;
-      });
-      if (anyIncrease) playAddPoint();
-    }
-    prevPtsRef.current = nextPts;
-  }, [students]);
 
   // Keep roamer entries in sync with the current roster — add newly-added
   // students, drop removed ones — without resetting anyone already roaming
@@ -198,6 +173,17 @@ export default function IslandView() {
   // Looked up fresh from `students` (not stored as its own object) so the
   // toast reflects live growth/points changes from another device while open.
   const selectedStudent = students.find((s) => s.id === selectedStudentId) ?? null;
+
+  const pendingStudentCount = students.filter((s) => (s.pendingPts ?? 0) !== 0).length;
+  // "Tama Time" — same action/confirm as the dashboard's own Distribute
+  // button (useClassroomStore.js's distributeClass); this one's the
+  // primary copy since the reveal itself plays right here, on this page
+  // (StudentGrid.jsx's tiles react to the write this triggers).
+  function distributeAll() {
+    if (pendingStudentCount === 0) return;
+    if (!confirm(`Distribute queued points for ${pendingStudentCount} student${pendingStudentCount === 1 ? '' : 's'}?`)) return;
+    store.distributeClass(students);
+  }
 
   return (
     <div
@@ -278,6 +264,19 @@ export default function IslandView() {
             </button>
           ))}
         </div>
+      )}
+
+      {activeClass && (
+        <button
+          onClick={distributeAll}
+          disabled={pendingStudentCount === 0}
+          style={{
+            ...classBtnStyle,
+            ...(pendingStudentCount > 0 ? classBtnActiveStyle : { opacity: 0.5, cursor: 'default' }),
+          }}
+        >
+          🎉 Distribute{pendingStudentCount > 0 ? ` (${pendingStudentCount})` : ''}
+        </button>
       )}
 
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center' }}>

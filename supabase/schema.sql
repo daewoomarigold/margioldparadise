@@ -19,6 +19,9 @@
 -- unlockedSecrets, growthConsumedPts) as one jsonb blob — growth.js's pure
 -- functions don't change at all, they just now read/write a blob that
 -- happens to live in Postgres instead of localStorage.
+--
+-- `pending_pts` on students is the "Tama Time" staging area — see that
+-- column's own comment below.
 
 create table public.classes (
   id uuid primary key default gen_random_uuid(),
@@ -38,6 +41,13 @@ create table public.students (
   email text,
   gotchi_pts integer not null default 0,
   lifetime_pts integer not null default 0,
+  -- Points awarded during a lesson sit here first, untouched by
+  -- gotchi_pts/lifetime_pts/growth/display_tama_id, until the teacher
+  -- hits Distribute ("Tama Time" — see useClassroomStore.js's
+  -- distributeClass) — the class often can't see the island live during
+  -- the lesson, so nothing about a student's pet should visibly change
+  -- until that reveal. Can go negative (a queued deduction).
+  pending_pts integer not null default 0,
   -- 'current' (follow whatever's growing) or a stringified tamaId (a
   -- specific completed adult) — same union growth.js's resolveDisplayTama
   -- already handles, just stored as text since a column can't be "number

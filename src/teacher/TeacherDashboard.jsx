@@ -17,13 +17,27 @@
 // spending gotchiPts can never shrink or un-advance a pet's growth — see
 // useClassroomStore.js's applyPtsChange for exactly how the two stay in
 // sync (moved there since it's now the thing actually writing points).
+//
+// "Tama Time" — points given during class don't touch gotchiPts/
+// lifetimePts/growth at all anymore; they queue in pendingPts (the
+// -10/-1/+1/+10 controls and the number input below all edit that, not
+// the confirmed total) since the island often isn't visible while class
+// is happening, so nothing about a pet should change until Taylor wants
+// it to. distributeAll below applies everything queued at once — see
+// useClassroomStore.js's distributeClass and StudentGrid.jsx's reveal
+// animation (the coin cascade + evolution playback that reacts to it).
 
 import { useRef, useState } from 'react';
 import './teacher.css';
 import { newStudentProgress, meterFraction, findTamaName, POINTS_PER_GROWTH } from '../game/growth.js';
+import { spriteUrl } from '../game/spriteData.js';
 import { useAuth } from '../auth/useAuth.js';
 import { useClassroomStore } from '../data/useClassroomStore.js';
 import LoginScreen from '../auth/LoginScreen.jsx';
+
+// Same coin icon StudentGrid.jsx uses for its pts readout — reused here
+// for the pending badge so the two pages speak the same visual language.
+const COIN_URL = spriteUrl('image-95.png');
 
 // Splits one CSV line into fields, honoring double-quoted fields (so a
 // quoted name like "Lee, Grace" doesn't get cut in half) and "" as an
@@ -153,6 +167,7 @@ export default function TeacherDashboard() {
   const studentCount = students.length;
   const topPts = studentCount ? Math.max(...students.map((s) => s.gotchiPts)) : 0;
   const avgPts = studentCount ? Math.round(students.reduce((sum, s) => sum + s.gotchiPts, 0) / studentCount) : 0;
+  const pendingStudentCount = students.filter((s) => (s.pendingPts ?? 0) !== 0).length;
 
   async function createClass() {
     const name = newClassName.trim();
@@ -248,23 +263,35 @@ export default function TeacherDashboard() {
     toast('Student removed');
   }
 
-  // Thin wrapper so the rest of this file can keep calling setStudentPts
+  // Thin wrapper so the rest of this file can keep calling setPendingPts
   // by id (matches the input/button handlers below) — the store itself
-  // needs the current student object to compute the gotchiPts/lifetimePts
-  // delta (see useClassroomStore.js's applyPtsChange).
-  function setStudentPts(studentId, newPts) {
+  // just needs the student object, for its id.
+  function setPendingPts(studentId, newPending) {
     const student = students.find((s) => s.id === studentId);
-    if (student) store.setStudentPts(student, newPts);
+    if (student) store.setPendingPts(student, newPending);
   }
 
-  function nudgePts(student, delta) {
-    setStudentPts(student.id, student.gotchiPts + delta);
+  function nudgePendingPts(student, delta) {
+    setPendingPts(student.id, (student.pendingPts ?? 0) + delta);
   }
 
   async function awardAll(sign) {
     const amt = Math.max(1, Number(awardAmount) || 1) * sign;
-    await store.awardAllPts(students, sign, awardAmount);
-    toast(sign > 0 ? `Awarded ${amt} pts to everyone` : `Deducted ${Math.abs(amt)} pts from everyone`);
+    await store.awardAllPendingPts(students, sign, awardAmount);
+    toast(sign > 0 ? `Queued ${amt} pts for everyone` : `Queued a ${Math.abs(amt)}-pt deduction for everyone`);
+  }
+
+  // "Tama Time" — applies every queued pendingPts at once (see
+  // useClassroomStore.js's distributeClass) and clears it. The reveal
+  // itself (coin cascade + any evolution) plays on the island
+  // (StudentGrid.jsx), reacting to the same write — nothing to trigger
+  // from here beyond the write itself.
+  async function distributeAll() {
+    const pendingCount = students.filter((s) => (s.pendingPts ?? 0) !== 0).length;
+    if (pendingCount === 0) return;
+    if (!confirm(`Distribute queued points for ${pendingCount} student${pendingCount === 1 ? '' : 's'}? This plays the reveal on the island.`)) return;
+    await store.distributeClass(students);
+    toast('Distributed — check the island for the reveal');
   }
 
   return (
@@ -380,6 +407,14 @@ export default function TeacherDashboard() {
                 <button className="teacher-btn yellow" onClick={() => setShowAwardBanner(true)}>
                   ★ Award All
                 </button>
+                <button
+                  className="teacher-btn yellow"
+                  onClick={distributeAll}
+                  disabled={pendingStudentCount === 0}
+                  title={pendingStudentCount === 0 ? 'Nothing queued yet' : `${pendingStudentCount} student${pendingStudentCount === 1 ? '' : 's'} queued`}
+                >
+                  🎉 Distribute{pendingStudentCount > 0 ? ` (${pendingStudentCount})` : ''}
+                </button>
               </div>
 
               {filteredStudents.length === 0 ? (
@@ -393,29 +428,38 @@ export default function TeacherDashboard() {
                   {filteredStudents.map((s) => (
                     <div className="teacher-student-card" key={s.id}>
                       <div className="teacher-student-name">{s.name}</div>
+                      <div className="teacher-confirmed-pts" title="Confirmed total — won't move until Distribute">
+                        <img src={COIN_URL} alt="" className="teacher-coin-icon" />
+                        {s.gotchiPts}
+                        {(s.pendingPts ?? 0) !== 0 && (
+                          <span className="teacher-pending-badge">
+                            {s.pendingPts > 0 ? `+${s.pendingPts}` : s.pendingPts} pending
+                          </span>
+                        )}
+                      </div>
                       <div className="teacher-pts-controls">
-                        <button className="teacher-pts-btn minus" onClick={() => nudgePts(s, -10)} title="-10">
+                        <button className="teacher-pts-btn minus" onClick={() => nudgePendingPts(s, -10)} title="-10">
                           −
                         </button>
-                        <button className="teacher-pts-btn minus" style={{ fontSize: 8 }} onClick={() => nudgePts(s, -1)} title="-1">
+                        <button className="teacher-pts-btn minus" style={{ fontSize: 8 }} onClick={() => nudgePendingPts(s, -1)} title="-1">
                           -1
                         </button>
                         <input
                           className="teacher-pts-input"
                           type="number"
-                          value={s.gotchiPts}
-                          min={0}
-                          onChange={(e) => setStudentPts(s.id, e.target.value)}
+                          value={s.pendingPts ?? 0}
+                          onChange={(e) => setPendingPts(s.id, e.target.value)}
+                          title="Pending — queued until Distribute"
                         />
                         <button
                           className="teacher-pts-btn plus"
                           style={{ fontSize: 8, borderColor: 'var(--green)', color: 'var(--green)' }}
-                          onClick={() => nudgePts(s, 1)}
+                          onClick={() => nudgePendingPts(s, 1)}
                           title="+1"
                         >
                           +1
                         </button>
-                        <button className="teacher-pts-btn plus" onClick={() => nudgePts(s, 10)} title="+10">
+                        <button className="teacher-pts-btn plus" onClick={() => nudgePendingPts(s, 10)} title="+10">
                           +
                         </button>
                       </div>
