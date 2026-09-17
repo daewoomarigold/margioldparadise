@@ -24,8 +24,23 @@
 // Tapping a tile opens the tamadex toast (see TamadexToast.jsx), where a
 // student can change their display tama; a future item shop could pop
 // out from here too.
+//
+// Evolution overlay: whenever a tile's growth.currentTama identity changes
+// (egg->baby, baby->toddler, ..., adult->a fresh egg next cycle), it plays
+// a short transformation sequence — cycle idle/happy, shake, white flash,
+// reveal — before settling back into the normal walking_forward loop.
+// Ported from the old gotchigarden.html's triggerEvolve() (see that repo's
+// EVOLVE SEQUENCE section): same four beats (cycle -> shake -> flash ->
+// reveal), same sine-wave shake shape, just the ANIMATION choreography —
+// none of the old cost/feeding/wait-days gating carried over, since growth
+// here already advances the moment points land (see growth.js). Unlike the
+// old code (which only animated baby->adult, egg hatching being a
+// separate flow), this plays for every stage change here, including
+// egg->baby — there's no old-tama face to cycle/shake for an egg, so that
+// specific case skips straight to a flash+reveal. Tile-only, by request —
+// the island field's roamers are untouched.
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { meterFraction, POINTS_PER_GROWTH } from '../game/growth.js';
 import { resolveAnimState, spriteUrl } from '../game/spriteData.js';
 import { TamaComposite } from '../game/spriteCompositor.jsx';
@@ -36,6 +51,22 @@ const TILE_ANIM_FPS = 2; // was 4 — read as too fast for a small in-place idle
 
 const WALKING_FORWARD = resolveAnimState('walking_forward');
 const EGG_ROCK = resolveAnimState('egg_rock');
+const IDLE = resolveAnimState('idle');
+const HAPPY = resolveAnimState('happy');
+
+// Evolution sequence timings (ms), adapted from triggerEvolve()'s
+// stand/cycle/shake/flash/wave beats — shortened a bit since this is a
+// small dashboard tile, not a full-screen moment.
+const EVO_CYCLE_STEP_MS = 250; // matches the original's cycle cadence exactly
+const EVO_CYCLE_STEPS = 8; // 8 * 250ms = 2s, same total as the original's stand+cycle buildup
+const EVO_SHAKE_MS = 1200; // was 1500 in the original
+const EVO_FLASH_IN_MS = 350; // was 400
+const EVO_FLASH_OUT_MS = 500; // matches the original's fade-in duration
+const EVO_CELEBRATE_MS = 1400; // was 2500 (a brief happy pose here, not a full wave animation — we don't have a "wave" state defined)
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 // Grass-and-tree background for occupied tiles (empty slots stay plain —
 // see EmptyTile). A dark scrim is layered under it so the name/meter/dex
@@ -86,33 +117,73 @@ function StudentTile({ student, onClick }) {
     return () => clearInterval(id);
   }, []);
 
+  // --- Evolution overlay -------------------------------------------------
+  // See the file header for the full picture. prevTamaRef remembers what
+  // was showing last render; when stage/tamaId changes we still have the
+  // OLD identity in hand (needed for the cycle/shake beats, which show the
+  // pet that's ABOUT to transform, not the new one) before kicking off the
+  // sequence. `evo` is null during normal play.
+  const prevTamaRef = useRef(null);
+  const [evo, setEvo] = useState(null);
+
+  useEffect(() => {
+    const prev = prevTamaRef.current;
+    const isInitialMount = prev == null;
+    const changed = !isInitialMount && (prev.tamaId !== tamaId || prev.stage !== stage);
+    prevTamaRef.current = { stage, tamaId };
+    if (!changed) return;
+
+    let cancelled = false;
+    const isCancelled = () => cancelled;
+    runEvolution(prev, isCancelled, setEvo).then(() => {
+      if (!cancelled) setEvo(null);
+    });
+    return () => {
+      cancelled = true;
+    };
+    // Only re-run when the growing tama's identity actually changes —
+    // intentionally not depending on setEvo (stable) or the functions
+    // above (module-level, pure).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stage, tamaId]);
+
   const eggFrameIdx = animFrame % EGG_ROCK.body.length;
-  const frames = isEgg
+  const normalFrames = isEgg
     ? { body: EGG_ROCK.body[eggFrameIdx], eyes: 0, mouth: 0 }
     : {
         body: WALKING_FORWARD.body[animFrame % WALKING_FORWARD.body.length],
         eyes: WALKING_FORWARD.eyes[animFrame % WALKING_FORWARD.eyes.length],
         mouth: WALKING_FORWARD.mouth[animFrame % WALKING_FORWARD.mouth.length],
       };
-  const faceOffset = isEgg
+  const normalFaceOffset = isEgg
     ? undefined
     : {
         x: WALKING_FORWARD.faceOffsetX[animFrame % WALKING_FORWARD.faceOffsetX.length],
         y: WALKING_FORWARD.faceOffsetY[animFrame % WALKING_FORWARD.faceOffsetY.length],
       };
-  const mirrored = isEgg && EGG_ROCK.bodyMirror[eggFrameIdx % EGG_ROCK.bodyMirror.length];
+  const normalMirrored = isEgg && EGG_ROCK.bodyMirror[eggFrameIdx % EGG_ROCK.bodyMirror.length];
+
+  // While evolving, override what's shown — see evoSpriteFor below for the
+  // per-phase logic (which pet, which pose, whether it's shaking).
+  const showing = evo ? evoSpriteFor(evo, isEgg, tamaId) : { tamaId: isEgg ? 'egg' : tamaId, frames: normalFrames, mirrored: normalMirrored, faceOffset: normalFaceOffset, shakeX: 0 };
+
+  const flashOpacity = evo?.phase === 'flashIn' ? 1 : evo?.phase === 'flashOut' ? 0 : 0;
+  const flashMs = evo?.phase === 'flashIn' ? EVO_FLASH_IN_MS : EVO_FLASH_OUT_MS;
 
   return (
     <div style={{ ...tileStyle, ...tileBgStyle, cursor: 'pointer' }} onClick={onClick}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 32 * TILE_SCALE }}>
-        <TamaComposite
-          tamaId={isEgg ? 'egg' : tamaId}
-          variant="mini"
-          frames={frames}
-          scale={TILE_SCALE}
-          mirrored={mirrored}
-          faceOffset={faceOffset}
-        />
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', height: 32 * TILE_SCALE }}>
+        <div style={{ transform: `translateX(${showing.shakeX}px)` }}>
+          <TamaComposite
+            tamaId={showing.tamaId}
+            variant="mini"
+            frames={showing.frames}
+            scale={TILE_SCALE}
+            mirrored={showing.mirrored}
+            faceOffset={showing.faceOffset}
+          />
+        </div>
+        <div style={{ ...flashOverlayStyle, opacity: flashOpacity, transition: `opacity ${flashMs}ms linear` }} />
       </div>
       <div style={nameStyle}>{student.name}</div>
       <div style={meterTrackStyle} title={`${Math.round(fraction * POINTS_PER_GROWTH)}/${POINTS_PER_GROWTH} pts to next stage`}>
@@ -124,6 +195,93 @@ function StudentTile({ student, onClick }) {
       </div>
     </div>
   );
+}
+
+// Runs the ported triggerEvolve() choreography, pushing each beat into
+// setEvo as it happens (the caller renders off that state). oldTama is
+// {stage, tamaId} captured right before the change — that's what the
+// cycle/shake beats show, since they're meant to be the pet transforming,
+// not the result. Skips the cycle/shake for an old egg (no face to
+// animate; eggs aren't part of the original triggerEvolve's scope either,
+// which only handled baby/adult) and goes straight to flash+reveal.
+async function runEvolution(oldTama, isCancelled, setEvo) {
+  if (oldTama.stage !== 'egg') {
+    for (let i = 0; i < EVO_CYCLE_STEPS && !isCancelled(); i++) {
+      setEvo({ phase: 'cycle', oldTama, cycleIdx: i });
+      await sleep(EVO_CYCLE_STEP_MS);
+    }
+    if (isCancelled()) return;
+
+    await new Promise((resolve) => {
+      const start = performance.now();
+      function frame(ts) {
+        if (isCancelled()) return resolve();
+        const elapsed = ts - start;
+        if (elapsed >= EVO_SHAKE_MS) {
+          resolve();
+          return;
+        }
+        // Same sine shape as the original's shake, scaled down (*3 vs *4)
+        // for this tile's smaller size.
+        const shakeX = Math.sin((elapsed / 60) * Math.PI * 2) * 3;
+        setEvo({ phase: 'shake', oldTama, shakeX });
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    });
+    if (isCancelled()) return;
+  }
+
+  setEvo({ phase: 'flashIn', oldTama });
+  await sleep(EVO_FLASH_IN_MS);
+  if (isCancelled()) return;
+
+  // The white overlay is fully opaque right at this instant, so swapping
+  // which tama is underneath (flashOut renders the NEW one — see
+  // evoSpriteFor) is invisible until the fade-out below reveals it.
+  setEvo({ phase: 'flashOut', oldTama });
+  await sleep(EVO_FLASH_OUT_MS);
+  if (isCancelled()) return;
+
+  setEvo({ phase: 'celebrate', oldTama });
+  await sleep(EVO_CELEBRATE_MS);
+}
+
+// Resolves an in-progress evolution's phase into what TamaComposite should
+// render. cycle/shake/flashIn still show the OLD pet (idle/happy
+// alternating for cycle, a static idle pose while shaking); flashOut/
+// celebrate show the NEW one (current isEgg/tamaId — the actual props the
+// tile was passed, already updated by the time the sequence gets here).
+function evoSpriteFor(evo, isEgg, tamaId) {
+  const { phase, oldTama, cycleIdx = 0, shakeX = 0 } = evo;
+  const showingOld = phase === 'cycle' || phase === 'shake' || phase === 'flashIn';
+
+  if (showingOld && oldTama.stage === 'egg') {
+    return { tamaId: 'egg', frames: { body: 0, eyes: 0, mouth: 0 }, mirrored: false, faceOffset: undefined, shakeX: 0 };
+  }
+  if (showingOld) {
+    const pose = phase === 'cycle' ? (cycleIdx % 2 === 0 ? IDLE : HAPPY) : IDLE;
+    return {
+      tamaId: oldTama.tamaId,
+      frames: { body: pose.body[0], eyes: pose.eyes[0], mouth: pose.mouth[0] },
+      mirrored: false,
+      faceOffset: { x: 0, y: 0 },
+      shakeX: phase === 'shake' ? shakeX : 0,
+    };
+  }
+
+  // flashOut / celebrate — the new pet.
+  if (isEgg) {
+    return { tamaId: 'egg', frames: { body: 0, eyes: 0, mouth: 0 }, mirrored: false, faceOffset: undefined, shakeX: 0 };
+  }
+  const pose = phase === 'celebrate' ? HAPPY : IDLE;
+  return {
+    tamaId,
+    frames: { body: pose.body[0], eyes: pose.eyes[0], mouth: pose.mouth[0] },
+    mirrored: false,
+    faceOffset: { x: 0, y: 0 },
+    shakeX: 0,
+  };
 }
 
 function EmptyTile() {
@@ -194,4 +352,15 @@ const coinIconStyle = {
   width: 10,
   height: 10,
   imageRendering: 'pixelated',
+};
+
+// The evolution sequence's white flash — see evoSpriteFor/runEvolution.
+// Sized via inset:0 against the sprite container (position:relative), so
+// it covers exactly the sprite's box regardless of tile scale.
+const flashOverlayStyle = {
+  position: 'absolute',
+  inset: 0,
+  background: '#fff',
+  pointerEvents: 'none',
+  borderRadius: 4,
 };
