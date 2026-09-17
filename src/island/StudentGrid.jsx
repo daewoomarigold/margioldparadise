@@ -1,7 +1,12 @@
 // 4x4 roster grid shown alongside the island — one tile per student
 // (Taylor's real classes max out at 16), showing their GROWING tama (not
 // their chosen display tama — see the asymmetric-design note below),
-// growth meter, name, and tamadex progress. Empty slots render as plain
+// growth meter, name, and current gotchiPts balance (the spendable
+// currency — see TeacherDashboard.jsx's file header for the
+// gotchiPts/lifetimePts split; the meter above it tracks lifetimePts
+// instead, so spending never moves it). Tamadex progress isn't shown here
+// — that lives inside the toast (TamadexToast.jsx) a tile opens on click,
+// so it's not duplicated in two places. Empty slots render as plain
 // placeholders, matching the mockup. Tamas play the "walking_forward"
 // animation state (a face-the-camera walk-in-place, body frames [4,5],
 // static eyes/mouth) in place — no roaming/movement, this is a dashboard
@@ -21,7 +26,7 @@
 // out from here too.
 
 import { useEffect, useState } from 'react';
-import { meterFraction, totalCollectible, POINTS_PER_GROWTH } from '../game/growth.js';
+import { meterFraction, POINTS_PER_GROWTH } from '../game/growth.js';
 import { resolveAnimState, spriteUrl } from '../game/spriteData.js';
 import { TamaComposite } from '../game/spriteCompositor.jsx';
 
@@ -29,7 +34,6 @@ const GRID_SIZE = 16; // 4x4 — matches the real max class size, not just the c
 const TILE_SCALE = 2; // mini sprites are 32x32 native; on-screen size within the tile
 const TILE_ANIM_FPS = 2; // was 4 — read as too fast for a small in-place idle bob
 
-const TOTAL_COLLECTIBLE = totalCollectible();
 const WALKING_FORWARD = resolveAnimState('walking_forward');
 const EGG_ROCK = resolveAnimState('egg_rock');
 
@@ -109,9 +113,7 @@ function StudentTile({ student, onClick }) {
       <div style={meterTrackStyle} title={`${Math.round(fraction * POINTS_PER_GROWTH)}/${POINTS_PER_GROWTH} pts to next stage`}>
         <div style={{ ...meterFillStyle, width: `${fraction * 100}%` }} />
       </div>
-      <div style={dexStyle}>
-        dex {growth.tamadex.length}/{TOTAL_COLLECTIBLE}
-      </div>
+      <div style={ptsStyle}>★ {student.gotchiPts}</div>
     </div>
   );
 }
@@ -171,8 +173,8 @@ const meterFillStyle = {
   transition: 'width 0.2s',
 };
 
-const dexStyle = {
+const ptsStyle = {
   fontSize: 8,
-  color: '#b0b0d0', // lightened from #7070a0 — the muted tone read too low-contrast over the grass background
+  color: '#ffe066', // matches the teacher dashboard's ★-prefixed currency styling (Award button, tamadex star)
   textShadow: '0 1px 2px rgba(0, 0, 0, 0.8)',
 };
