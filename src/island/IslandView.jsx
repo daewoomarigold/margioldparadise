@@ -27,6 +27,33 @@ const SPRITE_PX = 32 * SCALE;
 const HATCH_WOBBLE_MS = 700; // suspense beat on the resting egg (raw frame 0, not part of egg_hatch's own body array) before cracking starts, sliding side to side
 const HATCH_FRAME_MS = 500; // was 350 — per-frame duration for the crack/burst playback itself, held a bit longer
 
+// Class switcher — lets the island itself change which class is active
+// (currentClassId in the shared store) instead of requiring the teacher
+// dashboard's sidebar for that. See selectClass below.
+const classSwitcherStyle = {
+  display: 'flex',
+  gap: 8,
+  flexWrap: 'wrap',
+  justifyContent: 'center',
+};
+
+const classBtnStyle = {
+  background: '#1a1a2e',
+  border: '1px solid #2e2e4e',
+  color: '#a0a0c0',
+  borderRadius: 6,
+  padding: '6px 12px',
+  fontFamily: 'inherit',
+  fontSize: 12,
+  cursor: 'pointer',
+};
+
+const classBtnActiveStyle = {
+  border: '1px solid #ffe066',
+  background: 'rgba(255, 224, 102, 0.12)',
+  color: '#ffe066',
+};
+
 // The island now writes back (setting a student's display tama from the
 // tamadex toast), not just reads — so it holds the full store (all
 // classes + which one is active), not just a snapshot of the active
@@ -80,6 +107,24 @@ export default function IslandView() {
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
   }, []);
+
+  // Switches which class is "active" (roamed/shown here) — persisted back
+  // to the same shared store the teacher dashboard reads/writes, same
+  // write pattern as setDisplayTama below, so it survives reloads and the
+  // dashboard picks it up too (that's what currentClassId already existed
+  // for — see loadStore's header comment — this was just the one place
+  // nothing let you change it besides the dashboard's own sidebar).
+  function selectClass(classId) {
+    setStore((prev) => {
+      const next = { ...prev, currentClassId: classId };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        // storage full/blocked — the change still applies for this session via React state below
+      }
+      return next;
+    });
+  }
 
   // The island can now set a student's display tama (from the tamadex
   // toast) — persisted back to the same shared store the teacher
@@ -203,6 +248,20 @@ export default function IslandView() {
         boxSizing: 'border-box',
       }}
     >
+      {store.classes.length > 0 && (
+        <div style={classSwitcherStyle}>
+          {store.classes.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => selectClass(c.id)}
+              style={{ ...classBtnStyle, ...(c.id === activeClass?.id ? classBtnActiveStyle : null) }}
+            >
+              {c.name}
+            </button>
+          ))}
+        </div>
+      )}
+
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center' }}>
       <div
         style={{
@@ -237,7 +296,7 @@ export default function IslandView() {
               padding: 24,
             }}
           >
-            No class selected yet — pick one in the teacher dashboard.
+            No classes yet — create one in the teacher dashboard.
           </div>
         )}
 
