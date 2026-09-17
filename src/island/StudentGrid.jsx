@@ -27,7 +27,7 @@ import { TamaComposite } from '../game/spriteCompositor.jsx';
 
 const GRID_SIZE = 16; // 4x4 — matches the real max class size, not just the current roster
 const TILE_SCALE = 2; // mini sprites are 32x32 native; on-screen size within the tile
-const TILE_ANIM_FPS = 4; // matches the island's walk pace, for visual consistency
+const TILE_ANIM_FPS = 2; // was 4 — read as too fast for a small in-place idle bob
 
 const TOTAL_COLLECTIBLE = totalCollectible();
 const WALKING_FORWARD = resolveAnimState('walking_forward');
@@ -76,11 +76,17 @@ function StudentTile({ student, onClick }) {
         eyes: WALKING_FORWARD.eyes[animFrame % WALKING_FORWARD.eyes.length],
         mouth: WALKING_FORWARD.mouth[animFrame % WALKING_FORWARD.mouth.length],
       };
+  const faceOffset = isEgg
+    ? undefined
+    : {
+        x: WALKING_FORWARD.faceOffsetX[animFrame % WALKING_FORWARD.faceOffsetX.length],
+        y: WALKING_FORWARD.faceOffsetY[animFrame % WALKING_FORWARD.faceOffsetY.length],
+      };
 
   return (
     <div style={{ ...tileStyle, cursor: 'pointer' }} onClick={onClick}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 32 * TILE_SCALE }}>
-        <TamaComposite tamaId={isEgg ? 'egg' : tamaId} variant="mini" frames={frames} scale={TILE_SCALE} />
+        <TamaComposite tamaId={isEgg ? 'egg' : tamaId} variant="mini" frames={frames} scale={TILE_SCALE} faceOffset={faceOffset} />
       </div>
       <div style={nameStyle}>{student.name}</div>
       <div style={meterTrackStyle} title={`${Math.round(fraction * POINTS_PER_GROWTH)}/${POINTS_PER_GROWTH} pts to next stage`}>
