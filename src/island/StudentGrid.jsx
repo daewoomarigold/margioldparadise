@@ -48,6 +48,15 @@
 // keeps the flash shaped to whatever's actually on screen — including
 // transparent pixels around it — instead of flashing a hard-edged square.
 //
+// adult->new-egg is its own separate sequence (runNewCycleSequence, not
+// runEvolution) — no flash at all. A finished adult wrapping around to a
+// fresh egg isn't really "transforming into" the egg the way baby/
+// toddler/teen/adult stages are, so instead: the adult waves goodbye,
+// walks off (slides out using walk_left's frames, mirrored to face the
+// direction of travel — the same frame data the island's roamers walk
+// with), a brief empty beat once it's off-tile (clipped by the tile's own
+// overflow:hidden, no extra work needed), then the new egg appears.
+//
 // Tile-only, by request — the island field's roamers are untouched.
 
 import { useEffect, useRef, useState } from 'react';
@@ -64,6 +73,7 @@ const EGG_ROCK = resolveAnimState('egg_rock');
 const EGG_HATCH = resolveAnimState('egg_hatch');
 const IDLE = resolveAnimState('idle');
 const HAPPY = resolveAnimState('happy');
+const WALK = resolveAnimState('walk_left'); // reused for the adult->new-egg "walks off" beat, mirrored to face right
 
 // Evolution sequence timings (ms), adapted from triggerEvolve()'s
 // stand/cycle/shake/flash/wave beats — shortened a bit since this is a
@@ -78,6 +88,16 @@ const EVO_FLASH_IN_MS = 650; // was 350 — slower ramp to white
 const EVO_FLASH_HOLD_MS = 450; // new — a beat held at full white before the reveal starts
 const EVO_FLASH_OUT_MS = 900; // was 500 — slower, more dramatic reveal
 const EVO_CELEBRATE_MS = 1400; // was 2500 (a brief happy pose here, not a full wave animation — we don't have a "wave" state defined)
+
+// adult->new-egg sequence timings (ms) — see runNewCycleSequence. Not
+// ported from the original (it had no equivalent; a wrap-to-a-new-egg
+// cycle doesn't exist in the old game), so these are new.
+const EVO_WAVE_MS = 900; // static happy pose before setting off
+const EVO_WALKOFF_MS = 900; // duration of the slide-out
+const EVO_WALK_STEP_MS = 130; // walk-cycle frame swap rate while sliding — quicker than the island's roam pace, reads better over a short distance
+const EVO_WALKOFF_DISTANCE_PX = 100; // comfortably past a tile's sprite-area width, so it's fully clipped by the tile's overflow:hidden before the beat ends
+const EVO_GONE_MS = 250; // empty beat once it's off-tile, before the egg appears
+const EVO_EGG_APPEAR_MS = 450; // holds on the new egg before handing back to normal play
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -150,7 +170,12 @@ function StudentTile({ student, onClick }) {
 
     let cancelled = false;
     const isCancelled = () => cancelled;
-    runEvolution(prev, isCancelled, setEvo).then(() => {
+    // adult -> a fresh egg (the one path that ever lands back on 'egg'
+    // from something other than an egg) gets its own wave/walk-off
+    // sequence instead of the generic cycle/shake/flash one — see the
+    // file header.
+    const sequence = stage === 'egg' && prev.stage !== 'egg' ? runNewCycleSequence(prev, isCancelled, setEvo) : runEvolution(prev, isCancelled, setEvo);
+    sequence.then(() => {
       if (!cancelled) setEvo(null);
     });
     return () => {
@@ -179,8 +204,11 @@ function StudentTile({ student, onClick }) {
   const normalMirrored = isEgg && EGG_ROCK.bodyMirror[eggFrameIdx % EGG_ROCK.bodyMirror.length];
 
   // While evolving, override what's shown — see evoSpriteFor below for the
-  // per-phase logic (which pet, which pose, whether it's shaking).
-  const showing = evo ? evoSpriteFor(evo, isEgg, tamaId) : { tamaId: isEgg ? 'egg' : tamaId, frames: normalFrames, mirrored: normalMirrored, faceOffset: normalFaceOffset, shakeX: 0 };
+  // per-phase logic (which pet, which pose, whether it's shaking/walking,
+  // or (the 'gone' phase, adult->new-egg only) hidden entirely).
+  const showing = evo
+    ? evoSpriteFor(evo, isEgg, tamaId)
+    : { tamaId: isEgg ? 'egg' : tamaId, frames: normalFrames, mirrored: normalMirrored, faceOffset: normalFaceOffset, shakeX: 0, walkX: 0 };
 
   // Full opacity through both flashIn and the flashHold beat (the "swap
   // happens while fully white" moment — see evoSpriteFor); only flashOut
@@ -191,16 +219,9 @@ function StudentTile({ student, onClick }) {
   return (
     <div style={{ ...tileStyle, ...tileBgStyle, cursor: 'pointer' }} onClick={onClick}>
       <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', height: 32 * TILE_SCALE }}>
-        <div style={{ position: 'relative', transform: `translateX(${showing.shakeX}px)` }}>
-          <TamaComposite
-            tamaId={showing.tamaId}
-            variant="mini"
-            frames={showing.frames}
-            scale={TILE_SCALE}
-            mirrored={showing.mirrored}
-            faceOffset={showing.faceOffset}
-          />
-          <div style={{ ...flashMaskStyle, opacity: flashOpacity, transition: `opacity ${flashMs}ms linear` }}>
+        {!showing.hidden && (
+          <div style={{ position: 'relative', transform: `translateX(${(showing.shakeX || 0) + (showing.walkX || 0)}px)` }}>
+            {/* shakeX and walkX are both driven per-frame via rAF (see runEvolution/runNewCycleSequence), so no CSS transition here — it would just add lag on top of already-smooth manual animation. */}
             <TamaComposite
               tamaId={showing.tamaId}
               variant="mini"
@@ -209,8 +230,18 @@ function StudentTile({ student, onClick }) {
               mirrored={showing.mirrored}
               faceOffset={showing.faceOffset}
             />
+            <div style={{ ...flashMaskStyle, opacity: flashOpacity, transition: `opacity ${flashMs}ms linear` }}>
+              <TamaComposite
+                tamaId={showing.tamaId}
+                variant="mini"
+                frames={showing.frames}
+                scale={TILE_SCALE}
+                mirrored={showing.mirrored}
+                faceOffset={showing.faceOffset}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div style={nameStyle}>{student.name}</div>
       <div style={meterTrackStyle} title={`${Math.round(fraction * POINTS_PER_GROWTH)}/${POINTS_PER_GROWTH} pts to next stage`}>
@@ -287,18 +318,85 @@ async function runEvolution(oldTama, isCancelled, setEvo) {
   await sleep(EVO_CELEBRATE_MS);
 }
 
+// adult -> new egg: no flash, no transformation-in-place — the finished
+// adult waves, walks off the tile, and once it's gone the new egg just
+// appears. See the file header for why this is separate from
+// runEvolution. oldTama is the completed adult (still has a real tamaId,
+// unlike egg->baby's oldTama).
+async function runNewCycleSequence(oldTama, isCancelled, setEvo) {
+  setEvo({ phase: 'wave', oldTama });
+  await sleep(EVO_WAVE_MS);
+  if (isCancelled()) return;
+
+  await new Promise((resolve) => {
+    const start = performance.now();
+    function frame(ts) {
+      if (isCancelled()) return resolve();
+      const elapsed = ts - start;
+      if (elapsed >= EVO_WALKOFF_MS) {
+        resolve();
+        return;
+      }
+      const walkX = (elapsed / EVO_WALKOFF_MS) * EVO_WALKOFF_DISTANCE_PX;
+      const walkStep = Math.floor(elapsed / EVO_WALK_STEP_MS);
+      setEvo({ phase: 'walkoff', oldTama, walkX, walkStep });
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  });
+  if (isCancelled()) return;
+
+  // Fully off-tile now (clipped by the tile's own overflow:hidden) — a
+  // beat of nothing before the new egg shows up.
+  setEvo({ phase: 'gone', oldTama });
+  await sleep(EVO_GONE_MS);
+  if (isCancelled()) return;
+
+  setEvo({ phase: 'eggAppear', oldTama });
+  await sleep(EVO_EGG_APPEAR_MS);
+}
+
 // Resolves an in-progress evolution's phase into what TamaComposite should
-// render. cycle/shake/hatch/flashIn still show the OLD pet (idle/happy
-// alternating for cycle, a static idle pose while shaking, the live
-// egg_hatch frame while hatching); flashHold/flashOut/celebrate show the
-// NEW one (current isEgg/tamaId — the actual props the tile was passed,
-// already updated by the time the sequence gets here).
+// render. cycle/shake/hatch/flashIn/wave/walkoff still show the OLD pet
+// (idle/happy alternating for cycle, a static idle pose while shaking, the
+// live egg_hatch frame while hatching, a happy pose while waving, walking
+// frames while sliding off); flashHold/flashOut/celebrate/eggAppear show
+// the NEW one (current isEgg/tamaId — the actual props the tile was
+// passed, already updated by the time the sequence gets here); 'gone' is
+// hidden entirely.
 function evoSpriteFor(evo, isEgg, tamaId) {
-  const { phase, oldTama, cycleIdx = 0, shakeX = 0, hatchFrameIdx = 0 } = evo;
+  const { phase, oldTama, cycleIdx = 0, shakeX = 0, hatchFrameIdx = 0, walkX = 0, walkStep = 0 } = evo;
   const showingOld = phase === 'cycle' || phase === 'shake' || phase === 'hatch' || phase === 'flashIn';
 
   if (phase === 'hatch') {
-    return { tamaId: 'egg', frames: { body: EGG_HATCH.body[hatchFrameIdx], eyes: 0, mouth: 0 }, mirrored: false, faceOffset: undefined, shakeX: 0 };
+    return { tamaId: 'egg', frames: { body: EGG_HATCH.body[hatchFrameIdx], eyes: 0, mouth: 0 }, mirrored: false, faceOffset: undefined, shakeX: 0, walkX: 0 };
+  }
+  if (phase === 'wave') {
+    return {
+      tamaId: oldTama.tamaId,
+      frames: { body: HAPPY.body[0], eyes: HAPPY.eyes[0], mouth: HAPPY.mouth[0] },
+      mirrored: false,
+      faceOffset: { x: 0, y: 0 },
+      shakeX: 0,
+      walkX: 0,
+    };
+  }
+  if (phase === 'walkoff') {
+    const idx = walkStep % WALK.body.length;
+    return {
+      tamaId: oldTama.tamaId,
+      frames: { body: WALK.body[idx], eyes: WALK.eyes[idx % WALK.eyes.length], mouth: WALK.mouth[idx % WALK.mouth.length] },
+      mirrored: true, // faces right, the direction it's sliding — TamaComposite/resolveAnimState already account for mirroring flipping faceOffsetX's visual direction, no manual sign flip needed (same pattern IslandView's roamers use)
+      faceOffset: { x: WALK.faceOffsetX[idx % WALK.faceOffsetX.length], y: WALK.faceOffsetY[idx % WALK.faceOffsetY.length] },
+      shakeX: 0,
+      walkX,
+    };
+  }
+  if (phase === 'gone') {
+    return { hidden: true, shakeX: 0, walkX: 0 };
+  }
+  if (phase === 'eggAppear') {
+    return { tamaId: 'egg', frames: { body: 0, eyes: 0, mouth: 0 }, mirrored: false, faceOffset: undefined, shakeX: 0, walkX: 0 };
   }
   if (showingOld && oldTama.stage === 'egg') {
     // flashIn right after an egg->baby hatch — hold on egg_hatch's final
